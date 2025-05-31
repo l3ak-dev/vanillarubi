@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import brFlag from '../assets/br-flag.svg';
 import ukFlag from '../assets/uk-flag.svg';
@@ -6,6 +5,7 @@ import esFlag from '../assets/es-flag.svg';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
+import * as React from 'react';
 
 const NavbarContainer = styled.nav`
   width: 100%;
@@ -221,7 +221,7 @@ const MobileMenuLink = styled.a`
   }
 `;
 
-export const Navbar: React.FC = () => {
+export const Navbar = () => {
   const { t, i18n: i18nInstance } = useTranslation();
   const currentLang = i18nInstance.language;
   const [scrolled, setScrolled] = React.useState(false);
