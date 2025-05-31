@@ -113,15 +113,6 @@ const FlagButton = styled.button`
   }
 `;
 
-const FlagImg = styled.img`
-  width: 24px;
-  height: 24px;
-  @media (max-width: 600px) {
-    width: 18px;
-    height: 18px;
-  }
-`;
-
 const Hamburger = styled.button`
   display: none;
   background: none;
@@ -233,7 +224,6 @@ const MobileMenuLink = styled.a`
 export const Navbar: React.FC = () => {
   const { t, i18n: i18nInstance } = useTranslation();
   const currentLang = i18nInstance.language;
-  const [lang, setLang] = React.useState<'en' | 'pt' | 'es'>('pt');
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   React.useEffect(() => {

@@ -30,30 +30,6 @@ const MotionHeroContainer = styled(motion.section)`
   }
 `;
 
-const MobileImageWrapper = styled.div`
-  display: none;
-  @media (max-width: 600px) {
-    display: block;
-    width: 100vw;
-    margin-left: 50%;
-    transform: translateX(-50%);
-    background: var(--color-gray);
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    overflow: hidden;
-    height: 220px;
-    max-height: 220px;
-  }
-`;
-
-const MobileProfileImg = styled(motion.img)`
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-`;
-
 const HeroContent = styled.div`
   @media (max-width: 600px) {
     width: 100%;
@@ -221,18 +197,6 @@ const DesktopImage = styled.img`
     display: none;
   }
 `;
-
-// Hook para detectar mobile
-function useIsMobile(breakpoint = 900) {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, [breakpoint]);
-  return isMobile;
-}
 
 const ResponsiveHeadline: React.FC = () => {
   const { t } = useTranslation();
