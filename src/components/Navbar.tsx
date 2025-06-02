@@ -4,7 +4,6 @@ import ukFlag from '../assets/uk-flag.svg';
 import esFlag from '../assets/es-flag.svg';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import i18n from '../i18n';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
@@ -305,26 +304,7 @@ const MobileMenuLink = styled(motion.a)`
 `;
 
 // Animation variants
-const overlayVariants = {
-  closed: { opacity: 0, y: -20 },
-  open: { 
-    opacity: 1, 
-    y: 0,
-    transition: { 
-      type: "spring",
-      stiffness: 300,
-      damping: 30
-    }
-  },
-  exit: { 
-    opacity: 0,
-    y: -20,
-    transition: { 
-      duration: 0.2,
-      ease: "easeInOut" 
-    }
-  }
-};
+  
 
 const linkVariants = {
   closed: { opacity: 0, y: 20 },
