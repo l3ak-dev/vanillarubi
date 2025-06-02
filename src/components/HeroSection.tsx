@@ -260,18 +260,7 @@ const imageVariants = {
   }
 };
 
-const accentVariants = {
-  hidden: { opacity: 0, scale: 0.5 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delay: 0.6,
-      duration: 0.8,
-      ease: [0.4, 0, 0.2, 1]
-    }
-  }
-};
+
 
 export const HeroSection: React.FC = () => {
   const { t, i18n } = useTranslation();
