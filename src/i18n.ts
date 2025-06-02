@@ -42,6 +42,8 @@ const resources = {
         trinium: 'Scale with soul. Grow with intention.'
       },
       whatWeOffer: {
+        subtitle: 'OUR EXPERTISE',
+        description: 'From strategy to execution, discover the multidimensional services that elevate your business with clarity, creativity, and soul.',
         title: 'What We Actually Do?',
         services: [
           {
@@ -118,11 +120,11 @@ const resources = {
         headline1: 'Estratégia encontra <1>flow</1>',
         headline2: 'Ousadia encontra <1>clássico</1>',
         headline3: 'Intenção encontra <1>renda</1>',
-        headline4: 'E você? <1>Você nos encontra</1>',
-        strategyMeets: 'Estratégia encontra',
-        boldnessMeets: 'Ousadia encontra',
-        intentionMeets: 'Intenção encontra',
-        andYou: 'E você?',
+        headline4: 'E V ocê? <1>Você nos encontra</1>',
+        strategyMeets: 'Estratégia e',
+        boldnessMeets: 'Ousadia e',
+        intentionMeets: 'Intenção e',
+        andYou: 'E Você?',
         flow: 'flow',
         classic: 'clássico',
         income: 'renda',
@@ -145,6 +147,8 @@ const resources = {
         trinium: 'Escale com alma. Cresça com intenção.'
       },
       whatWeOffer: {
+        subtitle: 'NOSSA EXPERTISE',
+        description: 'Da estratégia à execução, conheça os serviços multidimensionais que elevam seu negócio com clareza, criatividade e alma.',
         title: 'O que realmente fazemos?',
         services: [
           {
@@ -222,9 +226,9 @@ const resources = {
         headline2: 'La audacia se une a lo <1>clásico</1>',
         headline3: 'La intención se une a los <1>ingresos</1>',
         headline4: '¿Y tú? <1>Nos encuentras</1>',
-        strategyMeets: 'La estrategia se une a',
-        boldnessMeets: 'La audacia se une a lo',
-        intentionMeets: 'La intención se une a los',
+        strategyMeets: 'Estrategia y',
+        boldnessMeets: 'Audacia y ',
+        intentionMeets: 'Intención y ',
         andYou: '¿Y tú?',
         flow: 'flow',
         classic: 'clásico',
@@ -248,6 +252,8 @@ const resources = {
         trinium: 'Escala con alma. Crece con intención.'
       },
       whatWeOffer: {
+        subtitle: 'NUESTRA EXPERTISE',
+        description: 'De la estrategia a la ejecución, descubre los servicios multidimensionales que elevan tu negocio con claridad, creatividad y alma.',
         title: '¿Qué hacemos realmente?',
         services: [
           {

@@ -2,100 +2,85 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-const MotionHeroContainer = styled(motion.section)`
+const HeroContainer = styled(motion.section)`
   scroll-margin-top: 90px;
-  min-height: 70vh;
+  min-height: 85vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   background: var(--color-white);
-  padding: 0 5rem;
-  gap: 4.5rem;
+  padding: var(--space-9) var(--space-7);
+  gap: var(--space-8);
+  
   @media (max-width: 1200px) {
-    padding: 0 2.5rem;
-    gap: 2.2rem;
+    padding: var(--space-6) var(--space-5);
+    gap: var(--space-5);
   }
+  
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    padding: 2.2rem 1.2rem 1.2rem 1.2rem;
-    gap: 1.2rem;
+    padding: var(--space-5) var(--space-3);
+    gap: var(--space-3);
     min-height: unset;
   }
+  
   @media (max-width: 600px) {
-    display: block;
-    padding: 0;
+    padding: var(--space-3);
     min-height: unset;
-    background: var(--color-white);
-  }
-`;
-
-const HeroContent = styled.div`
-  @media (max-width: 600px) {
-    width: 100%;
-    max-width: 100vw;
-    padding: 2.2rem 1.2rem 2.7rem 1.2rem;
-    position: relative;
-    background: url('https://plus.unsplash.com/premium_photo-1673758900733-b7b5b031341b?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center top/cover no-repeat;
-    color: var(--color-black);
-    z-index: 2;
-    min-height: 340px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0; 
-      background: rgba(255,255,255,0.88);
-      z-index: 1;
-      border-radius: 0;
-    }
-    > * {
-      position: relative;
-      z-index: 2;
-    }
+    gap: var(--space-4);
   }
 `;
 
-const Left = styled.div`
+const ContentSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  height: 100%;
-  min-height: 480px;
+  
   @media (max-width: 900px) {
-    align-items: center;
-    text-align: center;
-    min-height: unset;
+    order: 2;
+    margin-top: var(--space-5);
   }
+  
   @media (max-width: 600px) {
     align-items: center;
     text-align: center;
-    gap: 1.1rem;
-    margin-bottom: 2.2rem;
+    width: 100%;
   }
 `;
 
-const Headline = styled(motion.h1)`
-  font-size: 3.6rem;
+const ImageSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+  @media (max-width: 900px) {
+    order: 1;
+    width: 100%;
+  }
+`;
+
+const Headline = styled(motion.h1)<{ $lang?: string }>`
+  font-size: ${({ $lang }) =>
+    $lang === 'pt' || $lang === 'es'
+      ? 'clamp(2.3rem, 5vw, 3.7rem)'
+      : 'clamp(2.5rem, 5vw, 4rem)'};
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
   color: var(--color-black);
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-3);
+  
   @media (max-width: 900px) {
-    font-size: 2.2rem;
-    line-height: 1.13;
+    margin-bottom: var(--space-2);
   }
+  
   @media (max-width: 600px) {
-    font-size: 1.68rem;
-    line-height: 1.22;
-    margin-bottom: 1.1rem;
-    margin-top: 1.1rem;
-    text-align: center;
+    margin-bottom: var(--space-3);
   }
 `;
 
@@ -103,6 +88,7 @@ const Highlight = styled(motion.span)`
   color: var(--color-primary);
   position: relative;
   display: inline-block;
+  
   &::after {
     content: '';
     display: block;
@@ -112,135 +98,233 @@ const Highlight = styled(motion.span)`
     position: absolute;
     left: 0;
     bottom: 0.08em;
-    border-radius: 1px;
+    border-radius: var(--radius-sm);
     opacity: 0.18;
-    transition: width 0.3s cubic-bezier(.4,0,.2,1);
+    transition: width var(--transition-normal);
   }
 `;
 
 const Subheadline = styled(motion.p)`
-  font-size: 1.18rem;
-  color: var(--color-dark-gray);
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  color: var(--color-gray-700);
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  max-width: 420px;
-  margin-bottom: 1.7rem;
+  max-width: 480px;
+  margin-bottom: var(--space-4);
+  line-height: 1.6;
+  
   @media (max-width: 900px) {
-    font-size: 1rem;
-    margin-bottom: 1.1rem;
+    margin-bottom: var(--space-3);
+    max-width: 90%;
   }
+  
   @media (max-width: 600px) {
-    font-size: 1.08rem;
-    margin-bottom: 2.2rem;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 95vw;
-    line-height: 1.6;
+    margin-bottom: var(--space-5);
+    max-width: 100%;
+    text-align: center;
   }
 `;
 
 const CTAButton = styled(motion.a)`
-  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-black) 100%);
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: var(--color-white);
-  padding: 1.1rem 2.5rem;
-  border-radius: 40px;
-  font-size: 1.13rem;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-2xl);
+  font-size: 1.1rem;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   letter-spacing: 0.04em;
-  box-shadow: 0 4px 24px rgba(24,24,27,0.07);
-  transition: background 0.3s cubic-bezier(.4,0,.2,1), transform 0.2s cubic-bezier(.4,0,.2,1);
+  box-shadow: var(--shadow-md), 0 8px 24px rgba(230,57,70,0.16);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   cursor: pointer;
   border: none;
   text-decoration: none;
-  margin-top: 0.7rem;
-  margin-bottom: 1.7rem;
-  @media (max-width: 900px) {
-    font-size: 1rem;
-    padding: 1rem 1.5rem;
-  }
-  @media (max-width: 600px) {
-    width: 100%;
-    display: block;
-    font-size: 1.01rem;
-    padding: 1.1rem 0;
-    margin-top: 2.2rem;
-    margin-bottom: 2.1rem;
-    border-radius: 32px;
-  }
-`;
-
-const Right = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg), 0 12px 28px rgba(230,57,70,0.25);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-md), 0 6px 16px rgba(230,57,70,0.2);
+  }
+  
   @media (max-width: 900px) {
-    display: none;
+    font-size: 1rem;
+    padding: var(--space-2) var(--space-4);
+  }
+  
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: var(--space-3) 0;
+    border-radius: var(--radius-xl);
   }
 `;
 
-const DesktopImage = styled.img`
-  width: 420px;
-  max-width: 38vw;
+const ImageContainer = styled(motion.div)`
+  position: relative;
+  width: 90%;
   height: 520px;
-  object-fit: cover;
-  border-radius: 24px;
-  box-shadow: 0 8px 40px rgba(24,24,27,0.10);
-  background: var(--color-gray);
-  @media (max-width: 1200px) {
-    width: 320px;
-    height: 380px;
-    max-width: 48vw;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(210deg, rgba(230,57,70,0.08) 0%, rgba(24,24,27,0.02) 100%);
+    z-index: 1;
   }
+  
+  @media (max-width: 1200px) {
+    height: 460px;
+  }
+  
   @media (max-width: 900px) {
-    display: none;
+    width: 100%;
+    height: 400px;
+  }
+  
+  @media (max-width: 600px) {
+    height: 300px;
+    border-radius: var(--radius-lg);
   }
 `;
 
-const ResponsiveHeadline: React.FC = () => {
-  const { t } = useTranslation();
-  return (
-    <Headline>
-      {t('hero.strategyMeets')}<br /><Highlight>{t('hero.flow')}</Highlight><br />
-      {t('hero.boldnessMeets')}<br /><Highlight>{t('hero.classic')}</Highlight><br />
-      {t('hero.intentionMeets')}<br /><Highlight>{t('hero.income')}</Highlight><br />
-      {t('hero.andYou')}<br /><Highlight>{t('hero.youMeetUs')}</Highlight>
-    </Headline>
-  );
+const HeroImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--transition-slow);
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+const HeadlineLine = styled.span`
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.5ch;
+  @media (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+`;
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.2,
+      duration: 0.6
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      duration: 0.7,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const imageVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.8,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const accentVariants = {
+  hidden: { opacity: 0, scale: 0.5 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delay: 0.6,
+      duration: 0.8,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
 };
 
 export const HeroSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  
   return (
-    <MotionHeroContainer
-      id="about"
-      className="container"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+    <HeroContainer 
+      id="home"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
     >
-      <HeroContent>
-        <Left>
-          <ResponsiveHeadline />
-          <Subheadline>
-            {t('hero.subheadline')}
-          </Subheadline>
-          <CTAButton
-            as={motion.a}
-            href="#book-call"
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            {t('hero.cta')}
-          </CTAButton>
-        </Left>
-      </HeroContent>
-      <Right>
-        <DesktopImage
-          src="https://plus.unsplash.com/premium_photo-1673758900733-b7b5b031341b?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Editorial business portrait"
-        />
-      </Right>
-    </MotionHeroContainer>
+      <ContentSection>
+        <Headline variants={itemVariants} $lang={i18n.language}>
+          <HeadlineLine>
+            {t('hero.strategyMeets')}
+            <Highlight>{t('hero.flow')}</Highlight>
+          </HeadlineLine>
+          <HeadlineLine>
+            {t('hero.boldnessMeets')}
+            <Highlight>{t('hero.classic')}</Highlight>
+          </HeadlineLine>
+          <HeadlineLine>
+            {t('hero.intentionMeets')}
+            <Highlight>{t('hero.income')}</Highlight>
+          </HeadlineLine>
+          <HeadlineLine>
+            {t('hero.andYou')}
+            <Highlight>{t('hero.youMeetUs')}</Highlight>
+          </HeadlineLine>
+        </Headline>
+        
+        <Subheadline variants={itemVariants}>
+          {t('hero.subheadline')}
+        </Subheadline>
+        
+        <CTAButton 
+          href="#contact" 
+          variants={itemVariants}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          {t('hero.cta')}
+        </CTAButton>
+      </ContentSection>
+      
+      <ImageSection>
+        <ImageContainer variants={imageVariants}>
+          <HeroImage 
+            src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+            alt="Vanilla Rubi - Brand Strategy"
+          />
+        </ImageContainer>
+      </ImageSection>
+    </HeroContainer>
   );
 }; 

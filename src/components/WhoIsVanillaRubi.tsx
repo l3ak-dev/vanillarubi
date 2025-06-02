@@ -104,7 +104,7 @@ const Trinium = styled(motion.div)`
 export const WhoIsVanillaRubi: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <Section className="container">
+    <Section className="container" id="about">
       <MotionDiv
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
