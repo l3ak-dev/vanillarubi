@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { SectionSEO } from './SectionSEO';
 
 // Styled Components
 const HeroContainer = styled(motion.section)`
@@ -363,103 +364,111 @@ export const HeroSection: React.FC = () => {
   const { t } = useTranslation();
   
   return (
-    <LazyMotion features={domAnimation}>
-      <HeroContainer 
+    <>
+      <SectionSEO 
         id="home"
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        role="region"
-        aria-label="Hero Section"
-      >
-        <PhraseRow>
-          <LeftContent>
-            <LeftHeadline aria-label={t('hero.strategyMeets')}>
-              {t('hero.strategyMeets')}
-            </LeftHeadline>
-          </LeftContent>
-          <RightContent>
-            <RightHeadline aria-label={t('hero.flow')}>
-              {t('hero.flow')}.
-            </RightHeadline>
-          </RightContent>
-        </PhraseRow>
-        
-        <PhraseRow>
-          <LeftContent>
-            <LeftHeadline aria-label={t('hero.boldnessMeets')}>
-              {t('hero.boldnessMeets')}
-            </LeftHeadline>
-          </LeftContent>
-          <RightContent>
-            <RightHeadline aria-label={t('hero.classic')}>
-              {t('hero.classic')}.
-            </RightHeadline>
-          </RightContent>
-        </PhraseRow>
-        
-        <PhraseRow>
-          <LeftContent>
-            <LeftHeadline aria-label={t('hero.intentionMeets')}>
-              {t('hero.intentionMeets')}
-            </LeftHeadline>
-          </LeftContent>
-          <RightContent>
-            <RightHeadline aria-label={t('hero.income')}>
-              {t('hero.income')}.
-            </RightHeadline>
-          </RightContent>
-        </PhraseRow>
-        
-        <PhraseRow>
-          <LeftContent>
-            <LeftHeadline aria-label={t('hero.andYou')}>
-              {t('hero.andYou')}
-            </LeftHeadline>
-          </LeftContent>
-          <RightContent>
-            <RightHeadline aria-label={t('hero.youMeetUs')}>
-              {t('hero.youMeetUs')}!
-            </RightHeadline>
-          </RightContent>
-        </PhraseRow>
-        
-        <SplitLayout>
-          <LeftSection aria-hidden="true">
-            <ContentGrid />
-          </LeftSection>
+        title="Vanilla Rubi - Strategy meets flow, Boldness meets classic, Intention meets income"
+        description="A thriving business is an ecosystem. You just found your one-stop solution to integrate and balance every part of it. Creative strategy and business growth with soul."
+        keywords="business growth, strategy, creative strategy, business ecosystem, flow, boldness, intention, income"
+      />
+      
+      <LazyMotion features={domAnimation}>
+        <HeroContainer 
+          id="home"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          role="region"
+          aria-label="Hero Section"
+        >
+          <PhraseRow>
+            <LeftContent>
+              <LeftHeadline aria-label={t('hero.strategyMeets')}>
+                {t('hero.strategyMeets')}
+              </LeftHeadline>
+            </LeftContent>
+            <RightContent>
+              <RightHeadline aria-label={t('hero.flow')}>
+                {t('hero.flow')}.
+              </RightHeadline>
+            </RightContent>
+          </PhraseRow>
           
-          <RightSection>
-            <ImageWrapper>
-              <HeroImage 
-                src="/imagens/heroimg.jpg" 
-                alt="Creative strategy and business growth"
-                loading="eager"
-                fetchPriority="high"
-              />
-            </ImageWrapper>
-          </RightSection>
-        </SplitLayout>
-        
-        <BottomContent>
-          <SubheadlineContainer variants={itemVariants}>
-            <Subheadline role="doc-subtitle">
-              {t('hero.subheadline')}
-            </Subheadline>
-          </SubheadlineContainer>
+          <PhraseRow>
+            <LeftContent>
+              <LeftHeadline aria-label={t('hero.boldnessMeets')}>
+                {t('hero.boldnessMeets')}
+              </LeftHeadline>
+            </LeftContent>
+            <RightContent>
+              <RightHeadline aria-label={t('hero.classic')}>
+                {t('hero.classic')}.
+              </RightHeadline>
+            </RightContent>
+          </PhraseRow>
           
-          <CTAButton 
-            href="#contact" 
-            variants={itemVariants}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            role="button"
-            aria-label={t('hero.cta')}
-          >
-            {t('hero.cta')}
-          </CTAButton>
-        </BottomContent>
-      </HeroContainer>
-    </LazyMotion>
+          <PhraseRow>
+            <LeftContent>
+              <LeftHeadline aria-label={t('hero.intentionMeets')}>
+                {t('hero.intentionMeets')}
+              </LeftHeadline>
+            </LeftContent>
+            <RightContent>
+              <RightHeadline aria-label={t('hero.income')}>
+                {t('hero.income')}.
+              </RightHeadline>
+            </RightContent>
+          </PhraseRow>
+          
+          <PhraseRow>
+            <LeftContent>
+              <LeftHeadline aria-label={t('hero.andYou')}>
+                {t('hero.andYou')}
+              </LeftHeadline>
+            </LeftContent>
+            <RightContent>
+              <RightHeadline aria-label={t('hero.youMeetUs')}>
+                {t('hero.youMeetUs')}!
+              </RightHeadline>
+            </RightContent>
+          </PhraseRow>
+          
+          <SplitLayout>
+            <LeftSection aria-hidden="true">
+              <ContentGrid />
+            </LeftSection>
+            
+            <RightSection>
+              <ImageWrapper>
+                <HeroImage 
+                  src="/imagens/heroimg.jpg" 
+                  alt="Creative strategy and business growth"
+                  loading="eager"
+                />
+              </ImageWrapper>
+            </RightSection>
+          </SplitLayout>
+          
+          <BottomContent>
+            <SubheadlineContainer variants={itemVariants}>
+              <Subheadline role="doc-subtitle">
+                {t('hero.subheadline')}
+              </Subheadline>
+            </SubheadlineContainer>
+            
+            <CTAButton 
+              href="#contact" 
+              variants={itemVariants}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              role="button"
+              aria-label={t('hero.cta')}
+            >
+              {t('hero.cta')}
+            </CTAButton>
+          </BottomContent>
+        </HeroContainer>
+      </LazyMotion>
+    </>
   );
 }; 

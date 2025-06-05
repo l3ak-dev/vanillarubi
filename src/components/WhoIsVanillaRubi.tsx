@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useScroll, useTransform, LazyMotion, domAnimation } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import whoIsVanillaImage from '../imagens/whoisvanilla.jpg';
+import { SectionSEO } from './SectionSEO';
 
 const Section = styled.section`
   background: var(--color-accent);
@@ -326,19 +327,27 @@ const renderWithHighlights = (text: string) => {
 
 export const WhoIsVanillaRubi: React.FC = () => {
   const { t } = useTranslation();
-  const imageRef = useRef<HTMLElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+  const componentRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: componentRef,
     offset: ["start end", "end start"]
   });
   
-  const imageY = useTransform(scrollYProgress, [0, 1], ["-2%", "2%"]);
+  const imageScaleProgress = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
+  const contentOpacityProgress = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
   
   return (
-    <LazyMotion features={domAnimation}>
-      <Section id="about" ref={sectionRef} aria-labelledby="about-title">
+    <>
+      <SectionSEO 
+        id="who"
+        title="Who is Vanilla Rubi - Business Growth Agency"
+        description="Vanilla Rubi is a multidimensional business growth force, not just a marketing agency. We bring stillness, focus, and intention to your business strategy."
+        keywords="business growth, marketing agency, business strategy, Vanilla Rubi"
+        imageUrl={whoIsVanillaImage}
+      />
+      
+      <Section ref={componentRef} id="who" aria-labelledby="who-title">
         <Container>
           <ImageColumn
             initial={{ opacity: 0, x: -30 }}
@@ -346,11 +355,11 @@ export const WhoIsVanillaRubi: React.FC = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <StylishImage ref={imageRef}>
+            <StylishImage>
               <motion.img 
                 src={whoIsVanillaImage} 
                 alt={t('who.imageAlt') || "Vanilla Rubi - Business Growth Philosophy"}
-                style={{ y: imageY }}
+                style={{ scale: imageScaleProgress }}
                 loading="lazy"
                 width="600"
                 height="337"
@@ -363,6 +372,7 @@ export const WhoIsVanillaRubi: React.FC = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
+            style={{ opacity: contentOpacityProgress }}
           >
             <Eyebrow variants={itemVariants} aria-hidden="true">
               {renderWithHighlights(t('who.agency'))}
@@ -394,6 +404,6 @@ export const WhoIsVanillaRubi: React.FC = () => {
           </ContentColumn>
         </Container>
       </Section>
-    </LazyMotion>
+    </>
   );
 }; 

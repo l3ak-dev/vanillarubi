@@ -357,7 +357,11 @@ export const Navbar: React.FC = () => {
   const handleMenuClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
     setIsMobileMenuOpen(false);
-    const element = document.getElementById(id);
+    
+    // Usar contact-mobile em vez de contact no mobile
+    const targetId = id === 'contact' && window.innerWidth <= 600 ? 'contact-mobile' : id;
+    
+    const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -375,7 +379,7 @@ export const Navbar: React.FC = () => {
 
   // Menu items data
   const menuItems = [
-    { id: 'about', label: t('navbar.about') },
+    { id: 'who', label: t('navbar.about') },
     { id: 'services', label: t('navbar.services') },
     { id: 'audience', label: t('navbar.audience') },
     { id: 'contact', label: t('navbar.invitation') },

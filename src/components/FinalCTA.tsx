@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { motion, LazyMotion, domAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
+import { SectionSEO } from './SectionSEO';
 
 const Section = styled.section`
   scroll-margin-top: 120px;
@@ -172,10 +173,10 @@ const FormRow = styled.div`
   width: 100%;
 `;
 
-const FormGroup = styled.div<{ fullWidth?: boolean }>`
+const FormGroup = styled.div<{ $fullWidth?: boolean }>`
   width: 100%;
   text-align: left;
-  grid-column: ${props => props.fullWidth ? '1 / span 2' : 'auto'};
+  grid-column: ${props => props.$fullWidth ? '1 / span 2' : 'auto'};
 `;
 
 const Label = styled.label`
@@ -244,12 +245,12 @@ const OptionGroup = styled.div`
   margin-top: 2px;
 `;
 
-const OptionButton = styled.label<{ selected: boolean }>`
+const OptionButton = styled.label<{ $selected: boolean }>`
   display: inline-flex;
   align-items: center;
   padding: 8px 14px;
-  background: ${props => props.selected ? 'rgba(90, 0, 22, 0.05)' : 'white'};
-  border: 1px solid ${props => props.selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
+  background: ${props => props.$selected ? 'rgba(90, 0, 22, 0.05)' : 'white'};
+  border: 1px solid ${props => props.$selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
   border-radius: 2px;
   font-size: 0.85rem;
   font-family: 'Montserrat', sans-serif;
@@ -260,8 +261,8 @@ const OptionButton = styled.label<{ selected: boolean }>`
   user-select: none;
   
   &:hover {
-    background: ${props => props.selected ? 'rgba(90, 0, 22, 0.07)' : 'rgba(90, 0, 22, 0.02)'};
-    border-color: ${props => props.selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.25)'};
+    background: ${props => props.$selected ? 'rgba(90, 0, 22, 0.07)' : 'rgba(90, 0, 22, 0.02)'};
+    border-color: ${props => props.$selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.25)'};
   }
 `;
 
@@ -430,7 +431,14 @@ export const FinalCTA: React.FC = () => {
   };
 
   return (
-    <LazyMotion features={domAnimation}>
+    <>
+      <SectionSEO 
+        id="contact"
+        title="Contact Vanilla Rubi - Book Your Discovery Call"
+        description="Book a discovery call with Vanilla Rubi. We'll help grow your business to match your vision, value, and next level with our multidimensional business growth services."
+        keywords="discovery call, business consultation, growth strategy, contact form, business services"
+      />
+      
       <Section id="contact" aria-labelledby="contact-title">
         <Container>
           {/* Left Column - Content */}
@@ -517,10 +525,10 @@ export const FinalCTA: React.FC = () => {
                 </FormGroup>
               </FormRow>
               
-              <FormGroup fullWidth>
+              <FormGroup $fullWidth>
                 <OptionGroupTitle id="journey-title">{t('finalCTA.placeholders.journey')}</OptionGroupTitle>
                 <OptionGroup role="group" aria-labelledby="journey-title">
-                  <OptionButton selected={journeyOptions.includes('handsoff')}>
+                  <OptionButton $selected={journeyOptions.includes('handsoff')}>
                     <HiddenCheckbox 
                       type="checkbox" 
                       id="journey-handsoff" 
@@ -533,7 +541,7 @@ export const FinalCTA: React.FC = () => {
                     {t('finalCTA.placeholders.journeyOptions.handsOff')}
                   </OptionButton>
                 
-                  <OptionButton selected={journeyOptions.includes('notsure')}>
+                  <OptionButton $selected={journeyOptions.includes('notsure')}>
                     <HiddenCheckbox 
                       type="checkbox" 
                       id="journey-notsure" 
@@ -546,7 +554,7 @@ export const FinalCTA: React.FC = () => {
                     {t('finalCTA.placeholders.journeyOptions.notSure')}
                   </OptionButton>
                 
-                  <OptionButton selected={journeyOptions.includes('specific')}>
+                  <OptionButton $selected={journeyOptions.includes('specific')}>
                     <HiddenCheckbox 
                       type="checkbox" 
                       id="journey-specific" 
@@ -561,7 +569,7 @@ export const FinalCTA: React.FC = () => {
                 </OptionGroup>
               </FormGroup>
               
-              <FormGroup fullWidth>
+              <FormGroup $fullWidth>
                 <Label htmlFor="services">{t('finalCTA.placeholders.services')}</Label>
                 <TextArea 
                   id="services" 
@@ -572,7 +580,7 @@ export const FinalCTA: React.FC = () => {
                 />
               </FormGroup>
               
-              <FormGroup fullWidth>
+              <FormGroup $fullWidth>
                 <Label htmlFor="instagram">{t('finalCTA.placeholders.instagram')}</Label>
                 <Input 
                   type="text" 
@@ -583,10 +591,10 @@ export const FinalCTA: React.FC = () => {
                 />
               </FormGroup>
               
-              <FormGroup fullWidth>
+              <FormGroup $fullWidth>
                 <OptionGroupTitle id="readiness-title">{t('finalCTA.placeholders.readiness')}</OptionGroupTitle>
                 <OptionGroup role="group" aria-labelledby="readiness-title">
-                  <OptionButton selected={readinessOptions.includes('now')}>
+                  <OptionButton $selected={readinessOptions.includes('now')}>
                     <HiddenCheckbox 
                       type="checkbox" 
                       id="readiness-now" 
@@ -599,7 +607,7 @@ export const FinalCTA: React.FC = () => {
                     {t('finalCTA.placeholders.readinessOptions.now')}
                   </OptionButton>
                 
-                  <OptionButton selected={readinessOptions.includes('soon')}>
+                  <OptionButton $selected={readinessOptions.includes('soon')}>
                     <HiddenCheckbox 
                       type="checkbox" 
                       id="readiness-soon" 
@@ -612,7 +620,7 @@ export const FinalCTA: React.FC = () => {
                     {t('finalCTA.placeholders.readinessOptions.soon')}
                   </OptionButton>
                 
-                  <OptionButton selected={readinessOptions.includes('later')}>
+                  <OptionButton $selected={readinessOptions.includes('later')}>
                     <HiddenCheckbox 
                       type="checkbox" 
                       id="readiness-later" 
@@ -633,10 +641,10 @@ export const FinalCTA: React.FC = () => {
                 </WaitlistText>
               </WaitlistNotice>
               
-              <FormGroup fullWidth>
+              <FormGroup $fullWidth>
                 <OptionGroupTitle id="waitlist-title">{t('finalCTA.placeholders.waitlist')}</OptionGroupTitle>
                 <OptionGroup role="radiogroup" aria-labelledby="waitlist-title">
-                  <OptionButton selected={waitlist === 'yes'}>
+                  <OptionButton $selected={waitlist === 'yes'}>
                     <HiddenRadio 
                       type="radio" 
                       id="waitlist-yes" 
@@ -651,7 +659,7 @@ export const FinalCTA: React.FC = () => {
                     {t('finalCTA.placeholders.waitlistOptions.yes')}
                   </OptionButton>
                 
-                  <OptionButton selected={waitlist === 'no'}>
+                  <OptionButton $selected={waitlist === 'no'}>
                     <HiddenRadio 
                       type="radio" 
                       id="waitlist-no" 
@@ -687,6 +695,6 @@ export const FinalCTA: React.FC = () => {
           </FormContainer>
         </Container>
       </Section>
-    </LazyMotion>
+    </>
   );
 }; 

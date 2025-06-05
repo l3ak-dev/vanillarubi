@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { motion, useScroll, useTransform, LazyMotion, domAnimation } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import whoIsItForImage from '../imagens/whoisitfor.jpg';
+import { SectionSEO } from './SectionSEO';
 
 const Section = styled.section`
   scroll-margin-top: 90px;
@@ -457,8 +458,16 @@ export const WhoItsFor: React.FC = () => {
   const imageY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
   
   return (
-    <LazyMotion features={domAnimation}>
-      <Section id="audience" ref={sectionRef} aria-labelledby="audience-title">
+    <>
+      <SectionSEO 
+        id="audience"
+        title="Who It's For - Ideal Clients for Business Growth Services"
+        description="We work with entrepreneurs and growing companies ready for organization and scaling. If you're looking to grow vision, structure, and income from the inside out, we're your partner."
+        keywords="business scaling, entrepreneurs, growing companies, business organization, business structure"
+        imageUrl={whoIsItForImage}
+      />
+      
+      <Section ref={sectionRef} id="audience" aria-labelledby="audience-title">
         <Container>
           <ContentColumn
             initial={{ opacity: 0, x: -30 }}
@@ -546,6 +555,6 @@ export const WhoItsFor: React.FC = () => {
           </ImageColumn>
         </Container>
       </Section>
-    </LazyMotion>
+    </>
   );
 }; 

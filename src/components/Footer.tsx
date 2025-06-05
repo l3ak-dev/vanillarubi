@@ -318,7 +318,7 @@ export const Footer: React.FC = () => (
           <SocialIcon href="https://instagram.com/vanillarubi" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
           </SocialIcon>
-          <SocialIcon href="mailto:contato@vanillarubi.com" aria-label="Email">
+          <SocialIcon href="mailto:hello@vanillarubi.com" aria-label="Email">
             <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="4"/><polyline points="22,6 12,13 2,6"/></svg>
           </SocialIcon>
           <SocialIcon href="https://linkedin.com/company/vanillarubi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">

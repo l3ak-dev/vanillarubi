@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { SectionSEO } from './SectionSEO';
 
 // Material Icons styles
 const MaterialIconStyles = `
@@ -362,69 +363,65 @@ export const WhatWeOffer: React.FC = () => {
   const { t, i18n } = useTranslation();
   const services = i18n.t('whatWeOffer.services', { returnObjects: true }) as { title: string; desc: string }[];
   
-  // Função para renderizar o ícone correto
-  const renderIcon = (index: number) => {
-    const iconName = serviceIcons[index % serviceIcons.length];
-    
-    // Se for nosso ícone personalizado, use o SVG
-    if (iconName === 'custom_svg') {
-      return <NetworkIntelligenceSVG />;
-    }
-    
-    // Para os demais ícones, use o Material Icons
-    return <span className="material-icons" aria-hidden="true">{iconName}</span>;
-  };
-  
   return (
-    <LazyMotion features={domAnimation}>
-      <Section id="services" aria-labelledby="services-title">
-        <IconStyles />
-        <Container>
-          <SectionHeader
-            as={motion.div}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={containerVariants}
-          >
-            <Subtitle variants={itemVariants} aria-hidden="true">
-              {t('whatWeOffer.subtitle')}
-            </Subtitle>
-            <Title variants={itemVariants} id="services-title">
-              {t('whatWeOffer.title')}
-            </Title>
-            <Description variants={itemVariants}>
-              {t('whatWeOffer.description')}
-            </Description>
-          </SectionHeader>
-          
-          <ServicesGrid
-            as={motion.div}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={containerVariants}
-            role="list"
-          >
-            {services.map((service, index) => (
-              <ServiceCard 
-                key={index} 
-                custom={index}
-                variants={cardVariants}
-                whileHover={{ scale: 1.02 }}
-                role="listitem"
-                aria-labelledby={`service-title-${index}`}
-              >
-                <IconContainer className="icon-container">
-                  {renderIcon(index)}
-                </IconContainer>
-                <ServiceTitle id={`service-title-${index}`}>{service.title}</ServiceTitle>
-                <ServiceDesc>{service.desc}</ServiceDesc>
-              </ServiceCard>
-            ))}
-          </ServicesGrid>
-        </Container>
-      </Section>
-    </LazyMotion>
+    <>
+      <SectionSEO 
+        id="services"
+        title="What We Offer - Creative Strategy and Business Growth Services"
+        description="From strategy to execution, discover our multidimensional services: Media Management, Content Creation, Strategic Clarity, Business Mentoring, and more."
+        keywords="media management, content creation, business strategy, business mentoring, project planning"
+      />
+     
+      <LazyMotion features={domAnimation}>
+        <Section id="services" aria-labelledby="services-title">
+          <IconStyles />
+          <Container>
+            <SectionHeader
+              as={motion.div}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={containerVariants}
+            >
+              <Subtitle variants={itemVariants} aria-hidden="true">
+                {t('whatWeOffer.subtitle')}
+              </Subtitle>
+              <Title variants={itemVariants} id="services-title">
+                {t('whatWeOffer.title')}
+              </Title>
+              <Description variants={itemVariants}>
+                {t('whatWeOffer.description')}
+              </Description>
+            </SectionHeader>
+            
+            <ServicesGrid
+              as={motion.div}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              variants={containerVariants}
+              role="list"
+            >
+              {services.map((service, index) => (
+                <ServiceCard 
+                  key={index} 
+                  custom={index}
+                  variants={cardVariants}
+                  whileHover={{ scale: 1.02 }}
+                  role="listitem"
+                  aria-labelledby={`service-title-${index}`}
+                >
+                  <IconContainer className="icon-container">
+                    {serviceIcons[index] === 'custom_svg' ? <NetworkIntelligenceSVG /> : <span className="material-icons" aria-hidden="true">{serviceIcons[index]}</span>}
+                  </IconContainer>
+                  <ServiceTitle id={`service-title-${index}`}>{service.title}</ServiceTitle>
+                  <ServiceDesc>{service.desc}</ServiceDesc>
+                </ServiceCard>
+              ))}
+            </ServicesGrid>
+          </Container>
+        </Section>
+      </LazyMotion>
+    </>
   );
 }; 

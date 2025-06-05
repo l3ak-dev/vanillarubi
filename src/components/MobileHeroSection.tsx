@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { SectionSEO } from './SectionSEO';
 
 // Container principal com altura total da tela
 const MobileContainer = styled(motion.section)`
@@ -255,106 +256,114 @@ export const MobileHeroSection: React.FC = () => {
   const { t } = useTranslation();
   
   return (
-    <LazyMotion features={domAnimation}>
-      <MobileContainer 
+    <>
+      <SectionSEO 
         id="home-mobile"
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        role="region"
-        aria-label="Mobile Hero Section"
-      >
-        <HeroBackground>
-          <HeroImage 
-            src="/imagens/heroimg.jpg" 
-            alt="Creative strategy and business growth"
-            loading="eager"
-            width="640"
-            height="960"
-            fetchPriority="high"
-          />
-          <ContentOverlay>
-            <PhrasesContainer variants={containerVariants}>
-              <motion.div custom={1} variants={itemVariants}>
-                <PhraseRow>
-                  <LeftPhrase aria-label={t('hero.strategyMeets')}>
-                    {t('hero.strategyMeets')}
-                  </LeftPhrase>
-                  <RightPhrase aria-label={t('hero.flow')}>
-                    {t('hero.flow')}.
-                  </RightPhrase>
-                </PhraseRow>
-              </motion.div>
+        title="Vanilla Rubi Mobile - Business Growth Agency"
+        description="Strategy meets flow, Boldness meets classic, Intention meets income. A thriving business is an ecosystem - discover your one-stop solution for business growth."
+        keywords="mobile, business growth, strategy, creative strategy, business ecosystem, flow, boldness, intention"
+      />
+    
+      <LazyMotion features={domAnimation}>
+        <MobileContainer 
+          id="home-mobile"
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          role="region"
+          aria-label="Mobile Hero Section"
+        >
+          <HeroBackground>
+            <HeroImage 
+              src="/imagens/heroimg.jpg" 
+              alt="Creative strategy and business growth"
+              loading="eager"
+              width="640"
+              height="960"
+            />
+            <ContentOverlay>
+              <PhrasesContainer variants={containerVariants}>
+                <motion.div custom={1} variants={itemVariants}>
+                  <PhraseRow>
+                    <LeftPhrase aria-label={t('hero.strategyMeets')}>
+                      {t('hero.strategyMeets')}
+                    </LeftPhrase>
+                    <RightPhrase aria-label={t('hero.flow')}>
+                      {t('hero.flow')}.
+                    </RightPhrase>
+                  </PhraseRow>
+                </motion.div>
+                
+                <motion.div custom={2} variants={itemVariants}>
+                  <PhraseRow>
+                    <LeftPhrase aria-label={t('hero.boldnessMeets')}>
+                      {t('hero.boldnessMeets')}
+                    </LeftPhrase>
+                    <RightPhrase aria-label={t('hero.classic')}>
+                      {t('hero.classic')}.
+                    </RightPhrase>
+                  </PhraseRow>
+                </motion.div>
+                
+                <motion.div custom={3} variants={itemVariants}>
+                  <PhraseRow>
+                    <LeftPhrase aria-label={t('hero.intentionMeets')}>
+                      {t('hero.intentionMeets')}
+                    </LeftPhrase>
+                    <RightPhrase aria-label={t('hero.income')}>
+                      {t('hero.income')}.
+                    </RightPhrase>
+                  </PhraseRow>
+                </motion.div>
+                
+                <motion.div custom={4} variants={itemVariants}>
+                  <PhraseRow>
+                    <LeftPhrase aria-label={t('hero.andYou')}>
+                      {t('hero.andYou')}
+                    </LeftPhrase>
+                    <RightPhrase aria-label={t('hero.youMeetUs')}>
+                      {t('hero.youMeetUs')}!
+                    </RightPhrase>
+                  </PhraseRow>
+                </motion.div>
+                
+                <motion.div custom={5} variants={itemVariants}>
+                  <Decorator role="presentation" aria-hidden="true" />
+                </motion.div>
+                
+                <Subheadline 
+                  custom={6} 
+                  variants={itemVariants}
+                  role="doc-subtitle"
+                >
+                  {t('hero.subheadline')}
+                </Subheadline>
+                
+                <CTAButton 
+                  href="#contact-mobile" 
+                  custom={7}
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  role="button"
+                  aria-label={t('hero.cta')}
+                >
+                  {t('hero.cta')}
+                </CTAButton>
+              </PhrasesContainer>
               
-              <motion.div custom={2} variants={itemVariants}>
-                <PhraseRow>
-                  <LeftPhrase aria-label={t('hero.boldnessMeets')}>
-                    {t('hero.boldnessMeets')}
-                  </LeftPhrase>
-                  <RightPhrase aria-label={t('hero.classic')}>
-                    {t('hero.classic')}.
-                  </RightPhrase>
-                </PhraseRow>
-              </motion.div>
-              
-              <motion.div custom={3} variants={itemVariants}>
-                <PhraseRow>
-                  <LeftPhrase aria-label={t('hero.intentionMeets')}>
-                    {t('hero.intentionMeets')}
-                  </LeftPhrase>
-                  <RightPhrase aria-label={t('hero.income')}>
-                    {t('hero.income')}.
-                  </RightPhrase>
-                </PhraseRow>
-              </motion.div>
-              
-              <motion.div custom={4} variants={itemVariants}>
-                <PhraseRow>
-                  <LeftPhrase aria-label={t('hero.andYou')}>
-                    {t('hero.andYou')}
-                  </LeftPhrase>
-                  <RightPhrase aria-label={t('hero.youMeetUs')}>
-                    {t('hero.youMeetUs')}!
-                  </RightPhrase>
-                </PhraseRow>
-              </motion.div>
-              
-              <motion.div custom={5} variants={itemVariants}>
-                <Decorator role="presentation" aria-hidden="true" />
-              </motion.div>
-              
-              <Subheadline 
-                custom={6} 
-                variants={itemVariants}
-                role="doc-subtitle"
+              <ScrollIndicator
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.8 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                aria-hidden="true"
               >
-                {t('hero.subheadline')}
-              </Subheadline>
-              
-              <CTAButton 
-                href="#contact-mobile" 
-                custom={7}
-                variants={itemVariants}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                role="button"
-                aria-label={t('hero.cta')}
-              >
-                {t('hero.cta')}
-              </CTAButton>
-            </PhrasesContainer>
-            
-            <ScrollIndicator
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              aria-hidden="true"
-            >
-              {t('hero.scroll')}
-            </ScrollIndicator>
-          </ContentOverlay>
-        </HeroBackground>
-      </MobileContainer>
-    </LazyMotion>
+                {t('hero.scroll')}
+              </ScrollIndicator>
+            </ContentOverlay>
+          </HeroBackground>
+        </MobileContainer>
+      </LazyMotion>
+    </>
   );
 }; 
