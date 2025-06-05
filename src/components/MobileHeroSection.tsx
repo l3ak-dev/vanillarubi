@@ -266,7 +266,7 @@ export const MobileHeroSection: React.FC = () => {
       >
         <HeroBackground>
           <HeroImage 
-            src="/src/imagens/heroimg.jpg" 
+            src="/imagens/heroimg.jpg" 
             alt="Creative strategy and business growth"
             loading="eager"
             width="640"
