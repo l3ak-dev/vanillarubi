@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
@@ -11,6 +11,11 @@ const Section = styled.section`
   padding: 6rem 1.5rem;
   position: relative;
   overflow: hidden;
+  min-height: 100vh; /* Fallback */
+  min-height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   
   &::before {
     content: '';
@@ -128,9 +133,14 @@ const FormContainer = styled(motion.div)`
   width: 100%;
   box-shadow: 0 10px 30px rgba(90, 0, 22, 0.1);
   position: relative;
+  margin-bottom: 2rem;
   
   @media (max-width: 480px) {
     padding: 25px 20px;
+    max-height: 80vh; /* Prevent the form from being too tall */
+    max-height: calc(var(--vh, 1vh) * 80);
+    overflow-y: auto; /* Allow scrolling within the form */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
 `;
 
@@ -258,40 +268,55 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   padding: 12px 15px;
-  background: #fcfcfc;
-  border: 1px solid rgba(90, 0, 22, 0.12);
+  border: 1px solid rgba(90, 0, 22, 0.15);
   border-radius: 2px;
-  font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
   color: var(--color-primary-dark);
-  transition: all 0.2s ease;
+  transition: border-color 0.3s;
+  background-color: #fff;
   
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    background: white;
-    box-shadow: 0 0 0 2px rgba(90, 0, 22, 0.08);
+    box-shadow: 0 0 0 1px var(--color-primary-light);
+  }
+  
+  &::placeholder {
+    color: rgba(90, 0, 22, 0.4);
+  }
+  
+  /* Prevent zooming on iOS */
+  @media screen and (max-width: 480px) {
+    font-size: 16px; /* Prevents iOS zoom on focus */
   }
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   padding: 12px 15px;
-  background: #fcfcfc;
-  border: 1px solid rgba(90, 0, 22, 0.12);
+  border: 1px solid rgba(90, 0, 22, 0.15);
   border-radius: 2px;
-  font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
   color: var(--color-primary-dark);
-  min-height: 100px;
+  transition: border-color 0.3s;
   resize: vertical;
-  transition: all 0.2s ease;
+  min-height: 100px;
   
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    background: white;
-    box-shadow: 0 0 0 2px rgba(90, 0, 22, 0.08);
+    box-shadow: 0 0 0 1px var(--color-primary-light);
+  }
+  
+  &::placeholder {
+    color: rgba(90, 0, 22, 0.4);
+  }
+  
+  /* Prevent zooming on iOS */
+  @media screen and (max-width: 480px) {
+    font-size: 16px; /* Prevents iOS zoom on focus */
   }
 `;
 
@@ -345,31 +370,54 @@ const HiddenRadio = styled.input`
   height: 0;
 `;
 
+// Define a new NavigationButtons styled component with more mobile-friendly styling
 const NavigationButtons = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  gap: 15px;
+  margin-top: 20px;
+  position: relative;
+  z-index: 5;
+  
+  @media (max-width: 480px) {
+    padding-top: 10px;
+    margin-bottom: 5px;
+  }
 `;
 
-const NavButton = styled(motion.button)<{ isPrimary?: boolean }>`
-  background: ${props => props.isPrimary ? 'var(--color-primary)' : 'transparent'};
-  color: ${props => props.isPrimary ? 'white' : 'var(--color-primary)'};
-  border: ${props => props.isPrimary ? 'none' : '1px solid var(--color-primary)'};
-  padding: ${props => props.isPrimary ? '14px 20px' : '13px 20px'};
+const NavButton = styled(motion.button)<{ $isPrimary?: boolean }>`
+  background: ${props => props.$isPrimary ? 'var(--color-primary)' : 'transparent'};
+  color: ${props => props.$isPrimary ? 'white' : 'var(--color-primary)'};
+  border: ${props => props.$isPrimary ? 'none' : '1px solid var(--color-primary)'};
   border-radius: 2px;
+  padding: ${props => props.$isPrimary ? '14px 25px' : '12px 22px'};
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 100px;
+  min-width: 120px;
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(90, 0, 22, 0.3);
+  }
+  
+  @media (max-width: 480px) {
+    padding: ${props => props.$isPrimary ? '12px 20px' : '10px 18px'};
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: unset;
   }
 `;
 
@@ -494,6 +542,7 @@ export const MobileFinalCTA: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<FormStep>('info');
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const formRef = useRef<HTMLFormElement>(null);
+  const formContainerRef = useRef<HTMLDivElement>(null);
   
   // Estados para os campos do formulário
   const [fullName, setFullName] = useState('');
@@ -513,14 +562,66 @@ export const MobileFinalCTA: React.FC = () => {
   
   // Handlers para navegação
   const goToNextStep = () => {
-    if (currentStep === 'info') setCurrentStep('project');
-    else if (currentStep === 'project') setCurrentStep('timing');
+    if (currentStep === 'info') {
+      setCurrentStep('project');
+      // Clear any active focus
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      // Scroll to the top of the form container after changing steps
+      setTimeout(() => {
+        if (formContainerRef.current) {
+          formContainerRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 50);
+    }
+    else if (currentStep === 'project') {
+      setCurrentStep('timing');
+      // Clear any active focus
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      // Scroll to the top of the form container after changing steps
+      setTimeout(() => {
+        if (formContainerRef.current) {
+          formContainerRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 50);
+    }
     else if (currentStep === 'timing') handleSubmit();
   };
   
   const goToPrevStep = () => {
-    if (currentStep === 'project') setCurrentStep('info');
-    else if (currentStep === 'timing') setCurrentStep('project');
+    if (currentStep === 'project') {
+      setCurrentStep('info');
+      // Scroll to the top of the form container after changing steps
+      setTimeout(() => {
+        if (formContainerRef.current) {
+          formContainerRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 50);
+    }
+    else if (currentStep === 'timing') {
+      setCurrentStep('project');
+      // Scroll to the top of the form container after changing steps
+      setTimeout(() => {
+        if (formContainerRef.current) {
+          formContainerRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 50);
+    }
   };
   
   // Reset do formulário
@@ -858,7 +959,7 @@ export const MobileFinalCTA: React.FC = () => {
       <SuccessTitle>{t('finalCTA.success.title')}</SuccessTitle>
       <SuccessText>{t('finalCTA.success.message')}</SuccessText>
       <NavButton 
-        isPrimary 
+        $isPrimary 
         onClick={resetForm}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
@@ -868,6 +969,58 @@ export const MobileFinalCTA: React.FC = () => {
     </SuccessMessage>
   );
   
+  // Handle viewport issues when keyboard appears
+  useEffect(() => {
+    const handleFocus = () => {
+      // Prevent automatic scrolling when an input is focused
+      setTimeout(() => {
+        if (formContainerRef.current) {
+          // Get the position of the form container
+          const rect = formContainerRef.current.getBoundingClientRect();
+          
+          // If the form is partially or fully out of view, scroll to it
+          if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            formContainerRef.current.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center'
+            });
+          }
+        }
+      }, 100);
+    };
+
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('focus', handleFocus);
+    });
+
+    return () => {
+      inputs.forEach(input => {
+        input.removeEventListener('focus', handleFocus);
+      });
+    };
+  }, [currentStep]);
+
+  // Fix viewport height issues on mobile
+  useEffect(() => {
+    const setViewportHeight = () => {
+      // First we get the viewport height and multiply it by 1% to get a value for a vh unit
+      const vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    // Set the height initially
+    setViewportHeight();
+
+    // Update the height whenever the window resizes
+    window.addEventListener('resize', setViewportHeight);
+    
+    return () => {
+      window.removeEventListener('resize', setViewportHeight);
+    };
+  }, []);
+
   return (
     <>
       <SectionSEO 
@@ -901,7 +1054,7 @@ export const MobileFinalCTA: React.FC = () => {
             </ContentWrapper>
             
             {/* Formulário de múltiplas etapas */}
-            <FormContainer>
+            <FormContainer ref={formContainerRef}>
               {currentStep !== 'success' && (
                 <>
                   {/* Indicador de progresso */}
@@ -971,7 +1124,7 @@ export const MobileFinalCTA: React.FC = () => {
                     
                     <NavButton 
                       type="button" 
-                      isPrimary
+                      $isPrimary
                       onClick={goToNextStep}
                       disabled={isNextButtonDisabled()}
                       whileHover={{ scale: 1.02 }}
