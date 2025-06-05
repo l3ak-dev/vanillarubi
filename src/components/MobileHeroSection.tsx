@@ -82,17 +82,17 @@ const PhraseRow = styled.div`
   align-items: baseline;
   margin-bottom: 1.4rem;
   text-align: center;
-  white-space: nowrap;
   overflow: hidden;
+  flex-wrap: wrap;
 `;
 
 // Primeira parte da frase
 const LeftPhrase = styled.span`
   font-family: 'Playfair Display', serif;
   font-weight: 400;
-  font-size: clamp(1.9rem, 6.5vw, 2.7rem);
+  font-size: clamp(1.6rem, 5.5vw, 2.4rem);
   color: #ffffff;
-  line-height: 1;
+  line-height: 1.2;
   margin: 0;
   padding-right: 5px;
   letter-spacing: 0.01em;
@@ -100,8 +100,16 @@ const LeftPhrase = styled.span`
   display: inline-block;
   
   ${PhraseRow}:nth-child(4) & {
-    font-size: clamp(2.2rem, 7vw, 3rem);
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
     font-weight: 500;
+  }
+  
+  html[lang="pt"] &, html[lang="es"] & {
+    font-size: clamp(1.4rem, 5vw, 2.1rem);
+    
+    ${PhraseRow}:nth-child(4) & {
+      font-size: clamp(1.6rem, 5.5vw, 2.3rem);
+    }
   }
 `;
 
@@ -109,9 +117,9 @@ const LeftPhrase = styled.span`
 const RightPhrase = styled.span`
   font-family: 'Dancing Script', cursive;
   font-weight: 500;
-  font-size: clamp(1.9rem, 6.5vw, 2.7rem);
+  font-size: clamp(1.6rem, 5.5vw, 2.4rem);
   color: #F3EBE2;
-  line-height: 1;
+  line-height: 1.2;
   font-style: italic;
   margin: 0;
   padding-left: 2px;
@@ -122,8 +130,16 @@ const RightPhrase = styled.span`
     font-family: 'Playfair Display', serif;
     font-style: normal;
     font-weight: 500;
-    font-size: clamp(2.2rem, 7vw, 3rem);
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
     color: #F3EBE2;
+  }
+  
+  html[lang="pt"] &, html[lang="es"] & {
+    font-size: clamp(1.4rem, 5vw, 2.1rem);
+    
+    ${PhraseRow}:nth-child(4) & {
+      font-size: clamp(1.6rem, 5.5vw, 2.3rem);
+    }
   }
 `;
 
@@ -150,7 +166,7 @@ const Decorator = styled.div`
 
 // Subtítulo
 const Subheadline = styled(motion.p)`
-  font-size: clamp(1.1rem, 4.8vw, 1.4rem);
+  font-size: clamp(1rem, 4vw, 1.3rem);
   color: #F3EBE2;
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
@@ -159,6 +175,11 @@ const Subheadline = styled(motion.p)`
   text-align: center;
   max-width: 90%;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  
+  html[lang="pt"] &, html[lang="es"] & {
+    font-size: clamp(0.95rem, 3.8vw, 1.2rem);
+    line-height: 1.4;
+  }
 `;
 
 // Botão CTA
@@ -182,6 +203,13 @@ const CTAButton = styled(motion.a)`
   text-align: center;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  
+  html[lang="pt"] &, html[lang="es"] & {
+    max-width: 280px;
+    padding: 0.8rem 0.5rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
 `;
 
 // Indicador de scroll
@@ -253,7 +281,7 @@ const itemVariants = {
 };
 
 export const MobileHeroSection: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   
   return (
     <>
