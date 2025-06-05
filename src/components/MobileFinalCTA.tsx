@@ -622,12 +622,6 @@ export const MobileFinalCTA: React.FC = () => {
       exit="exit"
       variants={currentStep === 'info' ? fadeVariants : slideRightVariants}
     >
-      <CallInfoBox>
-        <CallInfoText>
-          {t('finalCTA.callInfo')}
-        </CallInfoText>
-      </CallInfoBox>
-      
       <FormGroup>
         <Label htmlFor="fullName">{t('finalCTA.placeholders.fullName')}</Label>
         <Input 
