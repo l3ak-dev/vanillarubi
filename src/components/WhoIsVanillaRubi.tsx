@@ -379,7 +379,7 @@ export const WhoIsVanillaRubi: React.FC = () => {
             </Eyebrow>
             
             <Title variants={itemVariants} id="about-title">
-              {t('who.title1')}<HighlightedText>Rubi</HighlightedText>{t('who.title2')}
+              {t('who.title1')}<HighlightedText></HighlightedText>{t('who.title2')}
             </Title>
             
             <TitleDivider 

@@ -149,26 +149,22 @@ const resources = {
         contact: 'Contato',
       },
       hero: {
-        headline1: 'Estratégia encontra <1>flow</1>',
-        headline2: 'Ousadia encontra <1>clássico</1>',
-        headline3: 'Intenção encontra <1>renda</1>',
-        headline4: 'E Você? <1>Você nos encontra</1>',
-        strategyMeets: 'Estratégia e',
+        strategyMeets: 'Se Estratégia e',
         boldnessMeets: 'Ousadia e',
         intentionMeets: 'Intenção e',
-        andYou: 'E Você?',
-        flow: 'flow',
-        classic: 'clássico',
-        income: 'renda',
-        youMeetUs: 'Você nos encontra',
-        subheadline: 'Estratégia criativa, conteúdo elevado e execução sem esforço para empreendedores e negócios prontos para escalar com flow, clareza e propósito.',
-        cta: 'Agende uma Chamada',
+        andYou: 'Tivessem um bebê',
+        flow: 'Fluidez',
+        classic: 'Clássico',
+        income: 'Faturamento',
+        youMeetUs: 'Seria a gente',
+        subheadline: 'Um negócio bem sucedido é um ecossistema. E você acabou de encontrar a solução completa para integrar e equilibrar cada parte dele.',
+        cta: 'Agendar uma Discovery Call',
         scroll: 'Role para explorar',
       },
       who: {
-        title1: 'Quem é Vanilla ',
+        title1: 'Quem Somos Nos?',
         title2: '?',
-        agency: 'Não somos uma <highlight>agência de marketing</highlight>. Somos uma <highlight>força de crescimento empresarial.</highlight>',
+        agency: 'Não somos uma <highlight>agência de marketing</highlight>. Somos parceiros para o crescimento da sua empresa.',
         desc1: 'Em um mundo de tendências, ruído e muito conteúdo, trazemos <highlight>calma, foco e intenção</highlight>. Conosco, seu objetivo se torna o ponto focal. Removemos distrações, tarefas desnecessárias e atividades performáticas.',
         desc2: 'Não acreditamos em fazer mais. Acreditamos em <highlight>fazer o que importa</highlight> com precisão e no momento certo.',
         trinium: 'Escale com alma. Cresça com intenção.'
@@ -176,31 +172,31 @@ const resources = {
       whatWeOffer: {
         subtitle: 'NOSSA EXPERTISE',
         description: 'Da estratégia à execução, conheça os serviços multidimensionais que elevam seu negócio com clareza, criatividade e alma.',
-        title: 'O que realmente fazemos?',
+        title: ' okay okay, mas como fazemos isto?',
         services: [
           {
-            title: 'Gestão de Mídias Sociais',
-            desc: 'Você foca na sua magia, nós cuidamos do resto.'
+            title: 'Gestão de Mídias Começo ao fim',
+            desc: 'LinkedIn, Facebook, Instagram, TikTok, YouTube, Website? Cuidamos de tudo. Você foca no que faz de melhor e a gente cuida do resto.'
           },
           {
             title: 'Criação de Conteúdo',
-            desc: 'Imagens, palavras e histórias feitas para conectar, converter e transmitir sua essência.'
+            desc: 'Roteiro, fotos, design, texto, vídeo e edição. Criamos tudo para conectar e converter. Tudo feito em  um único dia de forma estratégica para garantir semanas de conteúdo. Você com mais tempo e paz.'
           },
           {
-            title: 'Estratégia de Marca e Conteúdo',
-            desc: 'História, voz e visual alinhados com sua energia e objetivos.'
+            title: 'Clareza Estratégica e Plano de Crescimento',
+            desc: 'Nada de ideias soltas. Aqui você sai com um plano real, focado no que funciona de verdade, no ritmo certo para o seu crescimento.'
           },
           {
             title: 'Mentoria Energética para Negócios',
-            desc: 'Como você se sente faz parte da estratégia.'
+            desc: "Vamos à raiz do problema... mesmo que o problema seja você. Enxergue além. Organize internamente. Expanda em todos os aspectos."
           },
           {
-            title: 'Direção Criativa',
-            desc: 'De la ideia à execução, tudo flui com intenção.'
+            title: 'Gestão Multidimensional',
+            desc: 'De operações a finanças, de organização ao seu cliente ideal. Somos contratados para organizar o caos, otimizar o sistema e faturar de forma sustentável.'
           },
           {
-            title: 'Planejamento de Crescimento',
-            desc: 'Presença online, expansão financeira e clareza estrutural.'
+            title: 'Planejamento de Projetos e Expansão',
+            desc: 'Novo serviço? Nova filial? Nova Oferta? Transformamos sua ideia em ação com estrutura, direção e suporte na medida certa.'
           }
         ]
       },
@@ -287,26 +283,22 @@ const resources = {
         contact: 'Contacto',
       },
       hero: {
-        headline1: 'La estrategia se une a <1>flow</1>',
-        headline2: 'La audacia se une a lo <1>clásico</1>',
-        headline3: 'La intención se une a los <1>ingresos</1>',
-        headline4: '¿Y tú? <1>Nos encuentras</1>',
-        strategyMeets: 'Estrategia y',
-        boldnessMeets: 'Audacia y ',
+        strategyMeets: 'Si Estrategia y',
+        boldnessMeets: 'Atrevimiento y',
         intentionMeets: 'Intención y ',
-        andYou: '¿Y tú?',
-        flow: 'flow',
-        classic: 'clásico',
-        income: 'ingresos',
-        youMeetUs: 'Nos encuentras',
-        subheadline: 'Estrategia creativa, contenido elevado y ejecución sin esfuerzo para emprendedores y empresas listas para escalar con flow, claridad y propósito.',
-        cta: 'Agenda una Llamada',
+        andYou: 'Tuvieran un hijo?',
+        flow: 'Fluidez',
+        classic: 'Sofisticación',
+        income: 'Ingresos',
+        youMeetUs: 'Seríamos nosotros',
+        subheadline: 'Un negocio exitoso es un ecosistema. Y acabas de encontrar la solución completa para integrar y equilibrar cada parte del tuyo.',
+        cta: 'Agendar una Discovery Call',
         scroll: 'Desplácese para explorar',
       },
       who: {
-        title1: '¿Quién es Vanilla ',
+        title1: '¿Quiénes somos?',
         title2: '?',
-        agency: 'No somos una <highlight>agencia de marketing</highlight>. Somos una <highlight>fuerza de crecimiento empresarial.</highlight>',
+        agency: '<highlight>No somos una agencia de marketing</highlight>. Somos socios en el crecimiento de tu negocio.',
         desc1: 'En un mundo de tendencias, ruido y mucho contenido, aportamos <highlight>calma, enfoque e intención</highlight>. Con nosotros, tu objetivo se convierte en el punto central. Eliminamos distracciones, tareas innecesarias y actividades performativas.',
         desc2: 'No creemos en hacer más. Creemos en <highlight>hacer lo que importa</highlight> con precisión y en el momento adecuado.',
         trinium: 'Escala con alma. Crece con intención.'
@@ -314,31 +306,31 @@ const resources = {
       whatWeOffer: {
         subtitle: 'NUESTRA EXPERTISE',
         description: 'De la estrategia a la ejecución, descubre los servicios multidimensionales que elevan tu negocio con claridad, creatividad y alma.',
-        title: '¿Qué hacemos realmente?',
+        title: 'Vale, vale... ¿pero cómo lo hacemos?',
         services: [
           {
-            title: 'Gestión de Redes Sociales',
-            desc: 'Tú enfócate en tu magia, nosotros nos encargamos del resto.'
+            title: 'Gestión de Medios de Principio a Fin',
+            desc: 'LinkedIn, Facebook, Instagram, TikTok, YouTube, Web. Lo gestionamos todo. Tú te enfocas en tu magia, nosotros en el resto.'
           },
           {
             title: 'Creación de Contenido',
-            desc: 'Imágenes, palabras e historias creadas para conectar, convertir y transmitir tu esencia.'
+            desc: 'Guión, fotos, diseño, texto, video y edición. Creamos todo para conectar y convertir.Todo producido en un solo día, de forma estratégica, para asegurar semanas de contenido. Más tiempo y paz para ti.'
           },
           {
-            title: 'Estrategia de Marca y Contenido',
-            desc: 'Historia, voz y visuales alineados con tu energía y objetivos.'
+            title: 'Claridad Estratégica y Plan de Crecimiento',
+            desc: 'Nada de ideas sueltas. Aquí sales con un plan real, enfocado en lo que funciona, en el ritmo correcto para tu negocio'
           },
           {
-            title: 'Mentoría Energética Empresarial',
-            desc: 'Cómo te sientes es parte de la estrategia.'
+            title: 'Mentoría Energética para Negocios',
+            desc: 'Vamos a la raíz del problema… incluso si la raíz eres tú.Ve más allá. Ordena dentro. Expande en todos los niveles.'
           },
           {
-            title: 'Dirección Creativa',
-            desc: 'De la idea a la ejecución, todo fluye con intención.'
+            title: 'Gestión Multidimensional',
+            desc: ' Desde operaciones hasta finanzas, desde procesos internos hasta tu cliente ideal.Nos contratan para ordenar el caos, optimizar sistemas y aumentar ingresos de forma sostenible.'
           },
           {
-            title: 'Planificación de Crecimiento',
-            desc: 'Presencia online, expansión financiera y claridad estructural.'
+            title: 'Planificación de Proyectos y Expansión',
+            desc: ' ¿Nuevo servicio? ¿Nueva sede? ¿Nueva oferta? Transformamos tu idea en acción con estructura, dirección y el soporte justo que necesitas.'
           }
         ]
       },
@@ -358,9 +350,9 @@ const resources = {
       },
       finalCTA: {
         eyebrow: 'Listo para el cambio',
-        headline: '¿Listo para <1>crecer</1> con claridad, creatividad y alma?',
+        headline: 'Es hora de sacar tus ideas de la cabeza, del papel y de las conversaciones — y hacerlas realidad.',
         grow: 'crecer',
-        subheadline: 'Alineemos tu marca, tu energía y tus sistemas — y construyamos algo que realmente refleje quién eres.',
+        subheadline: 'Ya has gastado demasiado tiempo, dinero y paz mental en soluciones que no funcionan. Vamos a hacerlo bien.',
         cta: 'Agenda una Llamada',
         modalHeadline: 'Completa para agendar tu llamada',
         steps: {
