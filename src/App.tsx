@@ -4,6 +4,7 @@ import { WhoIsVanillaRubi } from './components/WhoIsVanillaRubi';
 import { WhatWeOffer } from './components/WhatWeOffer';
 import { WhoItsFor } from './components/WhoItsFor';
 import { FinalCTA } from './components/FinalCTA';
+import { MobileFinalCTA } from './components/MobileFinalCTA';
 import { Footer } from './components/Footer';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -85,6 +86,7 @@ function App() {
         <WhatWeOffer />
         <WhoItsFor />
         <FinalCTA />
+        <MobileFinalCTA />
       </main>
       <Footer />
     </>

@@ -332,7 +332,7 @@ export const MobileHeroSection: React.FC = () => {
               </Subheadline>
               
               <CTAButton 
-                href="#contact" 
+                href="#contact-mobile" 
                 custom={7}
                 variants={itemVariants}
                 whileHover={{ scale: 1.03 }}

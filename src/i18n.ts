@@ -88,10 +88,18 @@ const resources = {
         subheadline: "No more patchwork strategies, scattered efforts, or guessing games. Let's grow your business to match your vision, your value, and your next level.",
         cta: 'Book Your Discovery Call',
         modalHeadline: 'Fill in to book your call',
+        steps: {
+          info: 'Your Info',
+          project: 'Your Project',
+          timing: 'Timing',
+          infoTitle: 'Tell us about yourself',
+          projectTitle: 'Your business needs',
+          timingTitle: 'Timing & availability'
+        },
         placeholders: {
           fullName: 'Full Name',
           name: 'Name',
-          instagram: 'Instagram handle (optional)',
+          instagram: 'Instagram or LinkedIn handle (optional)',
           email: 'Email Address',
           journey: 'Where are you on your business journey? ',
           journeyOptions: {
@@ -110,13 +118,20 @@ const resources = {
           waitlistOptions: {
             yes: 'Yes, keep me in the loop',
             no: 'No, not right now'
-          },
+          }
         },
         callInfo: "Before the call, I review your business. During it, you'll receive a clear plan, custom insights, and one actionable step to start right away. The €55 fee is fully deducted from your first package if we move forward.",
         waitlistInfo: "We're currently fully booked, but if you're serious about working together, you can reserve your spot in advance.",
         send: 'Send',
         sending: 'Sending...',
         sent: 'Sent!',
+        next: 'Next',
+        back: 'Back',
+        success: {
+          title: 'Request Received!',
+          message: "Thanks for reaching out! We'll contact you within 24 hours to schedule your discovery call.",
+          button: 'Back to Home'
+        },
         privacy: 'Your information will never be shared.'
       },
       seo: {
@@ -210,10 +225,18 @@ const resources = {
         subheadline: 'Vamos alinhar sua marca, sua energia e seus sistemas — e construir algo que realmente reflita quem você é.',
         cta: 'Agende uma Chamada',
         modalHeadline: 'Preencha para agendar sua chamada',
+        steps: {
+          info: 'Seus Dados',
+          project: 'Seu Projeto',
+          timing: 'Prazo',
+          infoTitle: 'Fale sobre você',
+          projectTitle: 'Suas necessidades',
+          timingTitle: 'Prazo & disponibilidade'
+        },
         placeholders: {
           fullName: 'Nome Completo',
           name: 'Nome',
-          instagram: 'Instagram (opcional)',
+          instagram: 'Instagram ou LinkedIn (opcional)',
           email: 'E-mail',
           journey: 'Sua jornada de negócio',
           journeyOptions: {
@@ -240,6 +263,13 @@ const resources = {
         send: 'Enviar',
         sending: 'Enviando...',
         sent: 'Enviado!',
+        next: 'Próximo',
+        back: 'Voltar',
+        success: {
+          title: 'Solicitação Recebida!',
+          message: "Obrigado pelo seu contato! Entraremos em contato em até 24 horas para agendar sua chamada.",
+          button: 'Voltar ao Início'
+        },
         privacy: 'Suas informações nunca serão compartilhadas.'
       },
       seo: {
@@ -333,10 +363,18 @@ const resources = {
         subheadline: 'Alineemos tu marca, tu energía y tus sistemas — y construyamos algo que realmente refleje quién eres.',
         cta: 'Agenda una Llamada',
         modalHeadline: 'Completa para agendar tu llamada',
+        steps: {
+          info: 'Tus Datos',
+          project: 'Tu Proyecto',
+          timing: 'Plazos',
+          infoTitle: 'Cuéntanos sobre ti',
+          projectTitle: 'Tus necesidades',
+          timingTitle: 'Plazos & disponibilidad'
+        },
         placeholders: {
           fullName: 'Nombre Completo',
           name: 'Nombre',
-          instagram: 'Instagram (opcional)',
+          instagram: 'Instagram o LinkedIn (opcional)',
           email: 'Correo electrónico',
           journey: 'Tu camino empresarial',
           journeyOptions: {
@@ -363,6 +401,13 @@ const resources = {
         send: 'Enviar',
         sending: 'Enviando...',
         sent: '¡Enviado!',
+        next: 'Siguiente',
+        back: 'Atrás',
+        success: {
+          title: '¡Solicitud Recibida!',
+          message: "¡Gracias por contactarnos! Nos comunicaremos contigo dentro de 24 horas para programar tu llamada.",
+          button: 'Volver al Inicio'
+        },
         privacy: 'Tu información nunca será compartida.'
       },
       seo: {
