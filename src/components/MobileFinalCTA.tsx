@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
-import { SectionSEO } from './SectionSEO';
 
 // Container principal
 const Section = styled.section`
@@ -11,11 +10,6 @@ const Section = styled.section`
   padding: 6rem 1.5rem;
   position: relative;
   overflow: hidden;
-  min-height: 100vh; /* Fallback */
-  min-height: calc(var(--vh, 1vh) * 100);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   
   &::before {
     content: '';
@@ -133,14 +127,9 @@ const FormContainer = styled(motion.div)`
   width: 100%;
   box-shadow: 0 10px 30px rgba(90, 0, 22, 0.1);
   position: relative;
-  margin-bottom: 2rem;
   
   @media (max-width: 480px) {
     padding: 25px 20px;
-    max-height: 80vh; /* Prevent the form from being too tall */
-    max-height: calc(var(--vh, 1vh) * 80);
-    overflow-y: auto; /* Allow scrolling within the form */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
 `;
 
@@ -163,54 +152,45 @@ const ProgressContainer = styled.div`
   }
 `;
 
-const ProgressStep = styled.div<{ $active: boolean, $completed: boolean }>`
+const ProgressStep = styled.div<{ active: boolean; completed: boolean }>`
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: ${props => 
+    props.completed 
+      ? 'var(--color-primary)' 
+      : props.active 
+        ? 'white' 
+        : 'rgba(90, 0, 22, 0.05)'};
+  border: 2px solid ${props => 
+    props.completed || props.active 
+      ? 'var(--color-primary)' 
+      : 'rgba(90, 0, 22, 0.15)'};
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: ${props => 
+    props.completed 
+      ? 'white' 
+      : props.active 
+        ? 'var(--color-primary)' 
+        : 'rgba(90, 0, 22, 0.5)'};
   position: relative;
-  flex: 1;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 16px;
-    right: 50%;
-    width: 100%;
-    height: 1px;
-    background-color: ${props => props.$completed ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
-    z-index: 0;
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: 16px;
-    left: 50%;
-    width: 100%;
-    height: 1px;
-    background-color: ${props => props.$active || props.$completed ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
-    z-index: 0;
-  }
-  
-  &:first-child::before {
-    display: none;
-  }
-  
-  &:last-child::after {
-    display: none;
-  }
-  
-  svg {
-    margin-top: 3px;
-  }
+  z-index: 2;
 `;
 
-const StepLabel = styled.span<{ $active: boolean }>`
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.75rem;
-  margin-top: 8px;
-  color: ${props => props.$active ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.7)'};
-  font-weight: ${props => props.$active ? '600' : '400'};
+const StepLabel = styled.span<{ active: boolean }>`
+  position: absolute;
+  top: 30px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: ${props => props.active ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.5)'};
+  text-align: center;
+  width: 80px;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const FormTitle = styled.h3`
@@ -268,55 +248,40 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid rgba(90, 0, 22, 0.15);
+  background: #fcfcfc;
+  border: 1px solid rgba(90, 0, 22, 0.12);
   border-radius: 2px;
+  font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
   color: var(--color-primary-dark);
-  transition: border-color 0.3s;
-  background-color: #fff;
+  transition: all 0.2s ease;
   
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
-  }
-  
-  &::placeholder {
-    color: rgba(90, 0, 22, 0.4);
-  }
-  
-  /* Prevent zooming on iOS */
-  @media screen and (max-width: 480px) {
-    font-size: 16px; /* Prevents iOS zoom on focus */
+    background: white;
+    box-shadow: 0 0 0 2px rgba(90, 0, 22, 0.08);
   }
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid rgba(90, 0, 22, 0.15);
+  background: #fcfcfc;
+  border: 1px solid rgba(90, 0, 22, 0.12);
   border-radius: 2px;
+  font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
   color: var(--color-primary-dark);
-  transition: border-color 0.3s;
-  resize: vertical;
   min-height: 100px;
+  resize: vertical;
+  transition: all 0.2s ease;
   
   &:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 1px var(--color-primary-light);
-  }
-  
-  &::placeholder {
-    color: rgba(90, 0, 22, 0.4);
-  }
-  
-  /* Prevent zooming on iOS */
-  @media screen and (max-width: 480px) {
-    font-size: 16px; /* Prevents iOS zoom on focus */
+    background: white;
+    box-shadow: 0 0 0 2px rgba(90, 0, 22, 0.08);
   }
 `;
 
@@ -336,12 +301,12 @@ const OptionGroup = styled.div`
   margin-top: 2px;
 `;
 
-const OptionButton = styled.label<{ $selected: boolean }>`
+const OptionButton = styled.label<{ selected: boolean }>`
   display: flex;
   align-items: center;
   padding: 10px 14px;
-  background: ${props => props.$selected ? 'rgba(90, 0, 22, 0.05)' : 'white'};
-  border: 1px solid ${props => props.$selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
+  background: ${props => props.selected ? 'rgba(90, 0, 22, 0.05)' : 'white'};
+  border: 1px solid ${props => props.selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
   border-radius: 2px;
   font-size: 0.85rem;
   font-family: 'Montserrat', sans-serif;
@@ -351,8 +316,8 @@ const OptionButton = styled.label<{ $selected: boolean }>`
   user-select: none;
   
   &:hover {
-    background: ${props => props.$selected ? 'rgba(90, 0, 22, 0.07)' : 'rgba(90, 0, 22, 0.02)'};
-    border-color: ${props => props.$selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.25)'};
+    background: ${props => props.selected ? 'rgba(90, 0, 22, 0.07)' : 'rgba(90, 0, 22, 0.02)'};
+    border-color: ${props => props.selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.25)'};
   }
 `;
 
@@ -370,54 +335,31 @@ const HiddenRadio = styled.input`
   height: 0;
 `;
 
-// Define a new NavigationButtons styled component with more mobile-friendly styling
 const NavigationButtons = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 15px;
-  margin-top: 20px;
-  position: relative;
-  z-index: 5;
-  
-  @media (max-width: 480px) {
-    padding-top: 10px;
-    margin-bottom: 5px;
-  }
+  margin-top: 10px;
 `;
 
-const NavButton = styled(motion.button)<{ $isPrimary?: boolean }>`
-  background: ${props => props.$isPrimary ? 'var(--color-primary)' : 'transparent'};
-  color: ${props => props.$isPrimary ? 'white' : 'var(--color-primary)'};
-  border: ${props => props.$isPrimary ? 'none' : '1px solid var(--color-primary)'};
+const NavButton = styled(motion.button)<{ isPrimary?: boolean }>`
+  background: ${props => props.isPrimary ? 'var(--color-primary)' : 'transparent'};
+  color: ${props => props.isPrimary ? 'white' : 'var(--color-primary)'};
+  border: ${props => props.isPrimary ? 'none' : '1px solid var(--color-primary)'};
+  padding: ${props => props.isPrimary ? '14px 20px' : '13px 20px'};
   border-radius: 2px;
-  padding: ${props => props.$isPrimary ? '14px 25px' : '12px 22px'};
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
+  min-width: 100px;
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-  
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(90, 0, 22, 0.3);
-  }
-  
-  @media (max-width: 480px) {
-    padding: ${props => props.$isPrimary ? '12px 20px' : '10px 18px'};
-    font-size: 0.9rem;
-    flex: 1;
-    min-width: unset;
   }
 `;
 
@@ -542,7 +484,6 @@ export const MobileFinalCTA: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<FormStep>('info');
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const formRef = useRef<HTMLFormElement>(null);
-  const formContainerRef = useRef<HTMLDivElement>(null);
   
   // Estados para os campos do formulário
   const [fullName, setFullName] = useState('');
@@ -562,66 +503,14 @@ export const MobileFinalCTA: React.FC = () => {
   
   // Handlers para navegação
   const goToNextStep = () => {
-    if (currentStep === 'info') {
-      setCurrentStep('project');
-      // Clear any active focus
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-      // Scroll to the top of the form container after changing steps
-      setTimeout(() => {
-        if (formContainerRef.current) {
-          formContainerRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }
-      }, 50);
-    }
-    else if (currentStep === 'project') {
-      setCurrentStep('timing');
-      // Clear any active focus
-      if (document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
-      }
-      // Scroll to the top of the form container after changing steps
-      setTimeout(() => {
-        if (formContainerRef.current) {
-          formContainerRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }
-      }, 50);
-    }
+    if (currentStep === 'info') setCurrentStep('project');
+    else if (currentStep === 'project') setCurrentStep('timing');
     else if (currentStep === 'timing') handleSubmit();
   };
   
   const goToPrevStep = () => {
-    if (currentStep === 'project') {
-      setCurrentStep('info');
-      // Scroll to the top of the form container after changing steps
-      setTimeout(() => {
-        if (formContainerRef.current) {
-          formContainerRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }
-      }, 50);
-    }
-    else if (currentStep === 'timing') {
-      setCurrentStep('project');
-      // Scroll to the top of the form container after changing steps
-      setTimeout(() => {
-        if (formContainerRef.current) {
-          formContainerRef.current.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }
-      }, 50);
-    }
+    if (currentStep === 'project') setCurrentStep('info');
+    else if (currentStep === 'timing') setCurrentStep('project');
   };
   
   // Reset do formulário
@@ -788,7 +677,7 @@ export const MobileFinalCTA: React.FC = () => {
       <FormGroup>
         <OptionGroupTitle id="journey-title">{t('finalCTA.placeholders.journey')}</OptionGroupTitle>
         <OptionGroup role="group" aria-labelledby="journey-title">
-          <OptionButton $selected={journeyOptions.includes('handsoff')}>
+          <OptionButton selected={journeyOptions.includes('handsoff')}>
             <HiddenCheckbox 
               type="checkbox" 
               id="journey-handsoff" 
@@ -801,7 +690,7 @@ export const MobileFinalCTA: React.FC = () => {
             {t('finalCTA.placeholders.journeyOptions.handsOff')}
           </OptionButton>
         
-          <OptionButton $selected={journeyOptions.includes('notsure')}>
+          <OptionButton selected={journeyOptions.includes('notsure')}>
             <HiddenCheckbox 
               type="checkbox" 
               id="journey-notsure" 
@@ -814,7 +703,7 @@ export const MobileFinalCTA: React.FC = () => {
             {t('finalCTA.placeholders.journeyOptions.notSure')}
           </OptionButton>
         
-          <OptionButton $selected={journeyOptions.includes('specific')}>
+          <OptionButton selected={journeyOptions.includes('specific')}>
             <HiddenCheckbox 
               type="checkbox" 
               id="journey-specific" 
@@ -862,7 +751,7 @@ export const MobileFinalCTA: React.FC = () => {
       <FormGroup>
         <OptionGroupTitle id="readiness-title">{t('finalCTA.placeholders.readiness')}</OptionGroupTitle>
         <OptionGroup role="group" aria-labelledby="readiness-title">
-          <OptionButton $selected={readinessOptions.includes('now')}>
+          <OptionButton selected={readinessOptions.includes('now')}>
             <HiddenCheckbox 
               type="checkbox" 
               id="readiness-now" 
@@ -875,7 +764,7 @@ export const MobileFinalCTA: React.FC = () => {
             {t('finalCTA.placeholders.readinessOptions.now')}
           </OptionButton>
         
-          <OptionButton $selected={readinessOptions.includes('soon')}>
+          <OptionButton selected={readinessOptions.includes('soon')}>
             <HiddenCheckbox 
               type="checkbox" 
               id="readiness-soon" 
@@ -888,7 +777,7 @@ export const MobileFinalCTA: React.FC = () => {
             {t('finalCTA.placeholders.readinessOptions.soon')}
           </OptionButton>
         
-          <OptionButton $selected={readinessOptions.includes('later')}>
+          <OptionButton selected={readinessOptions.includes('later')}>
             <HiddenCheckbox 
               type="checkbox" 
               id="readiness-later" 
@@ -912,7 +801,7 @@ export const MobileFinalCTA: React.FC = () => {
       <FormGroup>
         <OptionGroupTitle id="waitlist-title">{t('finalCTA.placeholders.waitlist')}</OptionGroupTitle>
         <OptionGroup role="radiogroup" aria-labelledby="waitlist-title">
-          <OptionButton $selected={waitlist === 'yes'}>
+          <OptionButton selected={waitlist === 'yes'}>
             <HiddenRadio 
               type="radio" 
               id="waitlist-yes" 
@@ -927,7 +816,7 @@ export const MobileFinalCTA: React.FC = () => {
             {t('finalCTA.placeholders.waitlistOptions.yes')}
           </OptionButton>
         
-          <OptionButton $selected={waitlist === 'no'}>
+          <OptionButton selected={waitlist === 'no'}>
             <HiddenRadio 
               type="radio" 
               id="waitlist-no" 
@@ -959,7 +848,7 @@ export const MobileFinalCTA: React.FC = () => {
       <SuccessTitle>{t('finalCTA.success.title')}</SuccessTitle>
       <SuccessText>{t('finalCTA.success.message')}</SuccessText>
       <NavButton 
-        $isPrimary 
+        isPrimary 
         onClick={resetForm}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
@@ -969,183 +858,122 @@ export const MobileFinalCTA: React.FC = () => {
     </SuccessMessage>
   );
   
-  // Handle viewport issues when keyboard appears
-  useEffect(() => {
-    const handleFocus = () => {
-      // Prevent automatic scrolling when an input is focused
-      setTimeout(() => {
-        if (formContainerRef.current) {
-          // Get the position of the form container
-          const rect = formContainerRef.current.getBoundingClientRect();
-          
-          // If the form is partially or fully out of view, scroll to it
-          if (rect.top < 0 || rect.bottom > window.innerHeight) {
-            formContainerRef.current.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'center'
-            });
-          }
-        }
-      }, 100);
-    };
-
-    const inputs = document.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
-      input.addEventListener('focus', handleFocus);
-    });
-
-    return () => {
-      inputs.forEach(input => {
-        input.removeEventListener('focus', handleFocus);
-      });
-    };
-  }, [currentStep]);
-
-  // Fix viewport height issues on mobile
-  useEffect(() => {
-    const setViewportHeight = () => {
-      // First we get the viewport height and multiply it by 1% to get a value for a vh unit
-      const vh = window.innerHeight * 0.01;
-      // Then we set the value in the --vh custom property to the root of the document
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-
-    // Set the height initially
-    setViewportHeight();
-
-    // Update the height whenever the window resizes
-    window.addEventListener('resize', setViewportHeight);
-    
-    return () => {
-      window.removeEventListener('resize', setViewportHeight);
-    };
-  }, []);
-
   return (
-    <>
-      <SectionSEO 
-        id="contact-mobile"
-        title="Contact Vanilla Rubi - Mobile Booking Form"
-        description="Book a discovery call with Vanilla Rubi on mobile. Our step-by-step form makes it easy to connect with us and start your business growth journey."
-        keywords="mobile contact, discovery call, business consultation, mobile form, business growth"
-      />
-      
-      <LazyMotion features={domAnimation}>
-        <Section id="contact-mobile" aria-labelledby="contact-mobile-title">
-          <Container>
-            {/* Título e descrição */}
-            <ContentWrapper
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              viewport={{ once: true }}
-            >
-              <Eyebrow>
-                {t('finalCTA.eyebrow')}
-              </Eyebrow>
-              
-              <Headline id="contact-mobile-title">
-                <Trans i18nKey="finalCTA.headline" components={{ 1: <Highlight /> }} />
-              </Headline>
-              
-              <Subheadline>
-                {t('finalCTA.subheadline')}
-              </Subheadline>
-            </ContentWrapper>
+    <LazyMotion features={domAnimation}>
+      <Section id="contact-mobile" aria-labelledby="contact-mobile-title">
+        <Container>
+          {/* Título e descrição */}
+          <ContentWrapper
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <Eyebrow>
+              {t('finalCTA.eyebrow')}
+            </Eyebrow>
             
-            {/* Formulário de múltiplas etapas */}
-            <FormContainer ref={formContainerRef}>
-              {currentStep !== 'success' && (
-                <>
-                  {/* Indicador de progresso */}
-                  <ProgressContainer>
-                    <ProgressStep 
-                      $active={currentStep === 'info'} 
-                      $completed={currentStep === 'project' || currentStep === 'timing'}
-                    >
-                      {currentStep === 'project' || currentStep === 'timing' ? (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      ) : '1'}
-                      <StepLabel $active={currentStep === 'info'}>
-                        {t('finalCTA.steps.info')}
-                      </StepLabel>
-                    </ProgressStep>
-                    
-                    <ProgressStep 
-                      $active={currentStep === 'project'} 
-                      $completed={currentStep === 'timing'}
-                    >
-                      {currentStep === 'timing' ? (
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      ) : '2'}
-                      <StepLabel $active={currentStep === 'project'}>
-                        {t('finalCTA.steps.project')}
-                      </StepLabel>
-                    </ProgressStep>
-                    
-                    <ProgressStep 
-                      $active={currentStep === 'timing'} 
-                      $completed={false}
-                    >
-                      3
-                      <StepLabel $active={currentStep === 'timing'}>
-                        {t('finalCTA.steps.timing')}
-                      </StepLabel>
-                    </ProgressStep>
-                  </ProgressContainer>
+            <Headline id="contact-mobile-title">
+              <Trans i18nKey="finalCTA.headline" components={{ 1: <Highlight /> }} />
+            </Headline>
+            
+            <Subheadline>
+              {t('finalCTA.subheadline')}
+            </Subheadline>
+          </ContentWrapper>
+          
+          {/* Formulário de múltiplas etapas */}
+          <FormContainer>
+            {currentStep !== 'success' && (
+              <>
+                {/* Indicador de progresso */}
+                <ProgressContainer>
+                  <ProgressStep 
+                    active={currentStep === 'info'} 
+                    completed={currentStep === 'project' || currentStep === 'timing'}
+                  >
+                    {currentStep === 'project' || currentStep === 'timing' ? (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    ) : '1'}
+                    <StepLabel active={currentStep === 'info'}>
+                      {t('finalCTA.steps.info')}
+                    </StepLabel>
+                  </ProgressStep>
                   
-                  <FormTitle>{getStepTitle()}</FormTitle>
-                </>
-              )}
+                  <ProgressStep 
+                    active={currentStep === 'project'} 
+                    completed={currentStep === 'timing'}
+                  >
+                    {currentStep === 'timing' ? (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    ) : '2'}
+                    <StepLabel active={currentStep === 'project'}>
+                      {t('finalCTA.steps.project')}
+                    </StepLabel>
+                  </ProgressStep>
+                  
+                  <ProgressStep 
+                    active={currentStep === 'timing'} 
+                    completed={false}
+                  >
+                    3
+                    <StepLabel active={currentStep === 'timing'}>
+                      {t('finalCTA.steps.timing')}
+                    </StepLabel>
+                  </ProgressStep>
+                </ProgressContainer>
+                
+                <FormTitle>{getStepTitle()}</FormTitle>
+              </>
+            )}
+            
+            <Form ref={formRef} onSubmit={(e) => e.preventDefault()} aria-describedby="form-instructions-mobile">
+              <div id="form-instructions-mobile" className="sr-only">{t('finalCTA.formInstructions')}</div>
               
-              <Form ref={formRef} onSubmit={(e) => e.preventDefault()} aria-describedby="form-instructions-mobile">
-                <div id="form-instructions-mobile" className="sr-only">{t('finalCTA.formInstructions')}</div>
-                
-                <AnimatePresence mode="wait">
-                  {renderCurrentStep()}
-                </AnimatePresence>
-                
-                {currentStep !== 'success' && (
-                  <NavigationButtons>
-                    {currentStep !== 'info' && (
-                      <NavButton 
-                        type="button" 
-                        onClick={goToPrevStep}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        {t('finalCTA.back')}
-                      </NavButton>
-                    )}
-                    
+              <AnimatePresence mode="wait">
+                {renderCurrentStep()}
+              </AnimatePresence>
+              
+              {currentStep !== 'success' && (
+                <NavigationButtons>
+                  {currentStep !== 'info' && (
                     <NavButton 
                       type="button" 
-                      $isPrimary
-                      onClick={goToNextStep}
-                      disabled={isNextButtonDisabled()}
+                      onClick={goToPrevStep}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      style={{ marginLeft: currentStep === 'info' ? 'auto' : '0' }}
                     >
-                      {getNextButtonText()}
+                      {t('finalCTA.back')}
                     </NavButton>
-                  </NavigationButtons>
-                )}
-              </Form>
-              
-              {currentStep !== 'success' && (
-                <Privacy>
-                  {t('finalCTA.privacy')}
-                </Privacy>
+                  )}
+                  
+                  <NavButton 
+                    type="button" 
+                    isPrimary
+                    onClick={goToNextStep}
+                    disabled={isNextButtonDisabled()}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    style={{ marginLeft: currentStep === 'info' ? 'auto' : '0' }}
+                  >
+                    {getNextButtonText()}
+                  </NavButton>
+                </NavigationButtons>
               )}
-            </FormContainer>
-          </Container>
-        </Section>
-      </LazyMotion>
-    </>
+            </Form>
+            
+            {currentStep !== 'success' && (
+              <Privacy>
+                {t('finalCTA.privacy')}
+              </Privacy>
+            )}
+          </FormContainer>
+        </Container>
+      </Section>
+    </LazyMotion>
   );
 }; 
