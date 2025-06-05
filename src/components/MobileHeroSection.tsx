@@ -281,7 +281,7 @@ const itemVariants = {
 };
 
 export const MobileHeroSection: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   
   return (
     <>
