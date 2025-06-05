@@ -1,151 +1,399 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import whoIsVanillaImage from '../imagens/whoisvanilla.jpg';
 
 const Section = styled.section`
-  background: var(--color-white);
-  color: var(--color-black);
-  padding: 6rem 0 5rem 0;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  align-items: center;
-  gap: 3.5rem;
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 3rem 1.2rem 2.2rem 1.2rem;
+  background: var(--color-accent);
+  padding: 8rem 0;
+  position: relative;
+  overflow: hidden;
+  scroll-margin-top: 90px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30%;
+    height: 30%;
+    background: linear-gradient(225deg, transparent 50%, rgba(90, 0, 22, 0.05) 100%);
+    z-index: 1;
   }
+  
+  @media (max-width: 900px) {
+    padding: 6rem 1.5rem;
+  }
+  
   @media (max-width: 600px) {
-    padding: 3.2rem 1.2rem 2.7rem 1.2rem;
-    display: block;
-    border-top: 1.5px solid #ececec;
+    padding: 5rem 1.2rem;
   }
 `;
 
-const MotionDiv = styled(motion.div)``;
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 0 1.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    padding: 0 1.2rem;
+  }
+`;
+
+const ImageColumn = styled(motion.div)`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 40%;
+    height: 40%;
+    background: linear-gradient(135deg, rgba(128, 0, 32, 0.08), transparent);
+    z-index: -1;
+  }
+  
+  @media (max-width: 900px) {
+    order: 1;
+    align-items: center;
+  }
+`;
+
+const StylishImage = styled.figure`
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  background-color: #f4ece7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease;
+  margin: 0;
+  
+  &:hover {
+    box-shadow: 0 15px 35px rgba(90, 0, 22, 0.15);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    border: 1px solid var(--color-primary);
+    z-index: -1;
+    transition: all 0.3s ease;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    filter: contrast(1.05) saturate(1.05);
+    transition: all 0.6s ease;
+    mix-blend-mode: multiply;
+    will-change: transform;
+  }
+  
+  &:hover img {
+    transform: scale(1.02);
+  }
+  
+  &:hover::before {
+    top: 15px;
+    left: 15px;
+  }
+  
+  @media (max-width: 1200px) {
+    aspect-ratio: 16 / 10;
+  }
+  
+  @media (max-width: 900px) {
+    aspect-ratio: 16 / 11;
+  }
+  
+  @media (max-width: 600px) {
+    aspect-ratio: 16 / 12;
+  }
+`;
+
+const ContentColumn = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+  @media (max-width: 900px) {
+    order: 2;
+  }
+`;
+
+const Eyebrow = styled(motion.p)`
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 0.8rem;
+`;
 
 const Title = styled(motion.h2)`
-  font-size: 2.5rem;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--color-black);
-  margin-top: 2.7rem;
-  margin-bottom: 0.7rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  line-height: 1.1;
+  margin-bottom: 2.5rem;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1.2rem;
+    left: 0;
+    width: 5rem;
+    height: 1px;
+    background: var(--color-primary);
+    opacity: 0.5;
+  }
+  
+  @media (max-width: 1200px) {
+    font-size: 3rem;
+  }
+  
+  @media (max-width: 900px) {
+    font-size: 2.5rem;
+    text-align: center;
+    
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
+`;
+
+const TitleDivider = styled(motion.div)`
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-primary-dark), transparent);
+  margin: -0.5rem 0 1.5rem 0;
+  opacity: 0.3;
+  
+  @media (max-width: 900px) {
+    background: linear-gradient(to right, transparent, var(--color-primary-dark), transparent);
+    margin-bottom: 1.2rem;
+  }
+`;
+
+const HighlightedText = styled.span`
+  font-style: italic;
+`;
+
+const Paragraph = styled(motion.p)`
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #600014;
+  margin-bottom: 1.5rem;
+  position: relative;
+  text-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 0.5rem;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to right, rgba(128, 0, 32, 0.05), transparent);
+    z-index: -1;
+    transition: width 0.5s ease;
+  }
+  
+  &:hover::before {
+    width: 100%;
+  }
+  
   @media (max-width: 900px) {
     text-align: center;
-    font-size: 2rem;
-    margin-top: 1.7rem;
-    margin-bottom: 0.5rem;
   }
-  @media (max-width: 600px) {
-    font-size: 1.22rem;
-    margin-top: 1.1rem;
-    margin-bottom: 1.2rem;
+`;
+
+const HighlightBlock = styled.span`
+  color: var(--color-primary);
+  font-weight: 600;
+  display: inline;
+`;
+
+const Quote = styled(motion.blockquote)`
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--color-primary);
+  margin: 2rem 0 0 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--color-primary);
+  position: relative;
+  
+  &::before {
+    content: '"';
+    position: absolute;
+    top: -1.5rem;
+    left: -0.5rem;
+    font-size: 3rem;
+    color: rgba(128, 0, 32, 0.1);
+    font-family: 'Playfair Display', serif;
+  }
+  
+  @media (max-width: 900px) {
     text-align: center;
-    .accent-font {
-      color: var(--color-primary);
-      letter-spacing: 0.04em;
-      font-weight: 700;
+    padding-left: 0;
+    border-left: none;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-primary);
+    
+    &::before {
+      top: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 `;
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  @media (max-width: 900px) {
-    align-items: center;
-    text-align: center;
-    gap: 1.1rem;
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      duration: 0.5,
+      ease: "easeOut"
+    }
   }
-  @media (max-width: 600px) {
-    gap: 1.3rem;
-  }
-`;
+};
 
-const Description = styled(motion.p)`
-  font-size: 1.13rem;
-  font-family: 'Inter', sans-serif;
-  color: var(--color-dark-gray);
-  line-height: 1.7;
-  max-width: 520px;
-  @media (max-width: 900px) {
-    font-size: 1rem;
-    max-width: 95vw;
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
   }
-  @media (max-width: 600px) {
-    font-size: 1.05rem;
-    color: #444;
-    margin-bottom: 1.3rem;
-    max-width: 100vw;
-    line-height: 1.7;
-  }
-`;
+};
 
-const Trinium = styled(motion.div)`
-  font-size: 1.08rem;
-  font-family: 'Space Grotesk', sans-serif;
-  color: var(--color-primary);
-  margin-top: 1.7rem;
-  font-weight: 600;
-  @media (max-width: 900px) {
-    font-size: 1rem;
-    margin-top: 1.1rem;
-  }
-  @media (max-width: 600px) {
-    font-size: 1.01rem;
-    margin-top: 1.7rem;
-  }
-`;
+// Helper function to parse highlighted text
+const renderWithHighlights = (text: string) => {
+  if (!text) return null;
+  
+  const parts = text.split(/<highlight>|<\/highlight>/);
+  return parts.map((part, index) => {
+    // Even indexes are regular text, odd indexes need highlighting
+    if (index % 2 === 0) return part;
+    return <HighlightBlock key={index}>{part}</HighlightBlock>;
+  });
+};
 
 export const WhoIsVanillaRubi: React.FC = () => {
   const { t } = useTranslation();
+  const imageRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-2%", "2%"]);
+  
   return (
-    <Section className="container" id="about">
-      <MotionDiv
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-        viewport={{ once: true }}
-      >
-        <Title
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-        >
-          {t('who.title1')} <span className="accent-font">Vanilla Rubi</span>{t('who.title2')}
-        </Title>
-        <Content>
-          <Description
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            viewport={{ once: true }}
+    <LazyMotion features={domAnimation}>
+      <Section id="about" ref={sectionRef} aria-labelledby="about-title">
+        <Container>
+          <ImageColumn
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <span className="accent-font">{t('who.agency')}</span>{t('who.desc1a')}<span className="accent-font">{t('who.trio')}</span>{t('who.desc1b')}
-          </Description>
-          <Description
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            viewport={{ once: true }}
+            <StylishImage ref={imageRef}>
+              <motion.img 
+                src={whoIsVanillaImage} 
+                alt={t('who.imageAlt') || "Vanilla Rubi - Business Growth Philosophy"}
+                style={{ y: imageY }}
+                loading="lazy"
+                width="600"
+                height="337"
+              />
+            </StylishImage>
+          </ImageColumn>
+          
+          <ContentColumn
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
           >
-            {t('who.desc2a')} <span className="accent-font">{t('who.triniumSystem')}</span>{t('who.desc2b')}<span className="accent-font">{t('who.bodyMindSoul')}</span>{t('who.desc2c')}
-          </Description>
-          <Trinium
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.7 }}
-            viewport={{ once: true }}
-          >
-            {t('who.trinium')}
-          </Trinium>
-        </Content>
-      </MotionDiv>
-    </Section>
+            <Eyebrow variants={itemVariants} aria-hidden="true">
+              {renderWithHighlights(t('who.agency'))}
+            </Eyebrow>
+            
+            <Title variants={itemVariants} id="about-title">
+              {t('who.title1')}<HighlightedText>Rubi</HighlightedText>{t('who.title2')}
+            </Title>
+            
+            <TitleDivider 
+              initial={{ width: 0 }}
+              whileInView={{ width: "100%" }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              aria-hidden="true"
+            />
+            
+            <Paragraph variants={itemVariants}>
+              {renderWithHighlights(t('who.desc1'))}
+            </Paragraph>
+            
+            <Paragraph variants={itemVariants}>
+              {renderWithHighlights(t('who.desc2'))}
+            </Paragraph>
+            
+            <Quote variants={itemVariants} cite="https://vanillarubi.com">
+              {t('who.trinium')}
+            </Quote>
+          </ContentColumn>
+        </Container>
+      </Section>
+    </LazyMotion>
   );
 }; 

@@ -1,5 +1,5 @@
 import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
+import { ResponsiveHeroSection } from './components/ResponsiveHeroSection';
 import { WhoIsVanillaRubi } from './components/WhoIsVanillaRubi';
 import { WhatWeOffer } from './components/WhatWeOffer';
 import { WhoItsFor } from './components/WhoItsFor';
@@ -18,6 +18,20 @@ function SEO() {
   });
   const url = 'https://vanillarubi.eu/';
   const image = 'https://vanillarubi.eu/og-image.jpg';
+  
+  // JSON-LD structured data for Organization
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Vanilla Rubi",
+    "url": "https://vanillarubi.eu/",
+    "logo": "https://vanillarubi.eu/logo.png",
+    "description": description,
+    "sameAs": [
+      "https://instagram.com/vanillarubi",
+      "https://linkedin.com/company/vanillarubi"
+    ]
+  };
   
   return (
     <Helmet>
@@ -50,6 +64,11 @@ function SEO() {
       {/* Favicon */}
       <link rel="icon" href="/favicon.ico" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      
+      {/* JSON-LD Structured Data */}
+      <script type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </script>
     </Helmet>
   );
 }
@@ -61,7 +80,7 @@ function App() {
       <SEO />
       <Navbar />
       <main>
-        <HeroSection />
+        <ResponsiveHeroSection />
         <WhoIsVanillaRubi />
         <WhatWeOffer />
         <WhoItsFor />

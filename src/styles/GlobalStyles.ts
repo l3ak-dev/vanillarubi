@@ -2,20 +2,21 @@ import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   :root {
-    /* Colors */
-    --color-primary: #E63946;
-    --color-primary-light: #F5969E;
-    --color-primary-dark: #C6333F;
-    --color-black: #18181B;
+    /* Colors - adaptadas para o novo tema burgundy */
+    --color-primary: #800020; /* Burgundy como cor primária */
+    --color-primary-light: #A5324D; /* Burgundy mais claro */
+    --color-primary-dark: #5A0016; /* Burgundy mais escuro */
+    --color-secondary: #DCC9B6; /* Tom bege claro para contraste */
+    --color-accent: #F3EBE2; /* Bege muito claro/quase branco */
+    --color-black: #1A1A1A; /* Preto suave */
     --color-white: #FFFFFF;
-    --color-gray-100: #F9FAFB;
-    --color-gray-200: #F3F4F6;
-    --color-gray-300: #E5E7EB;
-    --color-gray-400: #D1D5DB;
-    --color-gray-500: #9CA3AF;
-    --color-gray-600: #6B7280;
-    --color-gray-700: #4B5563;
-    --color-accent: #F7F0EA; /* Subtle tertiary accent */
+    --color-gray-100: #F8F5F2; /* Tons de cinza com leve tom warm */
+    --color-gray-200: #EFE9E4;
+    --color-gray-300: #E2D9D3;
+    --color-gray-400: #C9BEB7;
+    --color-gray-500: #9E9189;
+    --color-gray-600: #776B64;
+    --color-gray-700: #544C47;
     
     /* Spacing system (8px increments) */
     --space-1: 0.25rem;  /* 4px */
@@ -29,26 +30,27 @@ export const GlobalStyles = createGlobalStyle`
     --space-9: 5rem;     /* 80px */
     --space-10: 6rem;    /* 96px */
     
-    /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(24,24,27,0.05);
-    --shadow-md: 0 4px 16px rgba(24,24,27,0.08);
-    --shadow-lg: 0 8px 32px rgba(24,24,27,0.12);
-    --shadow-primary: 0 8px 24px rgba(230,57,70,0.16);
+    /* Shadows - mais suaves para o estilo minimalista */
+    --shadow-sm: 0 2px 8px rgba(26,26,26,0.04);
+    --shadow-md: 0 4px 16px rgba(26,26,26,0.06);
+    --shadow-lg: 0 6px 24px rgba(26,26,26,0.08);
+    --shadow-primary: 0 6px 20px rgba(128,0,32,0.16);
     
     /* Transitions */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Border radius */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
-    --radius-2xl: 32px;
+    /* Border radius - mais suaves */
+    --radius-sm: 3px;
+    --radius-md: 6px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+    --radius-2xl: 28px;
   }
 
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
+  
 
   * {
     margin: 0;
@@ -57,9 +59,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--color-white);
-    color: var(--color-black);
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--color-primary); /* Burgundy */
+    color: var(--color-gray-100);
     line-height: 1.7;
     letter-spacing: 0.01em;
     -webkit-font-smoothing: antialiased;
@@ -67,9 +69,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6, .logo-font {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 1.2;
   }
 
@@ -86,9 +88,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .accent-font {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--color-primary);
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--color-secondary);
     position: relative;
     display: inline-block;
   }
@@ -102,7 +104,7 @@ export const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     transition: var(--transition-normal);
     border: none;
@@ -125,8 +127,8 @@ export const GlobalStyles = createGlobalStyle`
     content: '';
     display: block;
     width: 0;
-    height: 2px;
-    background: var(--color-primary);
+    height: 1.5px;
+    background: var(--color-secondary);
     transition: width var(--transition-normal);
     position: absolute;
     left: 0;
@@ -141,7 +143,7 @@ export const GlobalStyles = createGlobalStyle`
 
   .container + .container {
     margin-block: var(--space-8);
-    border-top: 1px solid var(--color-gray-200);
+    border-top: 1px solid var(--color-gray-700);
   }
   
   @media (max-width: 900px) {

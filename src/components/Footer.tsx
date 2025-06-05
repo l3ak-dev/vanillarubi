@@ -3,18 +3,34 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 const FooterContainer = styled(motion.footer)`
-  background: linear-gradient(180deg, var(--color-white) 0%, var(--color-gray-100) 100%);
-  color: var(--color-gray-600);
-  padding: var(--space-8) var(--space-4) var(--space-4) var(--space-4);
-  font-family: 'Inter', sans-serif;
-  border-top: 1px solid var(--color-gray-200);
+  background: var(--color-primary-dark);
+  color: var(--color-gray-300);
+  padding: var(--space-9) var(--space-5) var(--space-5) var(--space-5);
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      rgba(220, 201, 182, 0.05) 0%,
+      rgba(220, 201, 182, 0.3) 50%,
+      rgba(220, 201, 182, 0.05) 100%
+    );
+  }
   
   @media (max-width: 900px) {
-    padding: var(--space-6) var(--space-3) var(--space-3) var(--space-3);
+    padding: var(--space-7) var(--space-4) var(--space-4) var(--space-4);
   }
   
   @media (max-width: 600px) {
-    padding: var(--space-5) var(--space-2) var(--space-2) var(--space-2);
+    padding: var(--space-6) var(--space-3) var(--space-3) var(--space-3);
   }
 `;
 
@@ -22,12 +38,12 @@ const FooterContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--space-6);
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: var(--space-8);
   
   @media (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
+    gap: var(--space-6);
   }
   
   @media (max-width: 600px) {
@@ -50,11 +66,12 @@ const Logo = styled.div`
   display: inline-flex;
   align-items: baseline;
   gap: 0.3rem;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.5rem;
-  letter-spacing: 0.08em;
-  color: var(--color-black);
-  margin-bottom: var(--space-3);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  letter-spacing: 0.1em;
+  color: var(--color-white);
+  margin-bottom: var(--space-4);
+  position: relative;
 `;
 
 const Vanilla = styled.span`
@@ -70,46 +87,87 @@ const Diamond = styled.span`
 
 const Rubi = styled.span`
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 `;
 
 const CompanyDescription = styled.p`
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--color-gray-600);
-  max-width: 300px;
-  margin-bottom: var(--space-4);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-gray-300);
+  max-width: 320px;
+  margin-bottom: var(--space-5);
+  font-weight: 300;
 `;
 
 const FooterHeading = styled.h4`
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--color-black);
-  margin-bottom: var(--space-3);
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: var(--color-white);
+  margin-bottom: var(--space-4);
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 40px;
+    height: 1px;
+    background: var(--color-secondary);
+    opacity: 0.5;
+  }
+  
+  @media (max-width: 600px) {
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 `;
 
 const FooterLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 `;
 
 const FooterLink = styled.a`
-  color: var(--color-gray-600);
+  color: var(--color-gray-300);
   font-size: 0.95rem;
   text-decoration: none;
-  transition: color var(--transition-normal);
+  transition: all var(--transition-normal);
+  position: relative;
+  width: fit-content;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-secondary);
+    transition: width var(--transition-normal);
+  }
   
   &:hover {
-    color: var(--color-primary);
+    color: var(--color-secondary);
+    
+    &::after {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    margin: 0 auto;
   }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
   gap: var(--space-3);
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
   
   @media (max-width: 600px) {
     justify-content: center;
@@ -117,56 +175,52 @@ const SocialLinks = styled.div`
 `;
 
 const SocialIcon = styled.a`
-  color: var(--color-gray-600);
-  font-size: 1.3rem;
-  transition: color var(--transition-normal), transform var(--transition-normal);
+  color: var(--color-gray-300);
+  transition: all var(--transition-normal);
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-color: var(--color-gray-100);
-  border: 1px solid var(--color-gray-200);
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid rgba(220, 201, 182, 0.2);
   
   &:hover {
-    color: var(--color-primary);
+    color: var(--color-secondary);
     transform: translateY(-3px);
-    box-shadow: var(--shadow-sm);
-    background-color: var(--color-white);
+    border-color: var(--color-secondary);
+    
+    svg {
+      transform: scale(1.1);
+    }
   }
   
   svg {
-    width: 20px;
-    height: 20px;
-  }
-  
-  @media (max-width: 900px) {
-    width: 36px;
-    height: 36px;
-    
-    svg {
-      width: 18px;
-      height: 18px;
-    }
+    width: 18px;
+    height: 18px;
+    transition: transform var(--transition-normal);
   }
 `;
 
 const BottomBar = styled.div`
-  margin-top: var(--space-7);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-gray-200);
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(220, 201, 182, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
   color: var(--color-gray-500);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
   
   @media (max-width: 900px) {
-    margin-top: var(--space-5);
-    padding-top: var(--space-3);
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-3);
   }
 `;
 
@@ -178,35 +232,40 @@ const Copyright = styled.div`
 
 const LegalLinks = styled.div`
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-4);
   
   @media (max-width: 600px) {
     flex-wrap: wrap;
     justify-content: center;
+    gap: var(--space-3);
   }
 `;
 
 const LegalLink = styled.a`
-  color: var(--color-gray-500);
+  color: var(--color-gray-400);
   text-decoration: none;
   transition: color var(--transition-normal);
+  font-size: 0.85rem;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-gray-300);
+    transition: width var(--transition-normal);
+  }
   
   &:hover {
-    color: var(--color-primary);
+    color: var(--color-secondary);
+    
+    &::after {
+      width: 100%;
+    }
   }
-`;
-
-const AccentCircle = styled.div`
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: var(--color-accent);
-  opacity: 0.4;
-  top: -100px;
-  right: 10%;
-  z-index: -1;
-  filter: blur(40px);
 `;
 
 // Animation variants
@@ -240,16 +299,14 @@ export const Footer: React.FC = () => (
     whileInView="visible"
     viewport={{ once: true }}
     variants={containerVariants}
-    style={{ position: 'relative' }}
   >
-    <AccentCircle />
     <FooterContent>
       <FooterColumn as={motion.div} variants={itemVariants}>
         <Logo>
           <Vanilla>vanilla</Vanilla>
           <Diamond>
             <svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="15" height="15" rx="2" transform="matrix(0.75 -0.65 0.75 0.65 0 7.5)" fill="#E63946"/>
+              <rect width="15" height="15" rx="2" transform="matrix(0.75 -0.65 0.75 0.65 0 7.5)" fill="#DCC9B6"/>
             </svg>
           </Diamond>
           <Rubi>rubi</Rubi>
@@ -271,17 +328,22 @@ export const Footer: React.FC = () => (
       </FooterColumn>
       
       <FooterColumn as={motion.div} variants={itemVariants}>
-        <FooterHeading>Company</FooterHeading>
+        <FooterHeading>Navigation</FooterHeading>
         <FooterLinks>
           <FooterLink href="#about">About Us</FooterLink>
           <FooterLink href="#services">Services</FooterLink>
-          <FooterLink href="#for">Who It's For</FooterLink>
-          <FooterLink href="#testimonials">Testimonials</FooterLink>
+          <FooterLink href="#audience">Who It's For</FooterLink>
           <FooterLink href="#contact">Contact</FooterLink>
         </FooterLinks>
+      </FooterColumn> 
+      
+      <FooterColumn as={motion.div} variants={itemVariants}>
+        <FooterHeading>Contact</FooterHeading>
+        <FooterLinks>
+          <FooterLink href="mailto:hello@vanillarubi.com">hello@vanillarubi.com</FooterLink>
+          <FooterLink href="https://instagram.com/vanillarubi" target="_blank" rel="noopener noreferrer">@vanillarubi</FooterLink>
+        </FooterLinks>
       </FooterColumn>
-      
-      
     </FooterContent>
     
     <BottomBar as={motion.div} variants={itemVariants}>
