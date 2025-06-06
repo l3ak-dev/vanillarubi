@@ -137,6 +137,12 @@ const PhraseRow = styled.div`
     top: 60%;
   }
   
+  /* Ajuste específico para idiomas PT e ES - mais espaço entre linha 3 e 4 */
+  html[lang="pt"] &:nth-child(4),
+  html[lang="es"] &:nth-child(4) {
+    top: 55%;
+  }
+  
   @media (max-width: 900px) {
     position: relative;
     top: auto;
@@ -149,6 +155,20 @@ const PhraseRow = styled.div`
     
     &:nth-child(3) {
       margin-bottom: 5rem;
+    }
+  }
+  
+  /* Ajuste específico para idiomas que precisam de mais espaço */
+  html[lang="pt"] &:nth-child(3),
+  html[lang="es"] &:nth-child(3) {
+    margin-bottom: 8rem;
+    
+    @media (max-width: 900px) {
+      margin-bottom: 7rem;
+    }
+    
+    @media (max-width: 600px) {
+      margin-bottom: 6rem;
     }
   }
   

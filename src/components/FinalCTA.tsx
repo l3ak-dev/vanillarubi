@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { SectionSEO } from './SectionSEO';
+import emailjs from '@emailjs/browser';
 
 const Section = styled.section`
   scroll-margin-top: 120px;
@@ -358,6 +359,52 @@ const Privacy = styled.p`
   line-height: 1.5;
 `;
 
+// Novo componente para feedback de status
+const SuccessMessage = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  text-align: center;
+`;
+
+const SuccessIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  background: rgba(90, 0, 22, 0.05);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  color: var(--color-primary);
+`;
+
+const SuccessTitle = styled.h3`
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--color-primary);
+  margin: 0 0 15px;
+`;
+
+const SuccessText = styled.p`
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-primary-dark);
+  margin: 0 0 25px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #d32f2f;
+  background-color: rgba(211, 47, 47, 0.1);
+  border-left: 3px solid #d32f2f;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  font-family: 'Montserrat', sans-serif;
+`;
+
 // Animation variants - otimizados para performance
 const fadeUpVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -374,7 +421,8 @@ const fadeUpVariants = {
 
 export const FinalCTA: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
   
   // Estados para os campos do formulário
@@ -387,6 +435,9 @@ export const FinalCTA: React.FC = () => {
   const [journeyOptions, setJourneyOptions] = useState(['handsoff']);
   const [readinessOptions, setReadinessOptions] = useState(['now']);
   const [waitlist, setWaitlist] = useState('');
+  
+  // Flag para controlar quando mostrar a mensagem de sucesso
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const resetForm = () => {
     setFullName('');
@@ -396,6 +447,7 @@ export const FinalCTA: React.FC = () => {
     setJourneyOptions(['handsoff']);
     setReadinessOptions(['now']);
     setWaitlist('');
+    setErrorMessage('');
     
     if (formRef.current) {
       const form = formRef.current;
@@ -406,12 +458,70 @@ export const FinalCTA: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitState('sending');
-    await new Promise(res => setTimeout(res, 1400));
-    setSubmitState('sent');
-    setTimeout(() => {
-      setSubmitState('idle');
-      resetForm();
-    }, 1800);
+    setErrorMessage('');
+    
+    try {
+      // Preparar o template de email com os dados do formulário com valores mais detalhados
+      const templateParams = {
+        name: fullName,
+        email: email,
+        instagram: instagram,
+        
+        // Valores mais descritivos para os campos de escolha múltipla
+        journey: journeyOptions.map(option => {
+          switch(option) {
+            case 'handsoff': return 'Hands-off (Full service)';
+            case 'notsure': return 'Not sure yet (Need guidance)';
+            case 'specific': return 'Specific project (Targeted help)';
+            default: return option;
+          }
+        }).join(', '),
+        
+        // Descrição mais completa dos serviços
+        services: services || 'No details provided',
+        
+        // Valores mais descritivos para readiness
+        readiness: readinessOptions.map(option => {
+          switch(option) {
+            case 'now': return 'Ready to start now';
+            case 'soon': return 'Ready to start soon';
+            case 'later': return 'Planning for later';
+            default: return option;
+          }
+        }).join(', '),
+        
+        // Valor mais descritivo para waitlist
+        waitlist: waitlist === 'yes' ? 'Yes, willing to join waitlist' : 'No, not willing to join waitlist',
+        
+        language: i18n.language === 'en' ? 'English' : i18n.language === 'pt' ? 'Portuguese' : 'Spanish',
+        date: new Date().toLocaleString(),
+        source: 'Desktop Form'
+      };
+      
+      // Enviar o email usando EmailJS com os IDs corretos
+      const response = await emailjs.send(
+        'service_y56p4zp',  // Service ID do EmailJS
+        'template_daha4ei', // Template ID do EmailJS
+        templateParams,
+        'oRnW9lkMHFkYb0FCA'  // Public Key correta do EmailJS
+      );
+      
+      if (response.status === 200) {
+        setSubmitState('sent');
+        setShowSuccess(true);
+        setTimeout(() => {
+          resetForm();
+          setSubmitState('idle');
+        }, 5000);
+      }
+    } catch (error) {
+      console.error('Erro ao enviar email:', error);
+      setSubmitState('error');
+      setErrorMessage(t('finalCTA.error'));
+      setTimeout(() => {
+        setSubmitState('idle');
+      }, 3000);
+    }
   };
 
   const toggleJourneyOption = (option: string) => {
@@ -428,6 +538,250 @@ export const FinalCTA: React.FC = () => {
     } else {
       setReadinessOptions([...readinessOptions, option]);
     }
+  };
+
+  const renderFormContent = () => {
+    if (showSuccess) {
+      return (
+        <SuccessMessage
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <SuccessIcon>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </SuccessIcon>
+          <SuccessTitle>{t('finalCTA.success.title')}</SuccessTitle>
+          <SuccessText>{t('finalCTA.success.message')}</SuccessText>
+          <SubmitButton 
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setShowSuccess(false)}
+          >
+            {t('finalCTA.success.button')}
+          </SubmitButton>
+        </SuccessMessage>
+      );
+    }
+    
+    return (
+      <>
+        <FormHeadline id="contact-form-title">
+          {t('finalCTA.modalHeadline')}
+        </FormHeadline>
+        
+        <CallInfoBox>
+          <CallInfoText>
+            {t('finalCTA.callInfo')}
+          </CallInfoText>
+        </CallInfoBox>
+        
+        {submitState === 'error' && (
+          <ErrorMessage>
+            {errorMessage || t('finalCTA.error')}
+          </ErrorMessage>
+        )}
+        
+        <Form ref={formRef} onSubmit={handleSubmit} aria-describedby="form-instructions">
+          <div id="form-instructions" className="sr-only">{t('finalCTA.formInstructions')}</div>
+          <FormRow>
+            <FormGroup>
+              <Label htmlFor="fullName">{t('finalCTA.placeholders.fullName')}</Label>
+              <Input 
+                type="text" 
+                id="fullName" 
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+                aria-required="true"
+              />
+            </FormGroup>
+            
+            <FormGroup>
+              <Label htmlFor="email">{t('finalCTA.placeholders.email')}</Label>
+              <Input 
+                type="email" 
+                id="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                aria-required="true"
+              />
+            </FormGroup>
+          </FormRow>
+          
+          <FormGroup $fullWidth>
+            <OptionGroupTitle id="journey-title">{t('finalCTA.placeholders.journey')}</OptionGroupTitle>
+            <OptionGroup role="group" aria-labelledby="journey-title">
+              <OptionButton $selected={journeyOptions.includes('handsoff')}>
+                <HiddenCheckbox 
+                  type="checkbox" 
+                  id="journey-handsoff" 
+                  name="journey" 
+                  value="handsoff"
+                  checked={journeyOptions.includes('handsoff')}
+                  onChange={() => toggleJourneyOption('handsoff')}
+                  aria-describedby="journey-title"
+                />
+                {t('finalCTA.placeholders.journeyOptions.handsOff')}
+              </OptionButton>
+            
+              <OptionButton $selected={journeyOptions.includes('notsure')}>
+                <HiddenCheckbox 
+                  type="checkbox" 
+                  id="journey-notsure" 
+                  name="journey" 
+                  value="notsure"
+                  checked={journeyOptions.includes('notsure')}
+                  onChange={() => toggleJourneyOption('notsure')}
+                  aria-describedby="journey-title"
+                />
+                {t('finalCTA.placeholders.journeyOptions.notSure')}
+              </OptionButton>
+            
+              <OptionButton $selected={journeyOptions.includes('specific')}>
+                <HiddenCheckbox 
+                  type="checkbox" 
+                  id="journey-specific" 
+                  name="journey" 
+                  value="specific"
+                  checked={journeyOptions.includes('specific')}
+                  onChange={() => toggleJourneyOption('specific')}
+                  aria-describedby="journey-title"
+                />
+                {t('finalCTA.placeholders.journeyOptions.specificProject')}
+              </OptionButton>
+            </OptionGroup>
+          </FormGroup>
+          
+          <FormGroup $fullWidth>
+            <Label htmlFor="services">{t('finalCTA.placeholders.services')}</Label>
+            <TextArea 
+              id="services" 
+              value={services}
+              onChange={(e) => setServices(e.target.value)}
+              rows={3} 
+              placeholder={i18n.language === 'en' ? "Tell us about your business and services..." : i18n.language === 'pt' ? "Conte-nos sobre seu negócio e serviços..." : "Cuéntanos sobre tu negocio y servicios..."}
+            />
+          </FormGroup>
+          
+          <FormGroup $fullWidth>
+            <Label htmlFor="instagram">{t('finalCTA.placeholders.instagram')}</Label>
+            <Input 
+              type="text" 
+              id="instagram" 
+              value={instagram}
+              onChange={(e) => setInstagram(e.target.value)}
+              placeholder="@username or URL"
+            />
+          </FormGroup>
+          
+          <FormGroup $fullWidth>
+            <OptionGroupTitle id="readiness-title">{t('finalCTA.placeholders.readiness')}</OptionGroupTitle>
+            <OptionGroup role="group" aria-labelledby="readiness-title">
+              <OptionButton $selected={readinessOptions.includes('now')}>
+                <HiddenCheckbox 
+                  type="checkbox" 
+                  id="readiness-now" 
+                  name="readiness" 
+                  value="now"
+                  checked={readinessOptions.includes('now')}
+                  onChange={() => toggleReadinessOption('now')}
+                  aria-describedby="readiness-title"
+                />
+                {t('finalCTA.placeholders.readinessOptions.now')}
+              </OptionButton>
+            
+              <OptionButton $selected={readinessOptions.includes('soon')}>
+                <HiddenCheckbox 
+                  type="checkbox" 
+                  id="readiness-soon" 
+                  name="readiness" 
+                  value="soon"
+                  checked={readinessOptions.includes('soon')}
+                  onChange={() => toggleReadinessOption('soon')}
+                  aria-describedby="readiness-title"
+                />
+                {t('finalCTA.placeholders.readinessOptions.soon')}
+              </OptionButton>
+            
+              <OptionButton $selected={readinessOptions.includes('later')}>
+                <HiddenCheckbox 
+                  type="checkbox" 
+                  id="readiness-later" 
+                  name="readiness" 
+                  value="later"
+                  checked={readinessOptions.includes('later')}
+                  onChange={() => toggleReadinessOption('later')}
+                  aria-describedby="readiness-title"
+                />
+                {t('finalCTA.placeholders.readinessOptions.later')}
+              </OptionButton>
+            </OptionGroup>
+          </FormGroup>
+          
+          <WaitlistNotice>
+            <WaitlistText>
+              {t('finalCTA.waitlistInfo')}
+            </WaitlistText>
+          </WaitlistNotice>
+          
+          <FormGroup $fullWidth>
+            <OptionGroupTitle id="waitlist-title">{t('finalCTA.placeholders.waitlist')}</OptionGroupTitle>
+            <OptionGroup role="radiogroup" aria-labelledby="waitlist-title">
+              <OptionButton $selected={waitlist === 'yes'}>
+                <HiddenRadio 
+                  type="radio" 
+                  id="waitlist-yes" 
+                  name="waitlist" 
+                  value="yes"
+                  checked={waitlist === 'yes'}
+                  onChange={() => setWaitlist('yes')}
+                  required
+                  aria-describedby="waitlist-title"
+                  aria-required="true"
+                />
+                {t('finalCTA.placeholders.waitlistOptions.yes')}
+              </OptionButton>
+            
+              <OptionButton $selected={waitlist === 'no'}>
+                <HiddenRadio 
+                  type="radio" 
+                  id="waitlist-no" 
+                  name="waitlist" 
+                  value="no"
+                  checked={waitlist === 'no'}
+                  onChange={() => setWaitlist('no')}
+                  aria-describedby="waitlist-title"
+                />
+                {t('finalCTA.placeholders.waitlistOptions.no')}
+              </OptionButton>
+            </OptionGroup>
+          </FormGroup>
+          
+          <SubmitButton
+            type="submit"
+            disabled={submitState !== 'idle'}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            aria-live="polite"
+          >
+            <StatusContainer>
+              {submitState === 'idle' && t('finalCTA.send')}
+              {submitState === 'sending' && t('finalCTA.sending')}
+              {submitState === 'sent' && t('finalCTA.sent')}
+              {submitState === 'error' && t('finalCTA.tryAgain')}
+            </StatusContainer>
+          </SubmitButton>
+        </Form>
+        
+        <Privacy>
+          {t('finalCTA.privacy')}
+        </Privacy>
+      </>
+    );
   };
 
   return (
@@ -487,211 +841,7 @@ export const FinalCTA: React.FC = () => {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <FormHeadline id="contact-form-title">
-              {t('finalCTA.modalHeadline')}
-            </FormHeadline>
-            
-            <CallInfoBox>
-              <CallInfoText>
-                {t('finalCTA.callInfo')}
-              </CallInfoText>
-            </CallInfoBox>
-            
-            <Form ref={formRef} onSubmit={handleSubmit} aria-describedby="form-instructions">
-              <div id="form-instructions" className="sr-only">{t('finalCTA.formInstructions')}</div>
-              <FormRow>
-                <FormGroup>
-                  <Label htmlFor="fullName">{t('finalCTA.placeholders.fullName')}</Label>
-                  <Input 
-                    type="text" 
-                    id="fullName" 
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                    aria-required="true"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label htmlFor="email">{t('finalCTA.placeholders.email')}</Label>
-                  <Input 
-                    type="email" 
-                    id="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    aria-required="true"
-                  />
-                </FormGroup>
-              </FormRow>
-              
-              <FormGroup $fullWidth>
-                <OptionGroupTitle id="journey-title">{t('finalCTA.placeholders.journey')}</OptionGroupTitle>
-                <OptionGroup role="group" aria-labelledby="journey-title">
-                  <OptionButton $selected={journeyOptions.includes('handsoff')}>
-                    <HiddenCheckbox 
-                      type="checkbox" 
-                      id="journey-handsoff" 
-                      name="journey" 
-                      value="handsoff"
-                      checked={journeyOptions.includes('handsoff')}
-                      onChange={() => toggleJourneyOption('handsoff')}
-                      aria-describedby="journey-title"
-                    />
-                    {t('finalCTA.placeholders.journeyOptions.handsOff')}
-                  </OptionButton>
-                
-                  <OptionButton $selected={journeyOptions.includes('notsure')}>
-                    <HiddenCheckbox 
-                      type="checkbox" 
-                      id="journey-notsure" 
-                      name="journey" 
-                      value="notsure"
-                      checked={journeyOptions.includes('notsure')}
-                      onChange={() => toggleJourneyOption('notsure')}
-                      aria-describedby="journey-title"
-                    />
-                    {t('finalCTA.placeholders.journeyOptions.notSure')}
-                  </OptionButton>
-                
-                  <OptionButton $selected={journeyOptions.includes('specific')}>
-                    <HiddenCheckbox 
-                      type="checkbox" 
-                      id="journey-specific" 
-                      name="journey" 
-                      value="specific"
-                      checked={journeyOptions.includes('specific')}
-                      onChange={() => toggleJourneyOption('specific')}
-                      aria-describedby="journey-title"
-                    />
-                    {t('finalCTA.placeholders.journeyOptions.specificProject')}
-                  </OptionButton>
-                </OptionGroup>
-              </FormGroup>
-              
-              <FormGroup $fullWidth>
-                <Label htmlFor="services">{t('finalCTA.placeholders.services')}</Label>
-                <TextArea 
-                  id="services" 
-                  value={services}
-                  onChange={(e) => setServices(e.target.value)}
-                  rows={3} 
-                  placeholder={i18n.language === 'en' ? "Tell us about your business and services..." : i18n.language === 'pt' ? "Conte-nos sobre seu negócio e serviços..." : "Cuéntanos sobre tu negocio y servicios..."}
-                />
-              </FormGroup>
-              
-              <FormGroup $fullWidth>
-                <Label htmlFor="instagram">{t('finalCTA.placeholders.instagram')}</Label>
-                <Input 
-                  type="text" 
-                  id="instagram" 
-                  value={instagram}
-                  onChange={(e) => setInstagram(e.target.value)}
-                  placeholder="@username or URL"
-                />
-              </FormGroup>
-              
-              <FormGroup $fullWidth>
-                <OptionGroupTitle id="readiness-title">{t('finalCTA.placeholders.readiness')}</OptionGroupTitle>
-                <OptionGroup role="group" aria-labelledby="readiness-title">
-                  <OptionButton $selected={readinessOptions.includes('now')}>
-                    <HiddenCheckbox 
-                      type="checkbox" 
-                      id="readiness-now" 
-                      name="readiness" 
-                      value="now"
-                      checked={readinessOptions.includes('now')}
-                      onChange={() => toggleReadinessOption('now')}
-                      aria-describedby="readiness-title"
-                    />
-                    {t('finalCTA.placeholders.readinessOptions.now')}
-                  </OptionButton>
-                
-                  <OptionButton $selected={readinessOptions.includes('soon')}>
-                    <HiddenCheckbox 
-                      type="checkbox" 
-                      id="readiness-soon" 
-                      name="readiness" 
-                      value="soon"
-                      checked={readinessOptions.includes('soon')}
-                      onChange={() => toggleReadinessOption('soon')}
-                      aria-describedby="readiness-title"
-                    />
-                    {t('finalCTA.placeholders.readinessOptions.soon')}
-                  </OptionButton>
-                
-                  <OptionButton $selected={readinessOptions.includes('later')}>
-                    <HiddenCheckbox 
-                      type="checkbox" 
-                      id="readiness-later" 
-                      name="readiness" 
-                      value="later"
-                      checked={readinessOptions.includes('later')}
-                      onChange={() => toggleReadinessOption('later')}
-                      aria-describedby="readiness-title"
-                    />
-                    {t('finalCTA.placeholders.readinessOptions.later')}
-                  </OptionButton>
-                </OptionGroup>
-              </FormGroup>
-              
-              <WaitlistNotice>
-                <WaitlistText>
-                  {t('finalCTA.waitlistInfo')}
-                </WaitlistText>
-              </WaitlistNotice>
-              
-              <FormGroup $fullWidth>
-                <OptionGroupTitle id="waitlist-title">{t('finalCTA.placeholders.waitlist')}</OptionGroupTitle>
-                <OptionGroup role="radiogroup" aria-labelledby="waitlist-title">
-                  <OptionButton $selected={waitlist === 'yes'}>
-                    <HiddenRadio 
-                      type="radio" 
-                      id="waitlist-yes" 
-                      name="waitlist" 
-                      value="yes"
-                      checked={waitlist === 'yes'}
-                      onChange={() => setWaitlist('yes')}
-                      required
-                      aria-describedby="waitlist-title"
-                      aria-required="true"
-                    />
-                    {t('finalCTA.placeholders.waitlistOptions.yes')}
-                  </OptionButton>
-                
-                  <OptionButton $selected={waitlist === 'no'}>
-                    <HiddenRadio 
-                      type="radio" 
-                      id="waitlist-no" 
-                      name="waitlist" 
-                      value="no"
-                      checked={waitlist === 'no'}
-                      onChange={() => setWaitlist('no')}
-                      aria-describedby="waitlist-title"
-                    />
-                    {t('finalCTA.placeholders.waitlistOptions.no')}
-                  </OptionButton>
-                </OptionGroup>
-              </FormGroup>
-              
-              <SubmitButton
-                type="submit"
-                disabled={submitState !== 'idle'}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                aria-live="polite"
-              >
-                <StatusContainer>
-                  {submitState === 'idle' && t('finalCTA.send')}
-                  {submitState === 'sending' && t('finalCTA.sending')}
-                  {submitState === 'sent' && t('finalCTA.sent')}
-                </StatusContainer>
-              </SubmitButton>
-            </Form>
-            
-            <Privacy>
-              {t('finalCTA.privacy')}
-            </Privacy>
+            {renderFormContent()}
           </FormContainer>
         </Container>
       </Section>

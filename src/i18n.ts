@@ -162,11 +162,11 @@ const resources = {
         scroll: 'Role para explorar',
       },
       who: {
-        title1: 'Quem Somos Nos?',
+        title1: 'Quem Somos Nós?',
         title2: '?',
         agency: 'Não somos uma <highlight>agência de marketing</highlight>. Somos parceiros para o crescimento da sua empresa.',
-        desc1: 'Em um mundo de tendências, ruído e muito conteúdo, trazemos <highlight>calma, foco e intenção</highlight>. Conosco, seu objetivo se torna o ponto focal. Removemos distrações, tarefas desnecessárias e atividades performáticas.',
-        desc2: 'Não acreditamos em fazer mais. Acreditamos em <highlight>fazer o que importa</highlight> com precisão e no momento certo.',
+        desc1: 'Em um mundo barulhento com excesso de informação, ideias brilhantes e tendências, seu negócio fica sufocado. Com Vanilla Rubi você encontra <highlight>clareza e foco</highlight>. Eliminamos distrações, tarefas e complicações desnecessárias fazendo você chegar <highlight>de A a B de forma rápida, objetiva</highlight> pra <highlight>gerar ganhos</highlight>.',
+        desc2: '',
         trinium: 'Escale com alma. Cresça com intenção.'
       },
       whatWeOffer: {
@@ -299,8 +299,8 @@ const resources = {
         title1: '¿Quiénes somos?',
         title2: '?',
         agency: '<highlight>No somos una agencia de marketing</highlight>. Somos socios en el crecimiento de tu negocio.',
-        desc1: 'En un mundo de tendencias, ruido y mucho contenido, aportamos <highlight>calma, enfoque e intención</highlight>. Con nosotros, tu objetivo se convierte en el punto central. Eliminamos distracciones, tareas innecesarias y actividades performativas.',
-        desc2: 'No creemos en hacer más. Creemos en <highlight>hacer lo que importa</highlight> con precisión y en el momento adecuado.',
+        desc1: 'En un mundo ruidoso, lleno de información, ideas brillantes y tendencias pasajeras, tu negocio puede sentirse ahogado. Con Vanilla Rubi, encuentras <highlight>claridad y enfoque</highlight>. Eliminamos distracciones, tareas innecesarias y complicaciones para llevarte <highlight>del punto A al B con rapidez, dirección</highlight> y <highlight>resultados reales</highlight>.',
+        desc2: '',
         trinium: 'Escala con alma. Crece con intención.'
       },
       whatWeOffer: {
