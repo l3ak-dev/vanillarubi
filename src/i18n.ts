@@ -140,6 +140,7 @@ const resources = {
           nameTooShort: 'Name must be at least 2 characters',
           servicesRequired: 'Please tell us about your business',
           servicesTooShort: 'Please provide more details (at least 10 characters)',
+          pleaseFix: 'Please fix the errors above before submitting',
         },
         tryAgain: 'Try Again'
       },
@@ -283,6 +284,7 @@ const resources = {
           nameTooShort: 'Nome deve ter pelo menos 2 caracteres',
           servicesRequired: 'Por favor, conte-nos sobre seu negócio',
           servicesTooShort: 'Por favor, forneça mais detalhes (pelo menos 10 caracteres)',
+          pleaseFix: 'Por favor, corrija os erros acima antes de enviar',
         },
         tryAgain: 'Tentar Novamente'
       },
@@ -426,6 +428,7 @@ const resources = {
           nameTooShort: 'El nombre debe tener al menos 2 caracteres',
           servicesRequired: 'Por favor, cuéntanos sobre tu negocio',
           servicesTooShort: 'Por favor, proporciona más detalles (al menos 10 caracteres)',
+          pleaseFix: 'Por favor, corrige los errores antes de enviar',
         },
         tryAgain: 'Intentar de Nuevo'
       },

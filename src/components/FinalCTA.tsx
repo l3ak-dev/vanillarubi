@@ -298,7 +298,7 @@ const WaitlistText = styled.p`
   font-weight: 500;
 `;
 
-const SubmitButton = styled(motion.button)`
+const SubmitButton = styled(motion.button)<{ $isLoading?: boolean }>`
   background: var(--color-primary);
   color: white;
   border: none;
@@ -314,6 +314,7 @@ const SubmitButton = styled(motion.button)`
   overflow: hidden;
   letter-spacing: 0.5px;
   will-change: transform;
+  min-height: 48px;
   
   &::after {
     content: '';
@@ -343,6 +344,27 @@ const SubmitButton = styled(motion.button)`
     background: #999;
     cursor: not-allowed;
   }
+  
+  ${props => props.$isLoading && `
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      border: 2px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+  `}
 `;
 
 const StatusContainer = styled(motion.div)`
@@ -405,6 +427,39 @@ const ErrorMessage = styled.div`
   font-family: 'Montserrat', sans-serif;
 `;
 
+const FieldError = styled.div`
+  color: #d32f2f;
+  font-size: 0.75rem;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  &::before {
+    content: '⚠';
+    font-size: 0.8rem;
+  }
+`;
+
+const InputWithError = styled(Input)<{ $hasError?: boolean }>`
+  border-color: ${props => props.$hasError ? '#d32f2f' : 'rgba(90, 0, 22, 0.12)'};
+  
+  &:focus {
+    border-color: ${props => props.$hasError ? '#d32f2f' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px ${props => props.$hasError ? 'rgba(211, 47, 47, 0.1)' : 'rgba(90, 0, 22, 0.08)'};
+  }
+`;
+
+const TextAreaWithError = styled(TextArea)<{ $hasError?: boolean }>`
+  border-color: ${props => props.$hasError ? '#d32f2f' : 'rgba(90, 0, 22, 0.12)'};
+  
+  &:focus {
+    border-color: ${props => props.$hasError ? '#d32f2f' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px ${props => props.$hasError ? 'rgba(211, 47, 47, 0.1)' : 'rgba(90, 0, 22, 0.08)'};
+  }
+`;
+
 // Animation variants - otimizados para performance
 const fadeUpVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -431,6 +486,10 @@ export const FinalCTA: React.FC = () => {
   const [instagram, setInstagram] = useState('');
   const [services, setServices] = useState('');
   
+  // Estados para validação
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+  const [touched, setTouched] = useState<{[key: string]: boolean}>({});
+  
   // Estados para os campos de escolha múltipla
   const [journeyOptions, setJourneyOptions] = useState(['handsoff']);
   const [readinessOptions, setReadinessOptions] = useState(['now']);
@@ -438,6 +497,49 @@ export const FinalCTA: React.FC = () => {
   
   // Flag para controlar quando mostrar a mensagem de sucesso
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Funções de validação
+  const validateEmail = (email: string): string => {
+    if (!email.trim()) return t('finalCTA.validation.emailRequired');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return t('finalCTA.validation.emailInvalid');
+    return '';
+  };
+  
+  const validateFullName = (name: string): string => {
+    if (!name.trim()) return t('finalCTA.validation.nameRequired');
+    if (name.trim().length < 2) return t('finalCTA.validation.nameTooShort');
+    return '';
+  };
+  
+  const validateServices = (text: string): string => {
+    if (!text.trim()) return t('finalCTA.validation.servicesRequired');
+    if (text.trim().length < 10) return t('finalCTA.validation.servicesTooShort');
+    return '';
+  };
+  
+  // Validar campo específico
+  const validateField = (fieldName: string, value: string) => {
+    let error = '';
+    switch (fieldName) {
+      case 'fullName':
+        error = validateFullName(value);
+        break;
+      case 'email':
+        error = validateEmail(value);
+        break;
+      case 'services':
+        error = validateServices(value);
+        break;
+    }
+    
+    setFieldErrors(prev => ({
+      ...prev,
+      [fieldName]: error
+    }));
+    
+    return error === '';
+  };
 
   const resetForm = () => {
     setFullName('');
@@ -448,6 +550,8 @@ export const FinalCTA: React.FC = () => {
     setReadinessOptions(['now']);
     setWaitlist('');
     setErrorMessage('');
+    setFieldErrors({});
+    setTouched({});
     
     if (formRef.current) {
       const form = formRef.current;
@@ -457,6 +561,26 @@ export const FinalCTA: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Se é retry, reset error state primeiro
+    if (submitState === 'error') {
+      setSubmitState('idle');
+      setErrorMessage('');
+    }
+    
+    // Validar todos os campos obrigatórios antes de enviar
+    const nameValid = validateField('fullName', fullName);
+    const emailValid = validateField('email', email);
+    const servicesValid = validateField('services', services);
+    
+    setTouched({ fullName: true, email: true, services: true });
+    
+    if (!nameValid || !emailValid || !servicesValid) {
+      setSubmitState('idle');
+      setErrorMessage(t('finalCTA.validation.pleaseFix'));
+      return;
+    }
+    
     setSubmitState('sending');
     setErrorMessage('');
     
@@ -517,10 +641,12 @@ export const FinalCTA: React.FC = () => {
     } catch (error) {
       console.error('Erro ao enviar email:', error);
       setSubmitState('error');
-      setErrorMessage(t('finalCTA.error'));
-      setTimeout(() => {
-        setSubmitState('idle');
-      }, 3000);
+      setErrorMessage(
+        error instanceof Error 
+          ? `${t('finalCTA.error')}: ${error.message}` 
+          : t('finalCTA.error')
+      );
+      // Não resetar automaticamente para permitir retry manual
     }
   };
 
@@ -589,26 +715,58 @@ export const FinalCTA: React.FC = () => {
           <FormRow>
             <FormGroup>
               <Label htmlFor="fullName">{t('finalCTA.placeholders.fullName')}</Label>
-              <Input 
+              <InputWithError 
                 type="text" 
+                autoComplete="name"
                 id="fullName" 
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => {
+                  setFullName(e.target.value);
+                  if (touched.fullName) {
+                    validateField('fullName', e.target.value);
+                  }
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, fullName: true }));
+                  validateField('fullName', fullName);
+                }}
+                $hasError={touched.fullName && !!fieldErrors.fullName}
                 required
                 aria-required="true"
+                aria-invalid={touched.fullName && !!fieldErrors.fullName}
+                autoFocus
               />
+              {touched.fullName && fieldErrors.fullName && (
+                <FieldError>{fieldErrors.fullName}</FieldError>
+              )}
             </FormGroup>
             
             <FormGroup>
               <Label htmlFor="email">{t('finalCTA.placeholders.email')}</Label>
-              <Input 
+              <InputWithError 
                 type="email" 
+                inputMode="email"
+                autoComplete="email"
                 id="email" 
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (touched.email) {
+                    validateField('email', e.target.value);
+                  }
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, email: true }));
+                  validateField('email', email);
+                }}
+                $hasError={touched.email && !!fieldErrors.email}
                 required
                 aria-required="true"
+                aria-invalid={touched.email && !!fieldErrors.email}
               />
+              {touched.email && fieldErrors.email && (
+                <FieldError>{fieldErrors.email}</FieldError>
+              )}
             </FormGroup>
           </FormRow>
           
@@ -658,19 +816,34 @@ export const FinalCTA: React.FC = () => {
           
           <FormGroup $fullWidth>
             <Label htmlFor="services">{t('finalCTA.placeholders.services')}</Label>
-            <TextArea 
+            <TextAreaWithError 
               id="services" 
               value={services}
-              onChange={(e) => setServices(e.target.value)}
+              onChange={(e) => {
+                setServices(e.target.value);
+                if (touched.services) {
+                  validateField('services', e.target.value);
+                }
+              }}
+              onBlur={() => {
+                setTouched(prev => ({ ...prev, services: true }));
+                validateField('services', services);
+              }}
+              $hasError={touched.services && !!fieldErrors.services}
               rows={3} 
               placeholder={i18n.language === 'en' ? "Tell us about your business and services..." : i18n.language === 'pt' ? "Conte-nos sobre seu negócio e serviços..." : "Cuéntanos sobre tu negocio y servicios..."}
+              aria-invalid={touched.services && !!fieldErrors.services}
             />
+            {touched.services && fieldErrors.services && (
+              <FieldError>{fieldErrors.services}</FieldError>
+            )}
           </FormGroup>
           
           <FormGroup $fullWidth>
             <Label htmlFor="instagram">{t('finalCTA.placeholders.instagram')}</Label>
             <Input 
               type="text" 
+              autoComplete="url"
               id="instagram" 
               value={instagram}
               onChange={(e) => setInstagram(e.target.value)}
@@ -761,20 +934,21 @@ export const FinalCTA: React.FC = () => {
             </OptionGroup>
           </FormGroup>
           
-          <SubmitButton
-            type="submit"
-            disabled={submitState !== 'idle'}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            aria-live="polite"
-          >
-            <StatusContainer>
-              {submitState === 'idle' && t('finalCTA.send')}
-              {submitState === 'sending' && t('finalCTA.sending')}
-              {submitState === 'sent' && t('finalCTA.sent')}
-              {submitState === 'error' && t('finalCTA.tryAgain')}
-            </StatusContainer>
-          </SubmitButton>
+                      <SubmitButton
+              type="submit"
+              $isLoading={submitState === 'sending'}
+              disabled={submitState === 'sending'}
+              whileHover={{ scale: submitState === 'sending' ? 1 : 1.02 }}
+              whileTap={{ scale: submitState === 'sending' ? 1 : 0.98 }}
+              aria-live="polite"
+            >
+              <StatusContainer>
+                {submitState === 'idle' && t('finalCTA.send')}
+                {submitState === 'sending' && t('finalCTA.sending') + '...'}
+                {submitState === 'sent' && t('finalCTA.sent')}
+                {submitState === 'error' && t('finalCTA.tryAgain')}
+              </StatusContainer>
+            </SubmitButton>
         </Form>
         
         <Privacy>
