@@ -132,7 +132,16 @@ const resources = {
           message: "Thanks for reaching out! We'll contact you within 24 hours to schedule your discovery call.",
           button: 'Back to Home'
         },
-        privacy: 'Your information will never be shared.'
+        privacy: 'Your information will never be shared.',
+        validation: {
+          emailRequired: 'Email is required',
+          emailInvalid: 'Please enter a valid email',
+          nameRequired: 'Name is required',
+          nameTooShort: 'Name must be at least 2 characters',
+          servicesRequired: 'Please tell us about your business',
+          servicesTooShort: 'Please provide more details (at least 10 characters)',
+        },
+        tryAgain: 'Try Again'
       },
       seo: {
         description: 'Vanilla Rubi is a multidimensional business growth agency for entrepreneurs and businesses ready to scale with clarity, creativity, and soul. Creative strategy, energetic alignment, and hands-off execution — in three languages.'
@@ -266,7 +275,16 @@ const resources = {
           message: "Obrigado pelo seu contato! Entraremos em contato em até 24 horas para agendar sua chamada.",
           button: 'Voltar ao Início'
         },
-        privacy: 'Suas informações nunca serão compartilhadas.'
+        privacy: 'Suas informações nunca serão compartilhadas.',
+        validation: {
+          emailRequired: 'Email é obrigatório',
+          emailInvalid: 'Por favor, insira um email válido',
+          nameRequired: 'Nome é obrigatório',
+          nameTooShort: 'Nome deve ter pelo menos 2 caracteres',
+          servicesRequired: 'Por favor, conte-nos sobre seu negócio',
+          servicesTooShort: 'Por favor, forneça mais detalhes (pelo menos 10 caracteres)',
+        },
+        tryAgain: 'Tentar Novamente'
       },
       seo: {
         description: 'A Vanilla Rubi é uma agência multidimensional de crescimento para empreendedores e negócios prontos para escalar com clareza, criatividade e alma. Estratégia criativa, alinhamento energético e execução impecável — em três idiomas.'
@@ -400,7 +418,16 @@ const resources = {
           message: "¡Gracias por contactarnos! Nos comunicaremos contigo dentro de 24 horas para programar tu llamada.",
           button: 'Volver al Inicio'
         },
-        privacy: 'Tu información nunca será compartida.'
+        privacy: 'Tu información nunca será compartida.',
+        validation: {
+          emailRequired: 'El email es requerido',
+          emailInvalid: 'Por favor, ingresa un email válido',
+          nameRequired: 'El nombre es requerido',
+          nameTooShort: 'El nombre debe tener al menos 2 caracteres',
+          servicesRequired: 'Por favor, cuéntanos sobre tu negocio',
+          servicesTooShort: 'Por favor, proporciona más detalles (al menos 10 caracteres)',
+        },
+        tryAgain: 'Intentar de Nuevo'
       },
       seo: {
         description: 'Vanilla Rubi es una agencia multidimensional de crecimiento para emprendedores y empresas listas para escalar con claridad, creatividad y alma. Estrategia creativa, alineación energética y ejecución impecable — en tres idiomas.'

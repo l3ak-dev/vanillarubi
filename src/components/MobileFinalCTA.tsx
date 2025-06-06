@@ -299,14 +299,15 @@ const OptionGroupTitle = styled.h4`
 const OptionGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin-top: 2px;
 `;
 
 const OptionButton = styled.label<{ $selected: boolean }>`
   display: flex;
   align-items: center;
-  padding: 10px 14px;
+  padding: 14px 16px;
+  min-height: 44px;
   background: ${props => props.$selected ? 'rgba(90, 0, 22, 0.05)' : 'white'};
   border: 1px solid ${props => props.$selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.15)'};
   border-radius: 2px;
@@ -314,12 +315,18 @@ const OptionButton = styled.label<{ $selected: boolean }>`
   font-family: 'Montserrat', sans-serif;
   color: var(--color-primary-dark);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
   user-select: none;
+  position: relative;
   
   &:hover {
     background: ${props => props.$selected ? 'rgba(90, 0, 22, 0.07)' : 'rgba(90, 0, 22, 0.02)'};
     border-color: ${props => props.$selected ? 'var(--color-primary)' : 'rgba(90, 0, 22, 0.25)'};
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -343,7 +350,7 @@ const NavigationButtons = styled.div`
   margin-top: 10px;
 `;
 
-const NavButton = styled(motion.button)<{ $isPrimary?: boolean }>`
+const NavButton = styled(motion.button)<{ $isPrimary?: boolean; $isLoading?: boolean }>`
   background: ${props => props.$isPrimary ? 'var(--color-primary)' : 'transparent'};
   color: ${props => props.$isPrimary ? 'white' : 'var(--color-primary)'};
   border: ${props => props.$isPrimary ? 'none' : '1px solid var(--color-primary)'};
@@ -358,11 +365,33 @@ const NavButton = styled(motion.button)<{ $isPrimary?: boolean }>`
   align-items: center;
   justify-content: center;
   min-width: 100px;
+  min-height: 44px;
+  position: relative;
+  overflow: hidden;
   
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
   }
+  
+  ${props => props.$isLoading && `
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      margin: auto;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `}
 `;
 
 const WaitlistNotice = styled.div`
@@ -432,6 +461,39 @@ const ErrorBanner = styled.div`
   margin-bottom: 15px;
   font-size: 0.85rem;
   font-family: 'Montserrat', sans-serif;
+`;
+
+const FieldError = styled.div`
+  color: #d32f2f;
+  font-size: 0.75rem;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  &::before {
+    content: '⚠';
+    font-size: 0.8rem;
+  }
+`;
+
+const InputWithError = styled(Input)<{ $hasError?: boolean }>`
+  border-color: ${props => props.$hasError ? '#d32f2f' : 'rgba(90, 0, 22, 0.12)'};
+  
+  &:focus {
+    border-color: ${props => props.$hasError ? '#d32f2f' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px ${props => props.$hasError ? 'rgba(211, 47, 47, 0.1)' : 'rgba(90, 0, 22, 0.08)'};
+  }
+`;
+
+const TextAreaWithError = styled(TextArea)<{ $hasError?: boolean }>`
+  border-color: ${props => props.$hasError ? '#d32f2f' : 'rgba(90, 0, 22, 0.12)'};
+  
+  &:focus {
+    border-color: ${props => props.$hasError ? '#d32f2f' : 'var(--color-primary)'};
+    box-shadow: 0 0 0 2px ${props => props.$hasError ? 'rgba(211, 47, 47, 0.1)' : 'rgba(90, 0, 22, 0.08)'};
+  }
 `;
 
 // Animation variants
@@ -506,14 +568,61 @@ export const MobileFinalCTA: React.FC = () => {
   const [instagram, setInstagram] = useState('');
   const [services, setServices] = useState('');
   
+  // Estados para validação
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+  const [touched, setTouched] = useState<{[key: string]: boolean}>({});
+  
   // Estados para os campos de escolha múltipla
   const [journeyOptions, setJourneyOptions] = useState(['handsoff']);
   const [readinessOptions, setReadinessOptions] = useState(['now']);
   const [waitlist, setWaitlist] = useState('');
   
+  // Funções de validação
+  const validateEmail = (email: string): string => {
+    if (!email.trim()) return t('finalCTA.validation.emailRequired');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return t('finalCTA.validation.emailInvalid');
+    return '';
+  };
+  
+  const validateFullName = (name: string): string => {
+    if (!name.trim()) return t('finalCTA.validation.nameRequired');
+    if (name.trim().length < 2) return t('finalCTA.validation.nameTooShort');
+    return '';
+  };
+  
+  const validateServices = (text: string): string => {
+    if (!text.trim()) return t('finalCTA.validation.servicesRequired');
+    if (text.trim().length < 10) return t('finalCTA.validation.servicesTooShort');
+    return '';
+  };
+  
+  // Validar campo específico
+  const validateField = (fieldName: string, value: string) => {
+    let error = '';
+    switch (fieldName) {
+      case 'fullName':
+        error = validateFullName(value);
+        break;
+      case 'email':
+        error = validateEmail(value);
+        break;
+      case 'services':
+        error = validateServices(value);
+        break;
+    }
+    
+    setFieldErrors(prev => ({
+      ...prev,
+      [fieldName]: error
+    }));
+    
+    return error === '';
+  };
+  
   // Validações para navegação entre etapas
-  const isInfoStepValid = fullName.trim() !== '' && email.trim() !== '';
-  const isProjectStepValid = services.trim() !== '';
+  const isInfoStepValid = fullName.trim() !== '' && email.trim() !== '' && !fieldErrors.fullName && !fieldErrors.email;
+  const isProjectStepValid = services.trim() !== '' && !fieldErrors.services;
   const isTimingStepValid = waitlist !== '';
   
   // Handle viewport issues when keyboard appears
@@ -602,7 +711,14 @@ export const MobileFinalCTA: React.FC = () => {
         }
       }, 50);
     }
-    else if (currentStep === 'timing') handleSubmit();
+    else if (currentStep === 'timing') {
+      if (submitState === 'error') {
+        // Retry: reset error state and try again
+        setSubmitState('idle');
+        setErrorMessage('');
+      }
+      handleSubmit();
+    }
   };
   
   const goToPrevStep = () => {
@@ -642,6 +758,8 @@ export const MobileFinalCTA: React.FC = () => {
     setReadinessOptions(['now']);
     setWaitlist('');
     setErrorMessage('');
+    setFieldErrors({});
+    setTouched({});
     setCurrentStep('info');
     
     if (formRef.current) {
@@ -713,10 +831,12 @@ export const MobileFinalCTA: React.FC = () => {
       } catch (error) {
         console.error('Erro ao enviar email:', error);
         setSubmitState('error');
-        setErrorMessage(t('finalCTA.error'));
-        setTimeout(() => {
-          setSubmitState('idle');
-        }, 3000);
+        setErrorMessage(
+          error instanceof Error 
+            ? `${t('finalCTA.error')}: ${error.message}` 
+            : t('finalCTA.error')
+        );
+        // Não resetar automaticamente para permitir retry manual
       }
     }
   };
@@ -757,7 +877,7 @@ export const MobileFinalCTA: React.FC = () => {
       return submitState === 'idle' 
         ? t('finalCTA.send') 
         : submitState === 'sending' 
-          ? t('finalCTA.sending') 
+          ? t('finalCTA.sending') + '...' 
           : submitState === 'error'
             ? t('finalCTA.tryAgain')
             : t('finalCTA.sent');
@@ -800,26 +920,58 @@ export const MobileFinalCTA: React.FC = () => {
     >
       <FormGroup>
         <Label htmlFor="fullName">{t('finalCTA.placeholders.fullName')}</Label>
-        <Input 
+        <InputWithError 
           type="text" 
+          autoComplete="name"
           id="fullName" 
           value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          onChange={(e) => {
+            setFullName(e.target.value);
+            if (touched.fullName) {
+              validateField('fullName', e.target.value);
+            }
+          }}
+          onBlur={() => {
+            setTouched(prev => ({ ...prev, fullName: true }));
+            validateField('fullName', fullName);
+          }}
+          $hasError={touched.fullName && !!fieldErrors.fullName}
           required
           aria-required="true"
+          aria-invalid={touched.fullName && !!fieldErrors.fullName}
+          autoFocus
         />
+        {touched.fullName && fieldErrors.fullName && (
+          <FieldError>{fieldErrors.fullName}</FieldError>
+        )}
       </FormGroup>
       
       <FormGroup>
         <Label htmlFor="email">{t('finalCTA.placeholders.email')}</Label>
-        <Input 
+        <InputWithError 
           type="email" 
+          inputMode="email"
+          autoComplete="email"
           id="email" 
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (touched.email) {
+              validateField('email', e.target.value);
+            }
+          }}
+          onBlur={() => {
+            setTouched(prev => ({ ...prev, email: true }));
+            validateField('email', email);
+          }}
+          $hasError={touched.email && !!fieldErrors.email}
           required
           aria-required="true"
+          aria-invalid={touched.email && !!fieldErrors.email}
         />
+        {touched.email && fieldErrors.email && (
+          <FieldError>{fieldErrors.email}</FieldError>
+        )}
       </FormGroup>
       
       <FormGroup>
@@ -890,15 +1042,30 @@ export const MobileFinalCTA: React.FC = () => {
       
       <FormGroup>
         <Label htmlFor="services">{t('finalCTA.placeholders.services')}</Label>
-        <TextArea 
+        <TextAreaWithError 
           id="services" 
           value={services}
-          onChange={(e) => setServices(e.target.value)}
+          onChange={(e) => {
+            setServices(e.target.value);
+            if (touched.services) {
+              validateField('services', e.target.value);
+            }
+          }}
+          onBlur={() => {
+            setTouched(prev => ({ ...prev, services: true }));
+            validateField('services', services);
+          }}
+          $hasError={touched.services && !!fieldErrors.services}
           rows={4} 
           placeholder={i18n.language === 'en' ? "Tell us about your business and services..." : i18n.language === 'pt' ? "Conte-nos sobre seu negócio e serviços..." : "Cuéntanos sobre tu negocio y servicios..."}
           required
           aria-required="true"
+          aria-invalid={touched.services && !!fieldErrors.services}
+          autoFocus
         />
+        {touched.services && fieldErrors.services && (
+          <FieldError>{fieldErrors.services}</FieldError>
+        )}
       </FormGroup>
     </StepContainer>
   );
@@ -1138,10 +1305,11 @@ export const MobileFinalCTA: React.FC = () => {
                     <NavButton 
                       type="button" 
                       $isPrimary
+                      $isLoading={submitState === 'sending'}
                       onClick={goToNextStep}
                       disabled={isNextButtonDisabled()}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: submitState === 'sending' ? 1 : 1.02 }}
+                      whileTap={{ scale: submitState === 'sending' ? 1 : 0.98 }}
                       style={{ marginLeft: currentStep === 'info' ? 'auto' : '0' }}
                     >
                       {getNextButtonText()}
