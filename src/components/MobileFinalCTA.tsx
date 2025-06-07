@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { SectionSEO } from './SectionSEO';
-import emailjs from '@emailjs/browser';
+
 
 // Container principal
 const Section = styled.section`
@@ -775,8 +775,8 @@ export const MobileFinalCTA: React.FC = () => {
       setErrorMessage('');
       
       try {
-        // Preparar o template de email com os dados do formulário com valores mais detalhados
-        const templateParams = {
+        // Preparar os dados para envio via nossa API
+        const formData = {
           name: fullName,
           email: email,
           instagram: instagram,
@@ -805,28 +805,33 @@ export const MobileFinalCTA: React.FC = () => {
           }).join(', '),
           
           // Valor mais descritivo para waitlist
-          waitlist: waitlist === 'yes' ? 'Yes, willing to join waitlist' : 'No, not willing to join waitlist',
+          waitlist: waitlist,
           
           language: i18n.language === 'en' ? 'English' : i18n.language === 'pt' ? 'Portuguese' : 'Spanish',
-          date: new Date().toLocaleString(),
+          date: new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
           source: 'Mobile Form'
         };
         
-        // Enviar o email usando EmailJS com os IDs corretos
-        const response = await emailjs.send(
-          'service_y56p4zp',  // Service ID do EmailJS
-          'template_daha4ei', // Template ID do EmailJS
-          templateParams,
-          'oRnW9lkMHFkYb0FCA'  // Public Key correta do EmailJS
-        );
+        // Enviar via nossa API Vercel Function
+        const response = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
         
-        if (response.status === 200) {
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
           setSubmitState('sent');
           setCurrentStep('success');
           
           setTimeout(() => {
             setSubmitState('idle');
           }, 5000);
+        } else {
+          throw new Error(result.message || 'Erro ao enviar formulário');
         }
       } catch (error) {
         console.error('Erro ao enviar email:', error);
