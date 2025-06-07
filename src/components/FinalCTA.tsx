@@ -739,7 +739,6 @@ export const FinalCTA: React.FC = () => {
                 required
                 aria-required="true"
                 aria-invalid={touched.fullName && !!fieldErrors.fullName}
-                autoFocus
               />
               {touched.fullName && fieldErrors.fullName && (
                 <FieldError>{fieldErrors.fullName}</FieldError>

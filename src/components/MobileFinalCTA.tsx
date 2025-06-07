@@ -625,7 +625,7 @@ export const MobileFinalCTA: React.FC = () => {
   const isProjectStepValid = services.trim() !== '' && !fieldErrors.services;
   const isTimingStepValid = waitlist !== '';
   
-  // Handle viewport issues when keyboard appears
+  // Handle viewport issues when keyboard appears - ONLY for mobile form inputs
   useEffect(() => {
     const handleFocus = () => {
       // Prevent automatic scrolling when an input is focused
@@ -645,16 +645,19 @@ export const MobileFinalCTA: React.FC = () => {
       }, 100);
     };
 
-    const inputs = document.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
-      input.addEventListener('focus', handleFocus);
-    });
-
-    return () => {
+    // Only add listeners to inputs within the mobile form container
+    if (formContainerRef.current) {
+      const inputs = formContainerRef.current.querySelectorAll('input, textarea');
       inputs.forEach(input => {
-        input.removeEventListener('focus', handleFocus);
+        input.addEventListener('focus', handleFocus);
       });
-    };
+
+      return () => {
+        inputs.forEach(input => {
+          input.removeEventListener('focus', handleFocus);
+        });
+      };
+    }
   }, [currentStep]);
 
   // Fix viewport height issues on mobile
@@ -944,7 +947,6 @@ export const MobileFinalCTA: React.FC = () => {
           required
           aria-required="true"
           aria-invalid={touched.fullName && !!fieldErrors.fullName}
-          autoFocus
         />
         {touched.fullName && fieldErrors.fullName && (
           <FieldError>{fieldErrors.fullName}</FieldError>
@@ -1066,7 +1068,6 @@ export const MobileFinalCTA: React.FC = () => {
           required
           aria-required="true"
           aria-invalid={touched.services && !!fieldErrors.services}
-          autoFocus
         />
         {touched.services && fieldErrors.services && (
           <FieldError>{fieldErrors.services}</FieldError>

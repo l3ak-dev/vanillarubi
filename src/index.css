@@ -63,11 +63,7 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-top: 0; /* O padding é necessário apenas para mobile */
-  
-  @media (max-width: 600px) {
-    padding-top: 64px; /* Altura da navbar no mobile */
-  }
+  /* Removido padding-top que estava causando scroll automático */
 }
 
 img {
@@ -138,11 +134,7 @@ button, input, textarea, select {
   src: local('Inter');
 }
 
-/* Smooth scrolling para âncoras */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Altura da navbar fixa */
-}
+/* Configuração de scroll já definida acima */
 
 /* Estilos para o conteúdo principal */
 main {
