@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-
 // Google Analytics 4 Configuration
-const GA_MEASUREMENT_ID = 'G-HPGEMMPXGL';
+const GA_MEASUREMENT_ID = 'G-NP66MNMQGL';
 
 // Initialize gtag function
 declare global {
@@ -10,51 +8,6 @@ declare global {
     dataLayer: any[];
   }
 }
-
-export const GoogleAnalytics = () => {
-  useEffect(() => {
-    // Initialize dataLayer
-    window.dataLayer = window.dataLayer || [];
-    
-    // Define gtag function
-    window.gtag = function gtag() {
-      window.dataLayer.push(arguments);
-    };
-    
-    // Initialize with current date
-    window.gtag('js', new Date());
-    
-    // Configure with our measurement ID
-    window.gtag('config', GA_MEASUREMENT_ID, {
-      // Enhanced tracking
-      send_page_view: true,
-      allow_google_signals: true,
-      allow_ad_personalization_signals: true,
-      // Privacy settings for GDPR compliance
-      anonymize_ip: true,
-      // Enhanced ecommerce and events
-      custom_map: {
-        'custom_parameter_1': 'form_submission'
-      }
-    });
-
-    // Load Google Analytics script
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-
-    return () => {
-      // Cleanup: remove script on unmount
-      const existingScript = document.querySelector(`script[src*="${GA_MEASUREMENT_ID}"]`);
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, []);
-
-  return null; // This component doesn't render anything
-};
 
 // Utility functions for tracking custom events
 export const trackEvent = (eventName: string, parameters: Record<string, any> = {}) => {
