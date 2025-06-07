@@ -9,6 +9,7 @@ import { Footer } from './components/Footer';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { GlobalStyles } from './styles/GlobalStyles';
+import { GoogleAnalytics } from './components/GoogleAnalytics';
 
 function SEO() {
   const { t, i18n } = useTranslation();
@@ -78,6 +79,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
+      <GoogleAnalytics />
       <SEO />
       <Navbar />
       <main>

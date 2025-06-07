@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { SectionSEO } from './SectionSEO';
+import { trackFormSubmission } from './GoogleAnalytics';
 
 
 const Section = styled.section`
@@ -636,6 +637,17 @@ export const FinalCTA: React.FC = () => {
       if (response.ok && result.success) {
         setSubmitState('sent');
         setShowSuccess(true);
+        
+        // Track successful form submission
+        trackFormSubmission('Desktop Contact Form', {
+          form_source: 'desktop',
+          journey_type: journeyOptions.join(', '),
+          readiness_level: readinessOptions.join(', '),
+          waitlist_response: waitlist,
+          language: i18n.language,
+          services_length: services.length
+        });
+        
         setTimeout(() => {
           resetForm();
           setSubmitState('idle');

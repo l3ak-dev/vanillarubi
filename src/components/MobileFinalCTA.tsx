@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation, Trans } from 'react-i18next';
 import { SectionSEO } from './SectionSEO';
+import { trackFormSubmission } from './GoogleAnalytics';
 
 
 // Container principal
@@ -829,6 +830,17 @@ export const MobileFinalCTA: React.FC = () => {
         if (response.ok && result.success) {
           setSubmitState('sent');
           setCurrentStep('success');
+          
+          // Track successful form submission
+          trackFormSubmission('Mobile Contact Form', {
+            form_source: 'mobile',
+            journey_type: journeyOptions.join(', '),
+            readiness_level: readinessOptions.join(', '),
+            waitlist_response: waitlist,
+            language: i18n.language,
+            services_length: services.length,
+            form_step_completed: 'timing'
+          });
           
           setTimeout(() => {
             setSubmitState('idle');
