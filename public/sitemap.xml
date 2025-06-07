@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
+    <url>
     <loc>https://www.vanillarubi.eu/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <lastmod>2025-01-07</lastmod>
   </url>
   <url>
-    <loc>https://www.vanillarubi.eu/#about</loc>
+    <loc>https://www.vanillarubi.eu/#who</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <lastmod>2025-01-07</lastmod>
@@ -16,6 +16,12 @@
     <loc>https://www.vanillarubi.eu/#services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <lastmod>2025-01-07</lastmod>
+  </url>
+  <url>
+    <loc>https://www.vanillarubi.eu/#audience</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
     <lastmod>2025-01-07</lastmod>
   </url>
   <url>
