@@ -1,0 +1,24 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap.xml"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/xml"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=86400, stale-while-revalidate"
+        }
+      ]
+    }
+  ]
+} 
