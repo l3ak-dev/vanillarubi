@@ -44,6 +44,25 @@
   box-sizing: border-box;
 }
 
+/* Prevenção adicional de tradução */
+body, 
+#root,
+[data-translate],
+.translate {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Desabilita seleção para alguns tradutores automáticos */
+.notranslate {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;

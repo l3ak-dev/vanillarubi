@@ -22,8 +22,22 @@
       });
     </script>
   </head>
-  <body>
-    <div id="root"></div>
+  <body translate="no">
+    <div id="root" translate="no"></div>
+    <script>
+      // Prevenção adicional contra tradução automática
+      if (typeof window !== 'undefined') {
+        // Desabilita alguns eventos de tradução automática
+        document.documentElement.setAttribute('translate', 'no');
+        document.documentElement.className += ' notranslate';
+        
+        // Para alguns tradutores que detectam via JavaScript
+        window.addEventListener('DOMContentLoaded', function() {
+          document.body.setAttribute('translate', 'no');
+          document.body.className += ' notranslate';
+        });
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
