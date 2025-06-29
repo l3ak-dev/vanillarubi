@@ -272,6 +272,11 @@ const BottomContent = styled.div`
   flex-direction: column;
   align-items: center;
   
+  /* Ajuste simples para resolução 1024x600 - só mover para baixo */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    bottom: 1%;
+  }
+  
   @media (max-width: 900px) {
     position: relative;
     bottom: auto;
@@ -292,6 +297,11 @@ const SubheadlineContainer = styled(motion.div)`
   max-width: 100%;
   margin: 0 auto 2.5rem;
   padding: 0 3rem;
+  
+  /* Dar mais espaço para o botão na resolução 1024x600 */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    margin-bottom: 3rem;
+  }
   
   @media (max-width: 900px) {
     margin-bottom: 2rem;
