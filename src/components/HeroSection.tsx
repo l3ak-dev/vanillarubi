@@ -137,6 +137,25 @@ const PhraseRow = styled.div`
     top: 60%;
   }
   
+  /* Posicionamento perfeito evitando navbar na resolução 1024x600 */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    &:nth-child(1) {
+      top: 18%;
+    }
+    
+    &:nth-child(2) {
+      top: 28%;
+    }
+    
+    &:nth-child(3) {
+      top: 38%;
+    }
+    
+    &:nth-child(4) {
+      top: 52%;
+    }
+  }
+  
   /* Ajuste específico para idiomas PT e ES - mais espaço entre linha 3 e 4 */
   html[lang="pt"] &:nth-child(4),
   html[lang="es"] &:nth-child(4) {
@@ -220,6 +239,15 @@ const LeftHeadline = styled.h2`
     line-height: 1.1;
   }
   
+  /* Tipografia similar às telas maiores para resolução 1024x600 */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    font-size: clamp(2rem, 3.6vw, 2.8rem);
+    
+    ${PhraseRow}:nth-child(4) & {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+    }
+  }
+  
   @media (max-width: 600px) {
     text-align: center;
     font-size: clamp(1.8rem, 7vw, 2.5rem);
@@ -250,6 +278,15 @@ const RightHeadline = styled.h2`
     color: #ffeccc;
   }
   
+  /* Tipografia similar às telas maiores para resolução 1024x600 */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    font-size: clamp(2.2rem, 4.4vw, 3rem);
+    
+    ${PhraseRow}:nth-child(4) & {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+    }
+  }
+  
   @media (max-width: 600px) {
     text-align: center;
     font-size: clamp(1.8rem, 6vw, 2.5rem);
@@ -272,9 +309,15 @@ const BottomContent = styled.div`
   flex-direction: column;
   align-items: center;
   
-  /* Ajuste simples para resolução 1024x600 - só mover para baixo */
+  /* Centralizado perfeitamente para resolução 1024x600 */
   @media (min-width: 1000px) and (max-height: 650px) {
-    bottom: 1%;
+    bottom: 6%;
+    width: 100%;
+    left: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   @media (max-width: 900px) {
@@ -298,9 +341,12 @@ const SubheadlineContainer = styled(motion.div)`
   margin: 0 auto 2.5rem;
   padding: 0 3rem;
   
-  /* Dar mais espaço para o botão na resolução 1024x600 */
+  /* Limitado e perfeitamente espaçado para resolução 1024x600 */
   @media (min-width: 1000px) and (max-height: 650px) {
-    margin-bottom: 3rem;
+    margin-bottom: 1.8rem;
+    padding: 0 1rem;
+    max-width: 45%;
+    text-align: center;
   }
   
   @media (max-width: 900px) {
@@ -320,6 +366,13 @@ const Subheadline = styled(motion.p)`
   color: #333333;
   max-width: 850px;
   margin: 0 auto;
+  
+  /* Tipografia otimizada para não sobrepor na resolução 1024x600 */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    font-size: clamp(1.1rem, 1.4vw, 1.3rem);
+    line-height: 1.4;
+    max-width: 100%;
+  }
   
   @media (max-width: 600px) {
     font-size: 1.1rem;
@@ -350,6 +403,14 @@ const CTAButton = styled(motion.a)`
   }
   &:active {
     transform: translateY(0);
+  }
+  
+  /* Botão centralizado para resolução 1024x600 */
+  @media (min-width: 1000px) and (max-height: 650px) {
+    padding: 0.8rem 2.3rem;
+    font-size: 1rem;
+    width: fit-content;
+    margin: 0 auto;
   }
   
   @media (max-width: 900px) {
