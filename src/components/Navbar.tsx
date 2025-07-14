@@ -390,7 +390,7 @@ export const Navbar: React.FC = () => {
       <Helmet>
         <html lang={i18n.language} />
         <meta name="description" content={t('seo.description')} />
-        <link rel="canonical" href="https://vanillarubi.com" />
+        <link rel="canonical" href="https://vanillarubi.eu" />
       </Helmet>
       
       <header>

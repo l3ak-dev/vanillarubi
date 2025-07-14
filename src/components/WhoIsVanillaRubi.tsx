@@ -398,7 +398,7 @@ export const WhoIsVanillaRubi: React.FC = () => {
               {renderWithHighlights(t('who.desc2'))}
             </Paragraph>
             
-            <Quote variants={itemVariants} cite="https://vanillarubi.com">
+            <Quote variants={itemVariants} cite="https://vanillarubi.eu">
               {t('who.trinium')}
             </Quote>
           </ContentColumn>
