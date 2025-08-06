@@ -4,20 +4,20 @@ const GA_MEASUREMENT_ID = 'G-NP66MNMQGL';
 // Initialize gtag function
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
 // Utility functions for tracking custom events
-export const trackEvent = (eventName: string, parameters: Record<string, any> = {}) => {
+export const trackEvent = (eventName: string, parameters: Record<string, unknown> = {}) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, parameters);
   }
 };
 
 // Track form submissions
-export const trackFormSubmission = (formName: string, formData: Record<string, any> = {}) => {
+export const trackFormSubmission = (formName: string, formData: Record<string, unknown> = {}) => {
   trackEvent('form_submit', {
     form_name: formName,
     form_id: formName.toLowerCase().replace(/\s+/g, '_'),
