@@ -39,12 +39,12 @@ function SEO() {
       <html lang={lang} />
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={url} />
+      <link rel="canonical" href="https://vanillarubi.eu/" />
       
       {/* Alternate language versions */}
       <link rel="alternate" href="https://vanillarubi.eu/" hrefLang="en" />
-      <link rel="alternate" href="https://vanillarubi.eu/pt/" hrefLang="pt" />
-      <link rel="alternate" href="https://vanillarubi.eu/es/" hrefLang="es" />
+      <link rel="alternate" href="https://vanillarubi.eu/?lang=pt" hrefLang="pt" />
+      <link rel="alternate" href="https://vanillarubi.eu/?lang=es" hrefLang="es" />
       
       {/* Open Graph */}
       <meta property="og:type" content="website" />

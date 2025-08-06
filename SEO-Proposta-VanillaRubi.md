@@ -1,70 +1,69 @@
-# Proposta Comercial — SEO Básico
-**Projeto:** Vanilla Rubi (vanillarubi.eu)  
-**Profissional:** [Seu Nome]  
-**Data:** [Data de envio]
+# SEO - Vanilla Rubi
 
----
+**Projeto:** Vanilla Rubi (vanillarubi.eu)
 
-## 1. Resumo do Serviço
-Implementação de SEO básico profissional para o site Vanilla Rubi, garantindo indexação, performance e visibilidade internacional, com foco em estrutura editorial, internacionalização e melhores práticas técnicas.
+## ✅ Problemas Corrigidos
 
----
+### 1. **Conflito de URLs Canônicas**
+- **Problema:** Inconsistência entre URLs com e sem "www"
+- **Solução:** Padronização para URLs sem "www"
+- **Arquivos corrigidos:**
+  - `public/sitemap.xml`
+  - `public/sitemap-2025.xml`
+  - `public/robots.txt`
+  - `src/App.tsx`
+  - `src/components/Navbar.tsx`
 
-## 2. O que está incluso
+### 2. **Redirecionamentos**
+- **Adicionado:** Redirecionamento 301 de www para non-www
+- **Arquivos criados:**
+  - `public/_redirects`
+  - `vercel.json` (atualizado)
 
-- **Meta tags dinâmicas:**  
-  Título, descrição, Open Graph, Twitter Card e canonical, adaptados para cada idioma (EN, PT, ES).
+### 3. **Headers de Segurança e SEO**
+- **Adicionado:** Headers de segurança e cache
+- **Arquivo criado:** `public/_headers`
 
-- **Internacionalização de SEO:**  
-  Tags `<html lang>`, `<link rel="alternate" hrefLang="...">` e sitemap.xml para Google entender todas as versões do site.
+### 4. **URLs Alternativas Corrigidas**
+- **Problema:** URLs de idiomas incorretas
+- **Solução:** URLs corrigidas para usar parâmetros de idioma
 
-- **Estrutura semântica:**  
-  Uso correto de `<h1>`, `<h2>`, `<section>`, `<nav>`, etc., para melhor indexação e acessibilidade.
+## 📋 Checklist de SEO
 
-- **robots.txt e sitemap.xml:**  
-  Arquivos prontos para indexação internacional, facilitando o trabalho dos buscadores.
+### ✅ Estrutura Técnica
+- [x] Tags canônicas consistentes
+- [x] Sitemap XML funcional
+- [x] Robots.txt configurado
+- [x] Redirecionamentos 301
+- [x] Headers de segurança
 
-- **Acessibilidade e performance:**  
-  Imagens com alt, contraste adequado, responsividade e carregamento rápido.
+### ✅ Meta Tags
+- [x] Título otimizado
+- [x] Descrição meta
+- [x] Open Graph
+- [x] Twitter Cards
+- [x] Structured Data (JSON-LD)
 
-- **Pronto para Google Search Console e Analytics.**
+### ✅ Performance
+- [x] Cache configurado
+- [x] Headers otimizados
+- [x] Assets com cache longo
 
----
+### ✅ Internacionalização
+- [x] URLs alternativas por idioma
+- [x] Tags hreflang
+- [x] Estrutura de idiomas
 
-## 3. Benefícios para o cliente
+## 🚀 Próximos Passos
 
-- **Mais visibilidade:**  
-  O site será encontrado por clientes em diferentes idiomas e países.
+1. **Deploy das correções**
+2. **Reindexação no Google Search Console**
+3. **Monitoramento dos erros de indexação**
+4. **Validação das correções**
 
-- **Pronto para crescer:**  
-  Estrutura preparada para expansão futura (blog, cases, SEO avançado).
+## 📊 Monitoramento
 
-- **Diferencial editorial:**  
-  SEO alinhado ao design premium, reforçando a autoridade da marca.
-
-- **Tranquilidade:**  
-  Tudo implementado seguindo as melhores práticas do mercado europeu.
-
----
-
-## 4. Investimento
-
-- **Valor do pacote SEO básico:**  
-  **€450** (quatrocentos e cinquenta euros)
-
-- **Prazo de entrega:**  
-  2 dias úteis
-
-- **Forma de pagamento:**  
-  100% na entrega
-
----
-
-## 5. Observações
-
-- SEO avançado (blog, rich snippets, backlinks, etc.) pode ser contratado à parte.
-- Suporte para dúvidas e ajustes iniciais incluso por 7 dias após entrega.
-
----
-
-**Dúvidas? Estou à disposição para explicar cada item ou adaptar a proposta conforme sua necessidade.** 
+Após o deploy, monitorar no Google Search Console:
+- Erros de indexação
+- Status das URLs canônicas
+- Performance de indexação 
