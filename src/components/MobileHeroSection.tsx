@@ -282,6 +282,21 @@ const itemVariants = {
 
 export const MobileHeroSection: React.FC = () => {
   const { t } = useTranslation();
+
+  const renderWithPunctuation = (text: string, fallbackPunctuation: string) => {
+    if (/[.!?]$/.test(text)) {
+      return text;
+    }
+    return `${text}${fallbackPunctuation}`;
+  };
+
+  const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact-mobile');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   return (
     <>
@@ -317,7 +332,7 @@ export const MobileHeroSection: React.FC = () => {
                       {t('hero.strategyMeets')}
                     </LeftPhrase>
                     <RightPhrase aria-label={t('hero.flow')}>
-                      {t('hero.flow')}.
+                      {renderWithPunctuation(t('hero.flow'), '.')}
                     </RightPhrase>
                   </PhraseRow>
                 </motion.div>
@@ -328,7 +343,7 @@ export const MobileHeroSection: React.FC = () => {
                       {t('hero.boldnessMeets')}
                     </LeftPhrase>
                     <RightPhrase aria-label={t('hero.classic')}>
-                      {t('hero.classic')}.
+                      {renderWithPunctuation(t('hero.classic'), '.')}
                     </RightPhrase>
                   </PhraseRow>
                 </motion.div>
@@ -339,7 +354,7 @@ export const MobileHeroSection: React.FC = () => {
                       {t('hero.intentionMeets')}
                     </LeftPhrase>
                     <RightPhrase aria-label={t('hero.income')}>
-                      {t('hero.income')}.
+                      {renderWithPunctuation(t('hero.income'), '.')}
                     </RightPhrase>
                   </PhraseRow>
                 </motion.div>
@@ -350,7 +365,7 @@ export const MobileHeroSection: React.FC = () => {
                       {t('hero.andYou')}
                     </LeftPhrase>
                     <RightPhrase aria-label={t('hero.youMeetUs')}>
-                      {t('hero.youMeetUs')}!
+                      {renderWithPunctuation(t('hero.youMeetUs'), '!')}
                     </RightPhrase>
                   </PhraseRow>
                 </motion.div>
@@ -375,6 +390,7 @@ export const MobileHeroSection: React.FC = () => {
                   whileTap={{ scale: 0.98 }}
                   role="button"
                   aria-label={t('hero.cta')}
+                  onClick={handleCtaClick}
                 >
                   {t('hero.cta')}
                 </CTAButton>

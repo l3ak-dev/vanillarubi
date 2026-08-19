@@ -453,6 +453,21 @@ const itemVariants = {
 
 export const HeroSection: React.FC = () => {
   const { t } = useTranslation();
+
+  const renderWithPunctuation = (text: string, fallbackPunctuation: string) => {
+    if (/[.!?]$/.test(text)) {
+      return text;
+    }
+    return `${text}${fallbackPunctuation}`;
+  };
+
+  const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   return (
     <>
@@ -480,7 +495,7 @@ export const HeroSection: React.FC = () => {
             </LeftContent>
             <RightContent>
               <RightHeadline aria-label={t('hero.flow')}>
-                {t('hero.flow')}.
+                {renderWithPunctuation(t('hero.flow'), '.')}
               </RightHeadline>
             </RightContent>
           </PhraseRow>
@@ -493,7 +508,7 @@ export const HeroSection: React.FC = () => {
             </LeftContent>
             <RightContent>
               <RightHeadline aria-label={t('hero.classic')}>
-                {t('hero.classic')}.
+                {renderWithPunctuation(t('hero.classic'), '.')}
               </RightHeadline>
             </RightContent>
           </PhraseRow>
@@ -506,7 +521,7 @@ export const HeroSection: React.FC = () => {
             </LeftContent>
             <RightContent>
               <RightHeadline aria-label={t('hero.income')}>
-                {t('hero.income')}.
+                {renderWithPunctuation(t('hero.income'), '.')}
               </RightHeadline>
             </RightContent>
           </PhraseRow>
@@ -519,7 +534,7 @@ export const HeroSection: React.FC = () => {
             </LeftContent>
             <RightContent>
               <RightHeadline aria-label={t('hero.youMeetUs')}>
-                {t('hero.youMeetUs')}!
+                {renderWithPunctuation(t('hero.youMeetUs'), '!')}
               </RightHeadline>
             </RightContent>
           </PhraseRow>
@@ -554,6 +569,7 @@ export const HeroSection: React.FC = () => {
               whileTap={{ scale: 0.98 }}
               role="button"
               aria-label={t('hero.cta')}
+              onClick={handleCtaClick}
             >
               {t('hero.cta')}
             </CTAButton>
