@@ -335,7 +335,6 @@ export const WhoIsVanillaRubi: React.FC = () => {
   });
   
   const imageScaleProgress = useTransform(scrollYProgress, [0, 0.5], [0.9, 1]);
-  const contentOpacityProgress = useTransform(scrollYProgress, [0, 0.3], [0.6, 1]);
   
   return (
     <>
@@ -372,14 +371,21 @@ export const WhoIsVanillaRubi: React.FC = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
-            style={{ opacity: contentOpacityProgress }}
           >
             <Eyebrow variants={itemVariants} aria-hidden="true">
               {renderWithHighlights(t('who.agency'))}
             </Eyebrow>
             
-            <Title variants={itemVariants} id="about-title">
-              {t('who.title1')}<HighlightedText></HighlightedText>{t('who.title2')}
+            <Title variants={itemVariants} id="who-title">
+              {t('who.title1').endsWith('?') ? (
+                t('who.title1')
+              ) : (
+                <>
+                  {t('who.title1')}
+                  <HighlightedText>Rubi</HighlightedText>
+                  {t('who.title2')}
+                </>
+              )}
             </Title>
             
             <TitleDivider 
@@ -394,9 +400,11 @@ export const WhoIsVanillaRubi: React.FC = () => {
               {renderWithHighlights(t('who.desc1'))}
             </Paragraph>
             
-            <Paragraph variants={itemVariants}>
-              {renderWithHighlights(t('who.desc2'))}
-            </Paragraph>
+            {t('who.desc2') ? (
+              <Paragraph variants={itemVariants}>
+                {renderWithHighlights(t('who.desc2'))}
+              </Paragraph>
+            ) : null}
             
             <Quote variants={itemVariants} cite="https://vanillarubi.eu">
               {t('who.trinium')}
