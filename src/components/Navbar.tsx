@@ -175,14 +175,14 @@ const FlagButton = styled.button<{ $active?: boolean }>`
   }
 `;
 
-const Hamburger = styled.button`
+const Hamburger = styled.button<{ $isOpen?: boolean }>`
   display: none;
   background: none;
   border: none;
   cursor: pointer;
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1);
   margin-left: auto;
-  z-index: 120;
+  z-index: 130;
   border-radius: var(--radius-md);
   transition: background-color var(--transition-fast);
   height: 40px;
@@ -201,7 +201,18 @@ const Hamburger = styled.button`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 0.22em;
+    gap: 5px;
+  }
+
+  span:nth-child(1) {
+    transform: ${props => props.$isOpen ? 'translateY(7.5px) rotate(45deg)' : 'none'};
+  }
+  span:nth-child(2) {
+    opacity: ${props => props.$isOpen ? '0' : '1'};
+    transform: ${props => props.$isOpen ? 'scaleX(0)' : 'scaleX(1)'};
+  }
+  span:nth-child(3) {
+    transform: ${props => props.$isOpen ? 'translateY(-7.5px) rotate(-45deg)' : 'none'};
   }
 `;
 
@@ -211,14 +222,19 @@ const Bar = styled.span`
   height: 2.5px;
   background: var(--color-white);
   border-radius: var(--radius-sm);
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+  transform-origin: center;
 `;
 
 const Menu = styled.nav`
   display: flex;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-5);
   
+  @media (max-width: 900px) {
+    gap: var(--space-3);
+  }
+
   @media (max-width: 600px) {
     display: none;
   }
@@ -226,13 +242,14 @@ const Menu = styled.nav`
 
 const NavLink = styled.a`
   color: var(--color-gray-100);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   text-decoration: none;
   position: relative;
   padding: var(--space-1) var(--space-1);
   transition: color var(--transition-normal);
+  white-space: nowrap;
   
   &:hover {
     color: var(--color-secondary);
@@ -331,15 +348,29 @@ export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const currentLang = (i18n.resolvedLanguage || i18n.language || 'en').slice(0, 2);
+
   // Scroll effect handler
   useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   // Close mobile menu when window is resized to desktop size
   useEffect(() => {
@@ -388,7 +419,7 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <Helmet>
-        <html lang={i18n.language} />
+        <html lang={currentLang} />
         <meta name="description" content={t('seo.description')} />
       </Helmet>
       
@@ -417,18 +448,19 @@ export const Navbar: React.FC = () => {
           </Menu>
 
           <NavLinks>
-            <FlagButton onClick={() => handleLang('en')} $active={i18n.language === 'en'} title="Change to English">
+            <FlagButton onClick={() => handleLang('en')} $active={currentLang === 'en'} title="Change to English">
               <img src={ukFlag} alt="English" />
             </FlagButton>
-            <FlagButton onClick={() => handleLang('es')} $active={i18n.language === 'es'} title="Cambiar a Español">
+            <FlagButton onClick={() => handleLang('es')} $active={currentLang === 'es'} title="Cambiar a Español">
               <img src={esFlag} alt="Spanish" />
             </FlagButton>
-            <FlagButton onClick={() => handleLang('pt')} $active={i18n.language === 'pt'} title="Mudar para Português">
+            <FlagButton onClick={() => handleLang('pt')} $active={currentLang === 'pt'} title="Mudar para Português">
               <img src={brFlag} alt="Portuguese" />
             </FlagButton>
           </NavLinks>
 
           <Hamburger 
+            $isOpen={isMobileMenuOpen}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
             aria-label="Toggle Mobile Menu"
             aria-expanded={isMobileMenuOpen}

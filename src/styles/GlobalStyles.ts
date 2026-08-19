@@ -52,10 +52,24 @@ export const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
   
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+  }
+
+  section[id], header[id], div[id="home"], div[id="home-mobile"] {
+    scroll-margin-top: 90px;
+  }
+
+  @media (max-width: 600px) {
+    section[id], header[id], div[id="home"], div[id="home-mobile"] {
+      scroll-margin-top: 70px;
+    }
   }
 
   body {

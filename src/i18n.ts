@@ -439,15 +439,32 @@ const resources = {
   }
 };
 
+const getInitialLanguage = (): string => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('vanillarubi_lang');
+    if (saved && ['en', 'pt', 'es'].includes(saved)) {
+      return saved;
+    }
+  }
+  return 'en';
+};
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en',
+    lng: getInitialLanguage(),
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },
   });
+
+i18n.on('languageChanged', (lng) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('vanillarubi_lang', lng);
+    document.documentElement.lang = lng;
+  }
+});
 
 export default i18n; 
