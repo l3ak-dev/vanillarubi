@@ -293,68 +293,81 @@ const itemVariants = {
   }
 };
 
-export const Footer: React.FC = () => (
-  <FooterContainer
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    variants={containerVariants}
-  >
-    <FooterContent>
-      <FooterColumn as={motion.div} variants={itemVariants}>
-        <Logo>
-          <Vanilla>vanilla</Vanilla>
-          <Diamond>
-            <svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="15" height="15" rx="2" transform="matrix(0.75 -0.65 0.75 0.65 0 7.5)" fill="#DCC9B6"/>
-            </svg>
-          </Diamond>
-          <Rubi>rubi</Rubi>
-        </Logo>
-        <CompanyDescription>
-          A multidimensional business growth agency for entrepreneurs ready to scale with clarity, creativity, and soul.
-        </CompanyDescription>
-        <SocialLinks>
-          <SocialIcon href="https://www.instagram.com/vanilla_rubi/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
-          </SocialIcon>
-          <SocialIcon href="mailto:hello@vanillarubi.eu" aria-label="Email">
-            <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="4"/><polyline points="22,6 12,13 2,6"/></svg>
-          </SocialIcon>
-          <SocialIcon href="https://linkedin.com/company/vanillarubi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </SocialIcon>
-        </SocialLinks>
-      </FooterColumn>
+export const Footer: React.FC = () => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    let target = document.querySelector(targetId);
+    if (!target && targetId === '#contact') {
+      target = document.querySelector('#contact-mobile');
+    }
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <FooterContainer
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={containerVariants}
+    >
+      <FooterContent>
+        <FooterColumn as={motion.div} variants={itemVariants}>
+          <Logo>
+            <Vanilla>vanilla</Vanilla>
+            <Diamond>
+              <svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect width="15" height="15" rx="2" transform="matrix(0.75 -0.65 0.75 0.65 0 7.5)" fill="#DCC9B6"/>
+              </svg>
+            </Diamond>
+            <Rubi>rubi</Rubi>
+          </Logo>
+          <CompanyDescription>
+            A multidimensional business growth agency for entrepreneurs ready to scale with clarity, creativity, and soul.
+          </CompanyDescription>
+          <SocialLinks>
+            <SocialIcon href="https://www.instagram.com/vanilla_rubi/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>
+            </SocialIcon>
+            <SocialIcon href="mailto:hello@vanillarubi.eu" aria-label="Email">
+              <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="4"/><polyline points="22,6 12,13 2,6"/></svg>
+            </SocialIcon>
+            <SocialIcon href="https://linkedin.com/company/vanillarubi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </SocialIcon>
+          </SocialLinks>
+        </FooterColumn>
+        
+        <FooterColumn as={motion.div} variants={itemVariants}>
+          <FooterHeading>Navigation</FooterHeading>
+          <FooterLinks>
+            <FooterLink href="#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</FooterLink>
+            <FooterLink href="#services" onClick={(e) => handleNavClick(e, '#services')}>Services</FooterLink>
+            <FooterLink href="#audience" onClick={(e) => handleNavClick(e, '#audience')}>Who It's For</FooterLink>
+            <FooterLink href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact</FooterLink>
+          </FooterLinks>
+        </FooterColumn> 
+        
+        <FooterColumn as={motion.div} variants={itemVariants}>
+          <FooterHeading>Contact</FooterHeading>
+          <FooterLinks>
+            <FooterLink href="mailto:hello@vanillarubi.eu">hello@vanillarubi.eu</FooterLink>
+            <FooterLink href="https://www.instagram.com/vanilla_rubi/" target="_blank" rel="noopener noreferrer">@vanilla_rubi</FooterLink>
+          </FooterLinks>
+        </FooterColumn>
+      </FooterContent>
       
-      <FooterColumn as={motion.div} variants={itemVariants}>
-        <FooterHeading>Navigation</FooterHeading>
-        <FooterLinks>
-          <FooterLink href="#about">About Us</FooterLink>
-          <FooterLink href="#services">Services</FooterLink>
-          <FooterLink href="#audience">Who It's For</FooterLink>
-          <FooterLink href="#contact">Contact</FooterLink>
-        </FooterLinks>
-      </FooterColumn> 
-      
-      <FooterColumn as={motion.div} variants={itemVariants}>
-        <FooterHeading>Contact</FooterHeading>
-        <FooterLinks>
-          <FooterLink href="mailto:hello@vanillarubi.com">hello@vanillarubi.com</FooterLink>
-          <FooterLink href="https://instagram.com/vanillarubi" target="_blank" rel="noopener noreferrer">@vanillarubi</FooterLink>
-        </FooterLinks>
-      </FooterColumn>
-    </FooterContent>
-    
-    <BottomBar as={motion.div} variants={itemVariants}>
-      <Copyright>
-        © {new Date().getFullYear()} Vanilla Rubi. All rights reserved.
-      </Copyright>
-      <LegalLinks>
-        <LegalLink href="#terms">Terms</LegalLink>
-        <LegalLink href="#privacy">Privacy</LegalLink>
-        <LegalLink href="#cookies">Cookies</LegalLink>
-      </LegalLinks>
-    </BottomBar>
-  </FooterContainer>
-); 
+      <BottomBar as={motion.div} variants={itemVariants}>
+        <Copyright>
+          © {new Date().getFullYear()} Vanilla Rubi. All rights reserved.
+        </Copyright>
+        <LegalLinks>
+          <LegalLink href="#terms">Terms</LegalLink>
+          <LegalLink href="#privacy">Privacy</LegalLink>
+          <LegalLink href="#cookies">Cookies</LegalLink>
+        </LegalLinks>
+      </BottomBar>
+    </FooterContainer>
+  );
+}; 
