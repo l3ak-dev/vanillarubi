@@ -906,7 +906,7 @@ export const MobileFinalCTA: React.FC = () => {
   };
   
   const isNextButtonDisabled = () => {
-    if (submitState !== 'idle') return true;
+    if (submitState === 'sending') return true;
     if (currentStep === 'info') return !isInfoStepValid;
     if (currentStep === 'project') return !isProjectStepValid;
     if (currentStep === 'timing') return !isTimingStepValid;

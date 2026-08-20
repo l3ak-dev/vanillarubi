@@ -573,10 +573,11 @@ export const FinalCTA: React.FC = () => {
     const nameValid = validateField('fullName', fullName);
     const emailValid = validateField('email', email);
     const servicesValid = validateField('services', services);
+    const waitlistValid = waitlist === 'yes' || waitlist === 'no';
     
-    setTouched({ fullName: true, email: true, services: true });
+    setTouched({ fullName: true, email: true, services: true, waitlist: true });
     
-    if (!nameValid || !emailValid || !servicesValid) {
+    if (!nameValid || !emailValid || !servicesValid || !waitlistValid) {
       setSubmitState('idle');
       setErrorMessage(t('finalCTA.validation.pleaseFix'));
       return;
