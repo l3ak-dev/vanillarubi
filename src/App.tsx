@@ -60,7 +60,7 @@ function SEO() {
       <meta name="twitter:image" content={image} />
       
       {/* Theme Color */}
-      <meta name="theme-color" content="#E63946" />
+      <meta name="theme-color" content="#800020" />
       
       {/* Favicon */}
       <link rel="icon" href="/favicon.ico" />
