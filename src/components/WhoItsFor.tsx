@@ -127,12 +127,12 @@ const StylizedImage = styled.figure`
   }
   
   img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    width: 100%;
+    height: 105%;
+    object-fit: cover;
     object-position: center;
     filter: brightness(0.95) contrast(1.05);
-    transition: all 0.6s ease;
+    transition: transform 0.6s ease, filter 0.6s ease;
     will-change: transform;
   }
   
@@ -152,7 +152,7 @@ const StylizedImage = styled.figure`
   }
   
   @media (max-width: 900px) {
-    height: 580px;
+    height: 540px;
     width: 85%;
     
     &::after {
@@ -165,7 +165,7 @@ const StylizedImage = styled.figure`
   }
   
   @media (max-width: 600px) {
-    height: 500px;
+    height: clamp(360px, 55vh, 480px);
     width: 100%;
     padding: 10px;
   }
@@ -446,8 +446,8 @@ const fadeInVariants = {
 
 export const WhoItsFor: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const bullets = i18n.t('whoItsFor.bullets', { returnObjects: true }) as string[];
-  const imageRef = useRef<HTMLElement>(null);
+  const rawBullets = i18n.t('whoItsFor.bullets', { returnObjects: true });
+  const bullets = Array.isArray(rawBullets) ? (rawBullets as string[]) : [];
   const sectionRef = useRef<HTMLElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -542,7 +542,7 @@ export const WhoItsFor: React.FC = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <StylizedImage ref={imageRef}>
+            <StylizedImage>
               <motion.img 
                 src={whoIsItForImage} 
                 alt={t('whoItsFor.imageAlt') || "Ideal audience for Vanilla Rubi services"}
