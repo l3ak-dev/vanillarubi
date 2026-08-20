@@ -4,9 +4,14 @@ import { motion, LazyMotion, domAnimation } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { SectionSEO } from './SectionSEO';
 
-// Material Icons styles
-const MaterialIconStyles = `
-  @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+// Styled Components
+const Section = styled.section`
+  scroll-margin-top: 90px;
+  background: var(--color-primary);  
+  color: var(--color-white);
+  padding: var(--space-10) 0 var(--space-10) 0;
+  position: relative;
+  overflow: hidden;
   
   .material-icons {
     font-family: 'Material Icons';
@@ -26,21 +31,6 @@ const MaterialIconStyles = `
     font-feature-settings: 'liga';
     color: var(--color-secondary);
   }
-`;
-
-// Inject Material Icons styles
-const IconStyles = () => (
-  <style dangerouslySetInnerHTML={{ __html: MaterialIconStyles }} />
-);
-
-// Styled Components
-const Section = styled.section`
-  scroll-margin-top: 90px;
-  background: var(--color-primary);  
-  color: var(--color-white);
-  padding: var(--space-10) 0 var(--space-10) 0;
-  position: relative;
-  overflow: hidden;
   
   &::before {
     content: '';
@@ -157,14 +147,14 @@ const Description = styled(motion.p)`
 
 const ServicesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--space-5);
   max-width: 1200px;
   margin: 0 auto;
   
   @media (max-width: 900px) {
     gap: var(--space-4);
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
   
   @media (max-width: 600px) {
@@ -182,7 +172,7 @@ const ServiceCard = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: all var(--transition-normal);
+  transition: background var(--transition-normal), border var(--transition-normal), box-shadow var(--transition-normal);
   border: 1px solid rgba(220, 201, 182, 0.1);
   height: 100%;
   position: relative;
@@ -203,7 +193,6 @@ const ServiceCard = styled(motion.div)`
   &:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(220, 201, 182, 0.2);
-    transform: translateY(-8px);
     background: rgba(255, 255, 255, 0.08);
     
     &::before {
@@ -282,26 +271,15 @@ const ServiceDesc = styled.p`
   }
 `;
 
-// Define o array de ícones do Material Icons para cada serviço
-// Para alterar ícones: 
-// 1. Visite https://fonts.google.com/icons
-// 2. Encontre um ícone que você goste
-// 3. Copie o nome exato do ícone (geralmente em minúsculas com underscores)
-// 4. Substitua o nome do ícone abaixo na posição correspondente ao card
-//
-// Para usar um SVG personalizado:
-// 1. Coloque 'custom_svg' na posição desejada do array abaixo
-// 2. O renderIcon vai automaticamente usar o SVG personalizado nessa posição
 const serviceIcons = [
-  'campaign',           // Ícone para media management (megafone/campanha)
+  'campaign',           // Ícone para media management
   'video_camera_back',  // Ícone para criação de conteúdo
   'moving',             // Ícone para brand & content strategy
   'self_improvement',   // Ícone para mentoria energética
-  'custom_svg',         // Usaremos nosso SVG personalizado para creative direction
+  'custom_svg',         // SVG personalizado
   'rocket_launch',      // Ícone para growth planning
 ];
 
-// SVG personalizado para o ícone de network intelligence caso seja necessário
 const NetworkIntelligenceSVG = () => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -320,7 +298,6 @@ const NetworkIntelligenceSVG = () => (
   </svg>
 );
 
-// Animation variants - otimizados para performance
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -361,7 +338,8 @@ const cardVariants = {
 
 export const WhatWeOffer: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const services = i18n.t('whatWeOffer.services', { returnObjects: true }) as { title: string; desc: string }[];
+  const rawServices = i18n.t('whatWeOffer.services', { returnObjects: true });
+  const services = Array.isArray(rawServices) ? (rawServices as { title: string; desc: string }[]) : [];
   
   return (
     <>
@@ -374,7 +352,6 @@ export const WhatWeOffer: React.FC = () => {
      
       <LazyMotion features={domAnimation}>
         <Section id="services" aria-labelledby="services-title">
-          <IconStyles />
           <Container>
             <SectionHeader
               as={motion.div}
@@ -402,22 +379,29 @@ export const WhatWeOffer: React.FC = () => {
               variants={containerVariants}
               role="list"
             >
-              {services.map((service, index) => (
-                <ServiceCard 
-                  key={index} 
-                  custom={index}
-                  variants={cardVariants}
-                  whileHover={{ scale: 1.02 }}
-                  role="listitem"
-                  aria-labelledby={`service-title-${index}`}
-                >
-                  <IconContainer className="icon-container">
-                    {serviceIcons[index] === 'custom_svg' ? <NetworkIntelligenceSVG /> : <span className="material-icons" aria-hidden="true">{serviceIcons[index]}</span>}
-                  </IconContainer>
-                  <ServiceTitle id={`service-title-${index}`}>{service.title}</ServiceTitle>
-                  <ServiceDesc>{service.desc}</ServiceDesc>
-                </ServiceCard>
-              ))}
+              {services.map((service, index) => {
+                const iconName = serviceIcons[index] || 'star';
+                return (
+                  <ServiceCard 
+                    key={service.title || index} 
+                    custom={index}
+                    variants={cardVariants}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    role="listitem"
+                    aria-labelledby={`service-title-${index}`}
+                  >
+                    <IconContainer className="icon-container">
+                      {iconName === 'custom_svg' ? (
+                        <NetworkIntelligenceSVG />
+                      ) : (
+                        <span className="material-icons" aria-hidden="true">{iconName}</span>
+                      )}
+                    </IconContainer>
+                    <ServiceTitle id={`service-title-${index}`}>{service.title}</ServiceTitle>
+                    <ServiceDesc>{service.desc}</ServiceDesc>
+                  </ServiceCard>
+                );
+              })}
             </ServicesGrid>
           </Container>
         </Section>
